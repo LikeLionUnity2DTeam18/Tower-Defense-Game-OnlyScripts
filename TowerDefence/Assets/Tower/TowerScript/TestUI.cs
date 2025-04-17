@@ -2,7 +2,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class UI : MonoBehaviour
+public class TestUI : MonoBehaviour
 {
     [SerializeField] private float fadeSpeed = 1f;
     private bool alphaChange = false;

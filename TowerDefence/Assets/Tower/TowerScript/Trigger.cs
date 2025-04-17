@@ -2,11 +2,11 @@ using UnityEngine;
 
 public class Trigger : MonoBehaviour
 {
-    move mv;
+    TowerMove mv;
 
     private void Awake()
     {
-        mv = GetComponentInParent<move>();
+        mv = GetComponentInParent<TowerMove>();
     }
 
 

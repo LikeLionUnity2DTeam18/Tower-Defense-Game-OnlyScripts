@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class move : MonoBehaviour
+public class TowerMove : MonoBehaviour
 {
     Rigidbody2D rb;
     public float facingDir = 1; // 1 for right, -1 for left
