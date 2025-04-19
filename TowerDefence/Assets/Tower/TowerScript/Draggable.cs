@@ -9,20 +9,21 @@ public class Draggable : MonoBehaviour
     [SerializeField] private LayerMask whatIsBeacon;
     public GameObject DetectedBeacon { get; private set; }
 
+    //클릭 시 실행
     void OnMouseDown()
     {
         var mp = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         offset = transform.position - mp;
         dragging = true;
     }
-
+    //드래그 시 실행
     void OnMouseDrag()
     {
         if (!dragging) return;
         var mp = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         transform.position = mp + offset;
     }
-
+    //놓을 시 실행
     void OnMouseUp()
     {
         dragging = false;
@@ -44,7 +45,7 @@ public class Draggable : MonoBehaviour
     }
     private void OnDrawGizmos()
     {
-        Gizmos.color = Color.red;
+        Gizmos.color = Color.black;
         Gizmos.DrawWireSphere(transform.position, Radius);
     }
 
