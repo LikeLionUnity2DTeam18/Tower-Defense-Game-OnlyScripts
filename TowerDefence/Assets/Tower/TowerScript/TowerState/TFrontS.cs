@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class TFrontS : TowerState
 {
-    public TFrontS(Tower tower, TowerFSM towerFSM, string stateName) : base(tower, towerFSM, stateName)
+    public TFrontS(FSMLibrary fsmLibrary, Tower tower, TowerFSM towerFSM, string stateName) : base(fsmLibrary, tower, towerFSM, stateName)
     {
     }
 

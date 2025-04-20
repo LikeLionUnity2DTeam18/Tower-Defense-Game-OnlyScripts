@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class TBackS : TowerState
 {
-    public TBackS(Tower tower, TowerFSM towerFSM, string stateName) : base(tower, towerFSM, stateName)
+    public TBackS(FSMLibrary fsmLibrary, Tower tower, TowerFSM towerFSM, string stateName) : base(fsmLibrary, tower, towerFSM, stateName)
     {
     }
 

@@ -2,8 +2,8 @@ using UnityEngine;
 
 public class Tower : MonoBehaviour
 {
-    private bool towerFront;
-    private bool towerRight;
+    public bool towerFront { get; private set; } = true;//앞인지 뒤인지
+    public bool towerRight { get; private set; } //오른쪽인지 왼쪽인지
     [SerializeField] private float meleeAttack = 2f;
     [SerializeField] private float rangedAttack = 5f;
 
@@ -25,21 +25,7 @@ public class Tower : MonoBehaviour
     public virtual void Update()
     {
         towerFSM.currentState.Update();
-        var nearestEnemy = FindNearestEnemyByOverlap(transform.position, meleeAttack, LayerMask.GetMask("Enemy"));
-        if (nearestEnemy != null)
-        {
-            UpdateDirection(nearestEnemy.transform.position);
-        }
-        Flip();
-
-        if(towerFront)
-        {
-            towerFSM.ChangeState(fsmLibrary.tFrontS);
-        }
-        else if (!towerFront)
-        {
-            towerFSM.ChangeState(fsmLibrary.tBackS);
-        }
+        ChangeDir();
     }
     void OnDrawGizmosSelected()
     {
@@ -47,6 +33,24 @@ public class Tower : MonoBehaviour
         Gizmos.DrawWireSphere(transform.position, meleeAttack);
         Gizmos.color = Color.blue;
         Gizmos.DrawWireSphere(transform.position, rangedAttack);
+    }
+
+    private void ChangeDir()
+    {
+        var nearestMEnemy = FindNearestEnemyByOverlap(transform.position, meleeAttack, LayerMask.GetMask("Enemy"));
+        if (nearestMEnemy != null)
+        {
+            UpdateDirection(nearestMEnemy.transform.position);
+        }
+        else if (nearestMEnemy == null)
+        {
+            var nearestREnemy = FindNearestEnemyByOverlap(transform.position, rangedAttack, LayerMask.GetMask("Enemy"));
+            if (nearestREnemy != null)
+            {
+                UpdateDirection(nearestREnemy.transform.position);
+            }
+        }
+        Flip();
     }
 
 
