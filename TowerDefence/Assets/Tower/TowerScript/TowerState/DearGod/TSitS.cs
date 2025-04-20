@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class TSitS : TowerState
 {
-    public TSitS(Tower tower, TowerFSM towerFSM, string stateName) : base(tower, towerFSM, stateName)
+    public TSitS(FSMLibrary fsmLibrary, Tower tower, TowerFSM towerFSM, string stateName) : base(fsmLibrary, tower, towerFSM, stateName)
     {
     }
 

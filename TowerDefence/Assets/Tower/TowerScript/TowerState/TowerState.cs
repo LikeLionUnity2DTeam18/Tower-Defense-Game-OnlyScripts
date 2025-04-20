@@ -5,7 +5,16 @@ public class TowerState
     protected string stateName;
     protected Tower tower;
     protected TowerFSM towerFSM;
-    public TowerState(Tower tower,TowerFSM towerFSM, string stateName)
+    protected FSMLibrary fsmLibrary;
+    public TowerState(FSMLibrary fsmLibrary,Tower tower,TowerFSM towerFSM, string stateName)
+    {
+        this.fsmLibrary = fsmLibrary;
+        this.tower = tower;
+        this.towerFSM = towerFSM;
+        this.stateName = stateName;
+    }
+
+    public TowerState(Tower tower, TowerFSM towerFSM, string stateName)
     {
         this.tower = tower;
         this.towerFSM = towerFSM;
@@ -18,7 +27,14 @@ public class TowerState
     }
     public virtual void Update()
     {
-        tower.anim.SetBool(stateName, false);
+        if (tower.towerFront == true)
+        {
+            towerFSM.ChangeState(fsmLibrary.tFrontS);
+        }
+        else if(tower.towerFront == false)
+        {
+            towerFSM.ChangeState(fsmLibrary.tBackS);
+        }
     }
     public virtual void Exit()
     {

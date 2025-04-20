@@ -7,7 +7,7 @@ public class FSMLibrary
 
     public FSMLibrary(Tower tower,TowerFSM towerFSM)
     {
-        tFrontS = new TFrontS(tower, towerFSM, "IdleF");
-        tBackS = new TBackS(tower, towerFSM,"IdleB");
+        tFrontS = new TFrontS(this, tower, towerFSM, "IdleF");
+        tBackS = new TBackS(this, tower, towerFSM,"IdleB");
     }
 }
