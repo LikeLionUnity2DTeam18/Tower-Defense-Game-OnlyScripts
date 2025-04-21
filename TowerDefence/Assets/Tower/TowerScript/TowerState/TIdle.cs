@@ -1,8 +1,8 @@
 using UnityEngine;
 
-public class TStandS : TowerState
+public class TIdle : DeerSitS
 {
-    public TStandS(FSMLibrary fsmLibrary, Tower tower, TowerFSM towerFSM, string stateName) : base(fsmLibrary, tower, towerFSM, stateName)
+    public TIdle(Tower tower, TowerFSM towerFSM, string stateName) : base(tower, towerFSM, stateName)
     {
     }
 
@@ -10,7 +10,6 @@ public class TStandS : TowerState
     {
         base.Enter();
     }
-
     public override void Update()
     {
         base.Update();
@@ -20,4 +19,5 @@ public class TStandS : TowerState
     {
         base.Exit();
     }
+
 }

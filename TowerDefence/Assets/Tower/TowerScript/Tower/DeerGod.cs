@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class DeerGod : Tower
 {
-
+    public bool isStand { get; set; } = true;
     public override void Awake()
     {
         base.Awake();
@@ -12,11 +12,24 @@ public class DeerGod : Tower
     public override void Start()
     {
         base.Start();
-        towerFSM.Init(fsmLibrary.tFrontS);
+        towerFSM.Init(fsmLibrary.towerState);
     }
 
     public override void Update()
     {
         base.Update();
+        SitOrStand();
+    }
+
+    private void SitOrStand()
+    {//앉기, 일어나기 변경
+        if(isStand == true)
+        {
+            anim.SetBool("Sit", false);
+        }
+        else if (isStand == false)
+        {
+            anim.SetBool("Sit", true);
+        }
     }
 }
