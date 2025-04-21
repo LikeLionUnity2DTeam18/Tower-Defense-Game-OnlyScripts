@@ -5,39 +5,43 @@ public class TowerState
     protected string stateName;
     protected Tower tower;
     protected TowerFSM towerFSM;
-    protected FSMLibrary fsmLibrary;
-    public TowerState(FSMLibrary fsmLibrary,Tower tower,TowerFSM towerFSM, string stateName)
+
+
+    protected bool triggerCalled = false;
+    public TowerState(Tower tower,TowerFSM towerFSM, string stateName)
     {
-        this.fsmLibrary = fsmLibrary;
         this.tower = tower;
         this.towerFSM = towerFSM;
         this.stateName = stateName;
     }
 
-    public TowerState(Tower tower, TowerFSM towerFSM, string stateName)
+    public TowerState(Tower tower, TowerFSM towerFSM)
     {
         this.tower = tower;
         this.towerFSM = towerFSM;
-        this.stateName = stateName;
     }
+
 
     public virtual void Enter()
     {
-        tower.anim.SetBool(stateName, true);
+        if(stateName != null) tower.anim.SetBool(stateName, true);
+        else return;
     }
     public virtual void Update()
     {
-        if (tower.towerFront == true)
+        if(triggerCalled)
         {
-            towerFSM.ChangeState(fsmLibrary.tFrontS);
-        }
-        else if(tower.towerFront == false)
-        {
-            towerFSM.ChangeState(fsmLibrary.tBackS);
+            towerFSM.ChangeState(tower.fsmLibrary.deerSitS);
         }
     }
     public virtual void Exit()
     {
-        tower.anim.SetBool(stateName, false);
+        if (stateName != null) tower.anim.SetBool(stateName, false);
+        else return;
+    }
+
+    public virtual void AnimationFinishTrigger()
+    {
+        triggerCalled = true;
     }
 }

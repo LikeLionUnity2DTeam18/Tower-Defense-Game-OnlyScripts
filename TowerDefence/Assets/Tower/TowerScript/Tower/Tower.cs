@@ -2,13 +2,18 @@ using UnityEngine;
 
 public class Tower : MonoBehaviour
 {
+    //타워 방향
     public bool towerFront { get; private set; } = true;//앞인지 뒤인지
-    public bool towerRight { get; private set; } //오른쪽인지 왼쪽인지
+    public bool towerRight { get; private set; } = true;//오른쪽인지 왼쪽인지
+
+    //타워 공격 범위
     [SerializeField] private float meleeAttack = 2f;
     [SerializeField] private float rangedAttack = 5f;
 
+
+    //컴포넌트
     protected SpriteRenderer towerSprite;     //플립용
-    protected FSMLibrary fsmLibrary;
+    public FSMLibrary fsmLibrary { get; set; } //FSM 라이브러리
     protected TowerFSM towerFSM;
     public Animator anim {get; private set; }
 
@@ -27,6 +32,7 @@ public class Tower : MonoBehaviour
         towerFSM.currentState.Update();
         ChangeDir();
     }
+
     void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.red;
@@ -50,6 +56,16 @@ public class Tower : MonoBehaviour
                 UpdateDirection(nearestREnemy.transform.position);
             }
         }
+        //앞, 뒤 애니메이션 변경
+        if(towerFront == true)
+        {
+            anim.SetBool("Front", true);
+        }
+        else if (towerFront == false)
+        {
+            anim.SetBool("Front", false);
+        }
+        //좌, 우 변경
         Flip();
     }
 
@@ -124,5 +140,11 @@ public class Tower : MonoBehaviour
         {
             towerSprite.flipX = true;
         }
+    }
+
+
+    public void AnimationTrigger()
+    {
+        towerFSM.currentState.AnimationFinishTrigger();
     }
 }
