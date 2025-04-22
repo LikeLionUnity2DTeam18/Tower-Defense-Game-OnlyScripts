@@ -2,25 +2,43 @@ using UnityEngine;
 
 public class Tower : MonoBehaviour
 {
+    //타워 고정 위치
+    public GameObject Beacon { get; set; }
+
+    //타워 스텟
+    [SerializeField] public float moveSpeed = 1f; //이동 속도
+
+
     //타워 방향
     public bool towerFront { get; private set; } = true;//앞인지 뒤인지
     public bool towerRight { get; private set; } = true;//오른쪽인지 왼쪽인지
+    public Vector2 dir;
+
 
     //타워 공격 범위
-    [SerializeField] private float meleeAttack = 2f;
+    [SerializeField] private float meleeAttack = 1f;
     [SerializeField] private float rangedAttack = 5f;
+    [SerializeField] private float detectRange = 2f; //탐지 범위
+    public TowerEnemyTest nearestMEnemy { get; private set; } //근접 적
+    public TowerEnemyTest nearestREnemy { get; private set; } //원거리 적
+    public TowerEnemyTest nearestEnemy { get; private set; } //가장 가까운 적
 
 
     //컴포넌트
     protected SpriteRenderer towerSprite;     //플립용
+    public Animator anim {get; private set; }
+    public Rigidbody2D rb { get; private set; }
+
+
+    //인스턴스 생성해야 할 것들
     public FSMLibrary fsmLibrary { get; set; } //FSM 라이브러리
     protected TowerFSM towerFSM;
-    public Animator anim {get; private set; }
 
     public virtual void Awake()
     {
         towerSprite = GetComponent<SpriteRenderer>();
         anim = GetComponent<Animator>();
+        rb = GetComponent<Rigidbody2D>();
     }
     public virtual void Start()
     {
@@ -31,6 +49,7 @@ public class Tower : MonoBehaviour
     {
         towerFSM.currentState.Update();
         ChangeDir();
+        if(GetoutArea()) transform.position = Beacon.transform.position;
     }
 
     void OnDrawGizmosSelected()
@@ -39,25 +58,38 @@ public class Tower : MonoBehaviour
         Gizmos.DrawWireSphere(transform.position, meleeAttack);
         Gizmos.color = Color.blue;
         Gizmos.DrawWireSphere(transform.position, rangedAttack);
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawWireSphere(transform.position, detectRange);
     }
 
     private void ChangeDir()
     {
-        var nearestMEnemy = FindNearestEnemyByOverlap(transform.position, meleeAttack, LayerMask.GetMask("Enemy"));
-        if (nearestMEnemy != null)
+        if (GetoutArea())
         {
-            UpdateDirection(nearestMEnemy.transform.position);
+            UpdateDirection(Beacon.transform.position);
         }
-        else if (nearestMEnemy == null)
+        else
         {
-            var nearestREnemy = FindNearestEnemyByOverlap(transform.position, rangedAttack, LayerMask.GetMask("Enemy"));
-            if (nearestREnemy != null)
+            nearestEnemy = FindNearestEnemyByOverlap(transform.position, detectRange, LayerMask.GetMask("Enemy"));
+            if (nearestEnemy != null) dir = (nearestEnemy.transform.position - transform.position).normalized; //적과의 거리 계산
+
+            nearestMEnemy = FindNearestEnemyByOverlap(transform.position, meleeAttack, LayerMask.GetMask("Enemy"));
+            if (nearestMEnemy != null)
             {
-                UpdateDirection(nearestREnemy.transform.position);
+                UpdateDirection(nearestMEnemy.transform.position);
+            }
+            else if (nearestMEnemy == null)
+            {
+                nearestREnemy = FindNearestEnemyByOverlap(transform.position, rangedAttack, LayerMask.GetMask("Enemy"));
+                if (nearestREnemy != null)
+                {
+                    UpdateDirection(nearestREnemy.transform.position);
+                }
             }
         }
+
         //앞, 뒤 애니메이션 변경
-        if(towerFront == true)
+        if (towerFront == true)
         {
             anim.SetBool("Front", true);
         }
@@ -143,8 +175,36 @@ public class Tower : MonoBehaviour
     }
 
 
+
+    public bool GetoutArea()
+    {   if(Beacon == null) return false;
+        if (Vector2.Distance(transform.position, Beacon.transform.position) > Beacon.GetComponent<Beacon>().radius)
+        {
+            dir = (transform.position - Beacon.transform.position).normalized;
+            return true;
+        }
+        else
+        {
+
+            return false;
+        }
+    }
+
+
+
+
+
+    public void AnimationTriggerEnd()
+    {
+        towerFSM.currentState.AnimationEndTrigger();
+    }
+    public void AnimationTriggerStart()
+    {
+        towerFSM.currentState.AnimationStartTrigger();
+    }
+
     public void AnimationTrigger()
     {
-        towerFSM.currentState.AnimationFinishTrigger();
+        towerFSM.currentState.AnimationTrigger();
     }
 }

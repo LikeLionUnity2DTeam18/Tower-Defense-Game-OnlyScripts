@@ -6,31 +6,33 @@ public class DeerSitS : TowerState
     public DeerSitS(Tower tower, TowerFSM towerFSM, string stateName) : base(tower, towerFSM, stateName)
     {
     }
-    
+    public DeerSitS(Tower tower, TowerFSM towerFSM) : base(tower, towerFSM)
+    {
+    }
+
     public override void Enter()
     {
         base.Enter();
-        
+        if (towerFSM.previousState is DeerStandS) { deerGod.anim.SetBool("Sitting", true); deerGod.anim.SetBool("Standing", false); }
     }
     public override void Update()
     {
         base.Update();
-        if (triggerCalled)
+        if (triggerCalledEnd)
         {
-            towerFSM.ChangeState(tower.fsmLibrary.tIdle);
+            deerGod.anim.SetBool("Sitting", false);
         }
     }
 
     public override void Exit()
     {
         base.Exit();
-        deerGod.isStand = false;
+        deerGod.isStand = towerFSM.currentState is DeerStandS;
     }
 
-    public override void AnimationFinishTrigger()
+    public override void AnimationEndTrigger()
     {
-        base.AnimationFinishTrigger();
-        deerGod.anim.SetBool("Sitting", false);
+        base.AnimationEndTrigger();
     }
 
 }
