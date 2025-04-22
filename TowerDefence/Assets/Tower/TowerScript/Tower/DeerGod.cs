@@ -12,7 +12,7 @@ public class DeerGod : Tower
     public override void Start()
     {
         base.Start();
-        towerFSM.Init(fsmLibrary.towerState);
+        towerFSM.Init(fsmLibrary.deerStandS);
     }
 
     public override void Update()
