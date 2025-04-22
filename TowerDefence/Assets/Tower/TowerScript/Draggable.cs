@@ -8,6 +8,7 @@ public class Draggable : MonoBehaviour
     [SerializeField] private float Radius;
     [SerializeField] private LayerMask whatIsBeacon;
     public GameObject DetectedBeacon { get; private set; }
+    [SerializeField] private Tower tower;
 
     //클릭 시 실행
     void OnMouseDown()
@@ -28,6 +29,7 @@ public class Draggable : MonoBehaviour
     {
         dragging = false;
         IsBeaconDetected();
+        tower.Beacon = DetectedBeacon;
         SetPos();
     }
 
@@ -41,7 +43,6 @@ public class Draggable : MonoBehaviour
         }
         DetectedBeacon = null;
         return false;
-
     }
     private void OnDrawGizmos()
     {

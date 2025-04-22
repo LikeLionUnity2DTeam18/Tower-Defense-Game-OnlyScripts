@@ -7,6 +7,8 @@ public class TowerState
     protected TowerFSM towerFSM;
 
 
+    protected bool triggerCalledEnd = false;
+    protected bool triggerCalledStart = false;
     protected bool triggerCalled = false;
     public TowerState(Tower tower,TowerFSM towerFSM, string stateName)
     {
@@ -26,13 +28,11 @@ public class TowerState
     {
         if(stateName != null) tower.anim.SetBool(stateName, true);
         else return;
+        Debug.Log("상태 진입: " + towerFSM.currentState);
     }
     public virtual void Update()
     {
-        if(triggerCalled)
-        {
-            towerFSM.ChangeState(tower.fsmLibrary.deerSitS);
-        }
+        tower.rb.linearVelocity = Vector2.zero;
     }
     public virtual void Exit()
     {
@@ -40,7 +40,15 @@ public class TowerState
         else return;
     }
 
-    public virtual void AnimationFinishTrigger()
+    public virtual void AnimationEndTrigger()
+    {
+        triggerCalledEnd = true;
+    }
+    public virtual void AnimationStartTrigger()
+    {
+        triggerCalledStart = true;
+    }
+    public virtual void AnimationTrigger()
     {
         triggerCalled = true;
     }
