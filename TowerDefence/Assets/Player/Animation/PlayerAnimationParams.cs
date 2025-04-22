@@ -14,5 +14,6 @@ public static class PlayerAnimationParams
     public static readonly int MoveX = Animator.StringToHash("MoveX");
     public static readonly int MoveY = Animator.StringToHash("MoveY");
     public static readonly int Move = Animator.StringToHash("Move");
+    public static readonly int Attack = Animator.StringToHash("Attack");
 }
 
