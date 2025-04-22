@@ -26,6 +26,11 @@ public class DeerAttackStandS : DeerStandS
         {
             towerFSM.ChangeState(tower.fsmLibrary.deerIdleSitS);
         }
+        if (triggerCalledStart)
+        {
+            deerGod.StartSpikeAttack(tower.transform.position, tower.nearestREnemy.transform.position);
+            triggerCalledStart = false;
+        }
     }
 
     public override void Exit()

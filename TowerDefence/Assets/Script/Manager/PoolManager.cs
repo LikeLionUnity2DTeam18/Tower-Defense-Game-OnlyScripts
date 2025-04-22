@@ -8,18 +8,20 @@ public class PoolManager : MonoBehaviour
 {
 
     // 싱글톤 인스턴스
-    public static PoolManager Instance { get; private set; }
-
-    private void Awake()
+    public static PoolManager Instance
     {
-        if (Instance != null && Instance != this)
+        get
         {
-            Destroy(gameObject);
-            return;
+            if (instance == null)
+            {
+                GameObject obj = new GameObject("PoolManager");
+                instance = obj.AddComponent<PoolManager>();
+                DontDestroyOnLoad(obj);
+            }
+            return instance;
         }
-        Instance = this;
-        DontDestroyOnLoad(gameObject);
     }
+    private static PoolManager instance;
 
     // 프리팹 이름을 키로 사용하는 풀 딕셔너리
     private Dictionary<string, ObjectPool> pools = new Dictionary<string, ObjectPool>();

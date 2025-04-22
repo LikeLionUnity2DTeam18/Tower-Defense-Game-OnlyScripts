@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class DeerSitS : TowerState
 {
-    DeerGod deerGod => tower as DeerGod;
+    protected DeerGod deerGod => tower as DeerGod;
     public DeerSitS(Tower tower, TowerFSM towerFSM, string stateName) : base(tower, towerFSM, stateName)
     {
     }
