@@ -28,7 +28,7 @@ public class TowerState
     {
         if(stateName != null) tower.anim.SetBool(stateName, true);
         else return;
-        Debug.Log("상태 진입: " + towerFSM.currentState);
+        //Debug.Log("상태 진입: " + towerFSM.currentState);
     }
     public virtual void Update()
     {
