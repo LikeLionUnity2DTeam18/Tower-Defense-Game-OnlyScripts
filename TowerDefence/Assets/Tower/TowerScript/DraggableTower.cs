@@ -19,7 +19,6 @@ public class DraggableTower : MonoBehaviour
         {
             dragScript.StartDrag(Input.mousePosition);
         }
-
         PoolManager.Instance.Return(gameObject);
     }
 }
