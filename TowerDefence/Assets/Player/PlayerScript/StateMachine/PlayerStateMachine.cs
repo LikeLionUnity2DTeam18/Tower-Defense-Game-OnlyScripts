@@ -7,11 +7,18 @@ public class PlayerStateMachine
     public void Initialize( PlayerState state )
     {
         currentState = state;
-
+        currentState.Enter();
     }
 
-    public void ChangeState()
+    public void ChangeState(PlayerState state)
     {
+        currentState.Exit();
+        currentState = state;
+        currentState.Enter();
+    }
 
+    public void Update()
+    {
+        currentState.Update();
     }
 }
