@@ -2,7 +2,7 @@
 
 public class PlayerState
 {
-    protected Player player;
+    protected PlayerController player;
     protected PlayerStateMachine stateMachine;
     protected Rigidbody2D rb;
     protected Animator anim;
@@ -13,7 +13,7 @@ public class PlayerState
     protected bool triggerCalled = false;
     
 
-    public PlayerState(Player _player, string animBoolParam)
+    public PlayerState(PlayerController _player, string animBoolParam)
     {
         this.player = _player;
         stateMachine = player.stateMachine;

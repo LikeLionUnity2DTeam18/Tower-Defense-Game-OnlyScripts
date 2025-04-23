@@ -1,7 +1,8 @@
 ﻿using UnityEngine;
 
-public class Player : MonoBehaviour
+public class PlayerController : MonoBehaviour
 {
+    public PlayerInputHandler input;
     public Rigidbody2D rb { get; private set; }
     public PlayerStateMachine stateMachine { get; private set; }
     public Animator anim { get; private set; }
@@ -11,6 +12,7 @@ public class Player : MonoBehaviour
 
     private void Awake()
     {
+        input = GetComponent<PlayerInputHandler>();
         rb = GetComponent<Rigidbody2D>();
         anim = GetComponentInChildren<Animator>();
     }
@@ -22,8 +24,10 @@ public class Player : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        transform.Translate(input.MoveInput);
     }
 
     public void SetLastDirection(Vector2 dir) => lastDir = dir;
+
+    
 }
