@@ -17,7 +17,7 @@ public class PlayerProjectile : MonoBehaviour
     [SerializeField] protected float speed;
     [SerializeField] protected float travelTime;
     protected float travelTimer;
-    
+    protected float damage;
 
     protected virtual void Awake()
     {
@@ -44,9 +44,10 @@ public class PlayerProjectile : MonoBehaviour
 
 
     // 투사체 생성 후 초기화
-    public virtual void Initialize(Vector2 _direction)
+    public virtual void Initialize(Vector2 _direction, float _damage)
     {
         direction = _direction;
+        damage = _damage;
     }
 
     // 투사체 진행 방향으로 Transform을 회전해서 이미지 보정

@@ -39,6 +39,7 @@ public class PlayerHoamingProjectile : PlayerProjectile
         if(IsSamePosition(destination, (Vector2)transform.position))
         {
             // 풀로 리턴
+            Debug.Log($"명중! {damage}의 데미지");
         }
     }
 }
