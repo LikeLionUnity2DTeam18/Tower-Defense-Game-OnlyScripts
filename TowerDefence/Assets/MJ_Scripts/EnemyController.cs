@@ -10,6 +10,8 @@ public class EnemyController : MonoBehaviour
 
     private EnemyStateMachine stateMachine;
 
+    //머가 문제라는거지
+
     [SerializeField] private float targetRange = 0.5f;
 
     public void Initialize(EnemyData data)
