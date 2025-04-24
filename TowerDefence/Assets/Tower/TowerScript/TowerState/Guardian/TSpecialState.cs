@@ -1,8 +1,8 @@
 using UnityEngine;
 
-public class DeerAttackSitS : DeerSitS
+public class TSpecialState : TowerState
 {
-    public DeerAttackSitS(Tower tower, TowerFSM towerFSM, string stateName) : base(tower, towerFSM, stateName)
+    public TSpecialState(Tower tower, TowerFSM towerFSM, string stateName) : base(tower, towerFSM, stateName)
     {
     }
 
@@ -10,18 +10,17 @@ public class DeerAttackSitS : DeerSitS
     {
         base.Enter();
     }
-
     public override void Update()
     {
         base.Update();
-        if (tower.nearestMEnemy == null)
+        if (triggerCalledEnd)
         {
-            towerFSM.ChangeState(tower.fsmLibrary.deerIdleSitS);
+            towerFSM.ChangeState(tower.fsmLibrary.idleState);
         }
     }
-
     public override void Exit()
     {
         base.Exit();
     }
+
 }

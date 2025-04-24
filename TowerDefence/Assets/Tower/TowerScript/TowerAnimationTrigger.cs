@@ -2,14 +2,10 @@ using UnityEngine;
 
 public class TowerAnimationTrigger : MonoBehaviour
 {
-    private Tower tower;
-    private TowerProjectile towerProjectile;
+    private Tower tower => GetComponent<Tower>();
+    private TowerProjectile towerProjectile => GetComponent<TowerProjectile>();
+    private TowerSplash towerSplash => GetComponent<TowerSplash>();
 
-    private void Awake()
-    {
-        tower = GetComponent<Tower>();
-        towerProjectile = GetComponent<TowerProjectile>();
-    }
 
     public void AnimationTriggerEndwt()
     {
@@ -31,7 +27,9 @@ public class TowerAnimationTrigger : MonoBehaviour
 
     public void AnimationTriggerEnd()
     {
-        if (towerProjectile != null)
+        if (towerSplash != null)
+            towerSplash.AnimationTriggerEnd();
+        if(towerProjectile != null)
             towerProjectile.AnimationTriggerEnd();
     }
 }

@@ -14,24 +14,16 @@ public class DeerGod : Tower
     public override void Start()
     {
         base.Start();
-        towerFSM.Init(fsmLibrary.deerStandS);
+        towerFSM.Init(fsmLibrary.dIdleS);
     }
 
     public override void Update()
     {
         base.Update();
-        SitOrStand();
-    }
-
-    private void SitOrStand()
-    {//앉기, 일어나기 변경
-        if(isStand == true)
+        if (timer <= 0f)
         {
-            anim.SetBool("Sit", false);
-        }
-        else if (isStand == false)
-        {
-            anim.SetBool("Sit", true);
+            towerFSM.ChangeState(fsmLibrary.dSpecialS);
+            timer = skillCoolDown;
         }
     }
 
@@ -39,7 +31,7 @@ public class DeerGod : Tower
     public float interval = 0.1f;
     public float distanceBetweenSpikes = 1f;
 
-    public void StartSpikeAttack(Vector2 startPos, Vector2 targetPos)
+    public void StartProjectile(Vector2 startPos, Vector2 targetPos)
     {
         if(targetPos != null)StartCoroutine(SpawnSpikesRoutine(startPos, targetPos));
     }
