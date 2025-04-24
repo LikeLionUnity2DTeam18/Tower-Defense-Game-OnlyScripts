@@ -4,16 +4,19 @@ public class FSMLibrary
 {
     #region Total State
     public TowerState towerState { get; private set; }  
+    public TIdleState idleState { get; private set; }
+    public TMoveState moveState { get; private set; }
+    public TMeleeState meleeState { get; private set; }
+    public TRangeState rangeState { get; private set; }
+    public TSpecialState specialState { get; private set; }
     #endregion
 
     #region DeerGod State
-    public DeerStandS deerStandS { get; private set; }
-    public DeerSitS deerSitS { get; private set; }
-    public DeerIdleStandS deerIdleStandS { get; private set; }
-    public DeerIdleSitS deerIdleSitS { get; private set; }
-    public DeerAttackSitS deerAttackSitS { get; private set; }
-    public DeerAttackStandS deerAttackStandS { get; private set; }
-    public DeerMoveS deerMoveS { get; private set; }
+    public DIdleS dIdleS { get; private set; }
+    public DMoveS dMoveS { get; private set; }
+    public DMeleeS dMeleeS { get; private set; }
+    public DRangeS dRangeS { get; private set; }
+    public DSpecialS dSpecialS { get; private set; }
     #endregion
 
 
@@ -21,14 +24,17 @@ public class FSMLibrary
     {
         towerState = new TowerState(tower, towerFSM);
 
-        deerStandS = new DeerStandS(tower, towerFSM, "Standing");
-        deerSitS = new DeerSitS(tower, towerFSM, "Sitting");
-        deerIdleStandS = new DeerIdleStandS(tower, towerFSM, "Idle");
-        deerIdleSitS = new DeerIdleSitS(tower, towerFSM, "Idle");
-        deerAttackSitS = new DeerAttackSitS(tower, towerFSM, "Attack1");
-        deerAttackStandS = new DeerAttackStandS(tower, towerFSM, "Attack");
-        deerMoveS = new DeerMoveS(tower, towerFSM, "Move");
+        idleState = new TIdleState(tower, towerFSM, "Idle");
+        moveState = new TMoveState(tower, towerFSM, "Move");
+        meleeState = new TMeleeState(tower, towerFSM, "Melee");
+        rangeState = new TRangeState(tower, towerFSM, "Range");
+        specialState = new TSpecialState(tower, towerFSM, "Special");
 
+        dIdleS = new DIdleS(tower, towerFSM, "Idle");
+        dMoveS = new DMoveS(tower, towerFSM, "Move");
+        dMeleeS = new DMeleeS(tower, towerFSM, "Melee");
+        dRangeS = new DRangeS(tower, towerFSM, "Range");
+        dSpecialS = new DSpecialS(tower, towerFSM, "Special");
 
     }
 }

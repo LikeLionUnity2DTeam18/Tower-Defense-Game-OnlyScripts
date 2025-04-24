@@ -1,12 +1,18 @@
 using UnityEngine;
-
+enum layer
+{
+    Front,
+    Back,
+}
 public class Tower : MonoBehaviour
 {
     //비콘 관련 설정
     public GameObject Beacon { get; set; }
 
     //타워 스텟
-    [SerializeField] public float moveSpeed = 1f; //이동 속도
+    [SerializeField] public float moveSpeed;
+    [SerializeField] public float skillCoolDown;
+    [SerializeField] public float timer;
 
 
     //타워 방향
@@ -49,6 +55,8 @@ public class Tower : MonoBehaviour
     public virtual void Update()
     {
         towerFSM.currentState.Update();
+
+        timer -= Time.deltaTime;
         ChangeDir();
         if(GetoutArea()) transform.position = Beacon.transform.position;
     }
@@ -92,11 +100,13 @@ public class Tower : MonoBehaviour
         //앞, 뒤 애니메이션 변경
         if (towerFront == true)
         {
-            anim.SetBool("Front", true);
+            anim.SetLayerWeight(1, 1);
+            anim.SetLayerWeight(2, 0);
         }
         else if (towerFront == false)
         {
-            anim.SetBool("Front", false);
+            anim.SetLayerWeight(1, 0);
+            anim.SetLayerWeight(2, 1);
         }
         //좌, 우 변경
         Flip();
@@ -190,9 +200,7 @@ public class Tower : MonoBehaviour
             return false;
         }
     }
-
-
-
+    
 
 
     public void AnimationTriggerEnd()
