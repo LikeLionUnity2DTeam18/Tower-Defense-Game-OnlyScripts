@@ -59,6 +59,10 @@ public class PoolManager : MonoBehaviour
         {
             pools[key].Return(obj);
         }
+        else
+        {
+            GameObject.Destroy(obj);
+        }
     }
 
 }

@@ -7,9 +7,9 @@ public class TowerState
     protected TowerFSM towerFSM;
 
 
-    protected bool triggerCalledEnd = false;
-    protected bool triggerCalledStart = false;
-    protected bool triggerCalled = false;
+    protected bool triggerCalledEnd;
+    protected bool triggerCalledStart;
+    protected bool triggerCalled;
     public TowerState(Tower tower,TowerFSM towerFSM, string stateName)
     {
         this.tower = tower;
@@ -28,7 +28,7 @@ public class TowerState
     {
         if(stateName != null) tower.anim.SetBool(stateName, true);
         else return;
-        Debug.Log("상태 진입: " + towerFSM.currentState);
+        //Debug.Log("현재상태" + towerFSM.currentState);
     }
     public virtual void Update()
     {

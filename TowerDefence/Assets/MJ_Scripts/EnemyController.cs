@@ -1,72 +1,40 @@
-using Unity.VisualScripting;
+
 using UnityEngine;
 
 public class EnemyController : MonoBehaviour
 {
-    [SerializeField] private float targetRange;
-    private EnemyData data;
-    private float currentHP;
-    private Vector2 moveDir;
-    private bool reached = false;
-    
+    public EnemyData Data { get; private set; }
+    public Animator Animator { get; private set; }
+    public SpriteRenderer SpriteRenderer { get; private set; }
+    public Vector2 MoveDir { get; private set; }
+    public float TargetRange => targetRange;
 
-    private Animator anim;
-    private SpriteRenderer sr;
+    private EnemyStateMachine stateMachine;
 
-    public void Initialize(EnemyData enemyData)
+    //ë¨¸ê°€ ë¬¸ì œë¼ëŠ”ê±°ì§€
+
+    [SerializeField] private float targetRange = 0.5f;
+
+    public void Initialize(EnemyData data)
     {
-        data = enemyData;
-        currentHP = data.maxHealth;
+        Data = data;
+        Animator = GetComponent<Animator>();
+        stateMachine = GetComponent<EnemyStateMachine>();
+        SpriteRenderer = GetComponent<SpriteRenderer>();
 
-        anim = GetComponent<Animator>();
-        sr = GetComponentInChildren<SpriteRenderer>();
-
-        if (data.enemyAnim != null)
+        if (Data.enemyAnim != null)
         {
-            anim.runtimeAnimatorController = data.enemyAnim;
-        }
-        else
-        {
-            Debug.LogError("Enemy Animator Controller is not assigned in the EnemyData.");
+            Animator.runtimeAnimatorController = Data.enemyAnim;
         }
 
-        moveDir = (EnemyTarget.TargetPostion - (Vector2)transform.position).normalized; //Å¸°Ù ¹æÇâ ¹Ù¶óº¸±â
+        MoveDir = (EnemyTarget.TargetPostion - (Vector2)transform.position).normalized;
 
-        // ¹æÇâ¿¡ µû¶ó ¾Ö´Ï¸ŞÀÌ¼Ç »óÅÂ ¼³Á¤
-
-        if (moveDir.y > 0) // À§ÂÊ ¹æÇâ
-        {
-            anim.Play("Blocker_back");
-
-            // ¢ØÀÌ¸é flipX = true
-            sr.flipX = moveDir.x < 0;
-        }
-        else // ¾Æ·¡ÂÊ ¹æÇâ
-        {
-            anim.Play("Blocker_front");
-
-            // ¢×ÀÌ¸é flipX = true
-            sr.flipX = moveDir.x < 0;
-        }
+        stateMachine.Initialize(new Blocker_MoveState(this, stateMachine));
     }
 
-    void Update()
+    public void TakeDamage(float dmg)
     {
-        if (!reached)
-        {
-            float distance = Vector2.Distance(transform.position, EnemyTarget.TargetPostion);
-
-            if (distance <= targetRange)
-            {
-                reached = true;//¸ØÃß±â
-            }
-            else
-                transform.Translate(moveDir * data.moveSpeed * Time.deltaTime);
-        }
-    }
-
-    void OnBecameInvisible()
-    {
-        Destroy(gameObject);
+        // ì²´ë ¥ ê°ì†Œ ì²˜ë¦¬ í›„ ì£½ìŒ ìƒíƒœë¡œ ì „í™˜
+        //stateMachine.ChangeState(new DeadState(this, stateMachine));
     }
 }
