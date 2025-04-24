@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class Tower : MonoBehaviour
 {
-    //타워 고정 위치
+    //비콘 관련 설정
     public GameObject Beacon { get; set; }
 
     //타워 스텟
@@ -39,6 +39,7 @@ public class Tower : MonoBehaviour
         towerSprite = GetComponent<SpriteRenderer>();
         anim = GetComponent<Animator>();
         rb = GetComponent<Rigidbody2D>();
+        towerFSM = new TowerFSM();
     }
     public virtual void Start()
     {

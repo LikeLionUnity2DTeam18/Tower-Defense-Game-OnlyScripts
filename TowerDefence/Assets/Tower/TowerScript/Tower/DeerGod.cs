@@ -8,7 +8,7 @@ public class DeerGod : Tower
     public override void Awake()
     {
         base.Awake();
-        towerFSM = new TowerFSM();
+        
         fsmLibrary = new FSMLibrary(this, towerFSM);
     }
     public override void Start()

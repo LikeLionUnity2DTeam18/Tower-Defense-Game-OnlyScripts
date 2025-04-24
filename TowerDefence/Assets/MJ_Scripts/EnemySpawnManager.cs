@@ -6,10 +6,11 @@ public class EnemySpawnManager : MonoBehaviour
 {
     public EnemyData testEnemy;
     public Transform[] spawnPoints;
-    [SerializeField] private float spawnTime = 2f;
-    [SerializeField] private int spawnCount = 10; // ÇÑ¹ø¿¡ »ı¼ºÇÒ ÀûÀÇ ¼ö
-
     public EnemyFactory factory;
+
+    [SerializeField] private float spawnTime = 2f;
+    [SerializeField] private int spawnCount = 5; // í•œë²ˆì— ìƒì„±í•  ì ì˜ ìˆ˜
+
 
     private void Start()
     {
@@ -27,7 +28,7 @@ public class EnemySpawnManager : MonoBehaviour
                 int index = Random.Range(0, spawnPoints.Length);
                 Vector3 spawnPos = spawnPoints[index].position;
 
-                // ¾à°£ À§Ä¡ Â÷ÀÌ ÁÖ¸é °ãÄ¡Áö ¾Ê°Ô µÊ
+                // ì•½ê°„ ìœ„ì¹˜ ì°¨ì´ ì£¼ë©´ ê²¹ì¹˜ì§€ ì•Šê²Œ ë¨
                 Vector3 offset = new Vector3(Random.Range(-0.4f, 0.4f), Random.Range(-0.4f, 0.4f), 0);
 
                 if (testEnemy != null)
@@ -36,7 +37,7 @@ public class EnemySpawnManager : MonoBehaviour
                 }
                 else
                 {
-                    Debug.LogWarning("testEnemy ºñ¾î ÀÖÀ½! EnemyData ³Ö¾îÁà.");
+                    Debug.LogWarning("testEnemy ë¹„ì–´ ìˆìŒ! EnemyData ë„£ì–´ì¤˜.");
                 }
             }
             yield return new WaitForSeconds(spawnTime);
