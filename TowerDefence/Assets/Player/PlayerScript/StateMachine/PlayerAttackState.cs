@@ -1,16 +1,28 @@
-using UnityEngine;
+﻿using UnityEngine;
 
-public class PlayerAttackState : MonoBehaviour
+public class PlayerAttackState : PlayerState
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    public PlayerAttackState(PlayerController _player, int animBoolParam) : base(_player, animBoolParam)
     {
-        
     }
 
-    // Update is called once per frame
-    void Update()
+    public override void Enter()
     {
-        
+        base.Enter();
+    }
+
+    public override void Exit()
+    {
+        base.Exit();
+    }
+
+    public override void Update()
+    {
+        base.Update();
+    }
+
+    private void ShootArrowAnimationEvent()
+    {
+
     }
 }

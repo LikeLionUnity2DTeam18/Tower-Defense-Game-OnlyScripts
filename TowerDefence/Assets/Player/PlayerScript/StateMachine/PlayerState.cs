@@ -38,7 +38,7 @@ public class PlayerState
 
     }
 
-    private void SetAnimationDirection()
+    protected void SetAnimationDirection()
     {
         // x혹은 y방향 속도가 0 인 경우에는 lastDir로 마지막 바라보던 방향 확인
         if (rb.linearVelocity.sqrMagnitude > 0.01f)
@@ -60,7 +60,7 @@ public class PlayerState
             anim.SetBool(animBoolParam, false);
     }
 
-    private void AnimationEndTrigger()
+    protected virtual void AnimationEndTrigger()
     {
         triggerCalled = true;
     }
