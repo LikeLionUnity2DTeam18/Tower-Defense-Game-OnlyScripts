@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class DMeleeS : TowerState
+public class DMeleeS : TMeleeState
 {
     public DMeleeS(Tower tower, TowerFSM towerFSM, string stateName) : base(tower, towerFSM, stateName)
     {
@@ -19,10 +19,5 @@ public class DMeleeS : TowerState
     public override void Update()
     {
         base.Update();
-        if (tower.nearestMEnemy == null && triggerCalledEnd) 
-        { 
-            towerFSM.ChangeState(tower.fsmLibrary.dMoveS); 
-            triggerCalledEnd = false;
-        }
     }
 }

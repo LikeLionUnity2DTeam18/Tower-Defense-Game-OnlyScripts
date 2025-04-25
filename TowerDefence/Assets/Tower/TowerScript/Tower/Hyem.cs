@@ -23,12 +23,15 @@ public class Hyem : Tower
         base.Awake();
 
         fsmLibrary = new FSMLibrary(this, towerFSM);
+        idleState = fsmLibrary.hIdleState;
+        moveState = fsmLibrary.hMoveState;
+        meleeState = fsmLibrary.hMeleeState;
+        rangeState = fsmLibrary.hRangeState;
+        specialState = fsmLibrary.hSpecialState;
     }
     public override void Start()
     {
         base.Start();
-        towerFSM.Init(fsmLibrary.hIdleState);
-        specialState = fsmLibrary.hSpecialState;
     }
 
     public override void Update()
