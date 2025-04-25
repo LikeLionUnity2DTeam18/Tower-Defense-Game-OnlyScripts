@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 
 public class PlayerState
 {
@@ -28,6 +28,7 @@ public class PlayerState
     {
         if (animBoolParam != 0)
             anim.SetBool(animBoolParam, true);
+        triggerCalled = false;
     }
 
     public virtual void Update()
@@ -60,7 +61,7 @@ public class PlayerState
             anim.SetBool(animBoolParam, false);
     }
 
-    protected virtual void AnimationEndTrigger()
+    public virtual void AnimationEndTrigger()
     {
         triggerCalled = true;
     }

@@ -1,8 +1,8 @@
-﻿using UnityEngine;
+using UnityEngine;
 
 public class PlayerStateMachine
 {
-    PlayerState currentState;
+    public PlayerState currentState {get; private set;}
 
     public void Initialize( PlayerState state )
     {
@@ -21,4 +21,6 @@ public class PlayerStateMachine
     {
         currentState.Update();
     }
+
+    
 }
