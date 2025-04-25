@@ -10,6 +10,8 @@ public class EnemyController : MonoBehaviour
     public float TargetRange => targetRange;
 
     private EnemyStateMachine stateMachine;
+    public GameObject attackEffectPrefab; // 이펙트 프리팹
+    public Transform effectSpawnPoint;    // 이펙트 생성 위치 (optional)
 
     //머가 문제라는거지
 

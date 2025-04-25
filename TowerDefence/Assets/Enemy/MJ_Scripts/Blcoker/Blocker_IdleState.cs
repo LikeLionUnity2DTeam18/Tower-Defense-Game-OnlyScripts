@@ -32,7 +32,6 @@ public class Blocker_IdleState : EnemyState
     }
 
     public override void Exit()
-    {
-        Debug.Log("Idle 상태 종료");
+    { 
     }
 }
