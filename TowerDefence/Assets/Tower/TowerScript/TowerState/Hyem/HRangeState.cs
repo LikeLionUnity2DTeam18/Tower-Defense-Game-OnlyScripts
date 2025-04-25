@@ -19,11 +19,12 @@ public class HRangeState : TowerState
             if (tower.nearestMEnemy != null) towerFSM.ChangeState(tower.fsmLibrary.hMeleeState);
             else if (tower.nearestEnemy != null) towerFSM.ChangeState(tower.fsmLibrary.hMoveState);
             else if (tower.nearestREnemy == null) towerFSM.ChangeState(tower.fsmLibrary.hIdleState);
+            triggerCalledEnd = false;
         }
 
         if (triggerCalled && tower.nearestREnemy != null) 
         {
-            hyem.Shoot(hyem.firePoint.transform.position, tower.nearestREnemy.transform.position); 
+            hyem.StartShooting(tower.nearestREnemy.transform.position); 
             triggerCalled = false;
         }
     }

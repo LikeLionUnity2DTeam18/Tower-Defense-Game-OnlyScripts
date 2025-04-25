@@ -3,8 +3,8 @@ using UnityEngine;
 
 public class DeerGod : Tower
 {
+    [Header("투사체")]
     [SerializeField] private GameObject projectile;
-    public bool isStand { get; set; } = true;
     public override void Awake()
     {
         base.Awake();
@@ -15,16 +15,12 @@ public class DeerGod : Tower
     {
         base.Start();
         towerFSM.Init(fsmLibrary.dIdleS);
+        specialState = fsmLibrary.dSpecialS;
     }
 
     public override void Update()
     {
         base.Update();
-        if (timer <= 0f)
-        {
-            towerFSM.ChangeState(fsmLibrary.dSpecialS);
-            timer = skillCoolDown;
-        }
     }
 
 
