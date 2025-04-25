@@ -9,6 +9,7 @@ public class PlayerController : MonoBehaviour
     public PlayerInputHandler input { get; private set; }
     public Rigidbody2D rb { get; private set; }
     public Animator anim { get; private set; }
+    
     #endregion
 
     #region 스태이트 머신 선언
@@ -28,13 +29,20 @@ public class PlayerController : MonoBehaviour
 
     #region 플레이어 스탯
     [SerializeField] private PlayerStatsSO baseStats;
-    private PlayerRuntimeStats stats;
+    private PlayerStatManager stats;
 
-    public float MoveSpeed => Mathf.Clamp(stats.GetValue(PlayerStatModifierType.moveSpeed), PlayerSettings.MinMoveSpeed, PlayerSettings.MaxMoveSpeed);
-    public float BaseAttackDamage => stats.GetValue(PlayerStatModifierType.baseAttackDamage);
-    public float AttackSpeed => stats.GetValue(PlayerStatModifierType.attackSpeed);
-    public float AttackRange => stats.GetValue(PlayerStatModifierType.attackRange);
+    //public float MoveSpeed => Mathf.Clamp(stats.GetValue(PlayerStatModifierType.moveSpeed), PlayerSettings.MinMoveSpeed, PlayerSettings.MaxMoveSpeed);
+    //public float BaseAttackDamage => stats.GetValue(PlayerStatModifierType.baseAttackDamage);
+    //public float AttackSpeed => stats.GetValue(PlayerStatModifierType.attackSpeed);
+    //public float AttackRange => stats.GetValue(PlayerStatModifierType.attackRange);
+
+    public float MoveSpeed => stats.moveSpeed.GetValue();
+    public float BaseAttackDamage => stats.baseAttack.GetValue();
+    public float AttackSpeed => stats.attackSpeed.GetValue();
+    public float AttackRange => stats.attackRange.GetValue();
     #endregion
+
+
 
     //각종 쿨다운 관리
     private Dictionary<PlayerCooldownType, float> cooldownTimers = new();
@@ -46,7 +54,7 @@ public class PlayerController : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         anim = GetComponentInChildren<Animator>();
         stateMachine = new PlayerStateMachine();
-        stats = new PlayerRuntimeStats(Instantiate(baseStats));
+        stats = new PlayerStatManager(Instantiate(baseStats));
 
     }
     void Start()
@@ -66,6 +74,9 @@ public class PlayerController : MonoBehaviour
         UpdateCooldownTimers();
     }
 
+
+    #region 이동 목표 지점 관리
+
     public void SetLastDirection(Direction4Custom dir) => lastDir = dir;
     public void SetDestination(Vector2 _destination)
     {
@@ -78,6 +89,10 @@ public class PlayerController : MonoBehaviour
         hasDestination = false;
         destination = Vector2.zero;
     }
+
+    #endregion
+
+    #region 쿨다운 관리
 
     /// <summary>
     /// 해당 스킬 사용 후 쿨타임 설정
@@ -112,10 +127,14 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    #endregion
+
+
+    // 애니매이션 이벤트 래핑
     public void AnimationTriggerEvent() => stateMachine.currentState.AnimationEndTrigger();
     public void ShootArrowAnimationEvent() => attackState.ShootArrowAnimationEvent();
 
-
+    
 
 
     // 임시 테스트용
