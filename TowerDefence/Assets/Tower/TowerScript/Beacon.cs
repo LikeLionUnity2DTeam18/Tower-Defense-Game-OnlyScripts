@@ -35,6 +35,9 @@ public class Beacon : MonoBehaviour
             case TowerType.Guardian:
                 SpawnTower(TowerType.Guardian);
                 break;
+            case TowerType.Hyem:
+                SpawnTower(TowerType.Hyem);
+                break;
         }
     }
 

@@ -19,11 +19,8 @@ public class DIdleS : TowerState
     public override void Update()
     {
         base.Update();
-        if(triggerCalledEnd)
-        {
-            if (tower.nearestMEnemy != null) towerFSM.ChangeState(tower.fsmLibrary.dMeleeS);
-            else if (tower.nearestEnemy != null) towerFSM.ChangeState(tower.fsmLibrary.dMoveS);
-            else if (tower.nearestREnemy != null) towerFSM.ChangeState(tower.fsmLibrary.dRangeS);
-        }
+        if (tower.nearestMEnemy != null) towerFSM.ChangeState(tower.fsmLibrary.dMeleeS);
+        else if (tower.nearestEnemy != null) towerFSM.ChangeState(tower.fsmLibrary.dMoveS);
+        else if (tower.nearestREnemy != null) towerFSM.ChangeState(tower.fsmLibrary.dRangeS);
     }
 }

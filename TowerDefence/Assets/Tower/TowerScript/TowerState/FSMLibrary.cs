@@ -19,6 +19,14 @@ public class FSMLibrary
     public DSpecialS dSpecialS { get; private set; }
     #endregion
 
+    #region Hyem State
+    public HIdleState hIdleState { get; private set; }
+    public HMoveState hMoveState { get; private set; }
+    public HMeleeState hMeleeState { get; private set; }
+    public HRangeState hRangeState { get; private set; }
+    public HSpecialState hSpecialState { get; private set; }
+    #endregion
+
 
     public FSMLibrary(Tower tower,TowerFSM towerFSM)
     {
@@ -36,5 +44,10 @@ public class FSMLibrary
         dRangeS = new DRangeS(tower, towerFSM, "Range");
         dSpecialS = new DSpecialS(tower, towerFSM, "Special");
 
+        hIdleState = new HIdleState(tower, towerFSM, "Idle");
+        hMoveState = new HMoveState(tower, towerFSM, "Move");
+        hMeleeState = new HMeleeState(tower, towerFSM, "Melee");
+        hRangeState = new HRangeState(tower, towerFSM, "Range");
+        hSpecialState = new HSpecialState(tower, towerFSM, "Special");
     }
 }
