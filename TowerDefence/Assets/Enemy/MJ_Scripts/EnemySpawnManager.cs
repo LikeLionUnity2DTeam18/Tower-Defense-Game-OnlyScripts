@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class EnemySpawnManager : MonoBehaviour
 {
-    public EnemyData testEnemy;
+    public List<EnemyData> enemyTypes;
     public Transform[] spawnPoints;
     public EnemyFactory factory;
 
@@ -31,13 +31,17 @@ public class EnemySpawnManager : MonoBehaviour
                 // 약간 위치 차이 주면 겹치지 않게 됨
                 Vector3 offset = new Vector3(Random.Range(-0.4f, 0.4f), Random.Range(-0.4f, 0.4f), 0);
 
-                if (testEnemy != null)
+                if (enemyTypes != null && enemyTypes.Count > 0)
                 {
-                    factory.createEenemy(testEnemy, spawnPos + offset);
+                    // 랜덤하게 적군 선택
+                    EnemyData selectedEnemy = enemyTypes[Random.Range(0, enemyTypes.Count)];
+
+                    // 적 생성
+                    factory.CreateEnemy(selectedEnemy, spawnPos + offset);
                 }
                 else
                 {
-                    Debug.LogWarning("testEnemy 비어 있음! EnemyData 넣어줘.");
+                    Debug.LogWarning("enemyTypes 리스트가 비어있어! 적 데이터 넣어줘.");
                 }
             }
             yield return new WaitForSeconds(spawnTime);

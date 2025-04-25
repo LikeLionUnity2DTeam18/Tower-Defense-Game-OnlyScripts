@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class EnemyFactory : MonoBehaviour
 {
-    public GameObject createEenemy(EnemyData data, Vector2 spawnPosition)
+    public GameObject CreateEnemy(EnemyData data, Vector2 spawnPosition)
     {
         GameObject enemy = Instantiate(data.enemyPrefab, spawnPosition, Quaternion.identity);
 
