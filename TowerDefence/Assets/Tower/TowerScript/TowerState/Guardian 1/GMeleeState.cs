@@ -1,9 +1,8 @@
-using UnityEditor;
 using UnityEngine;
 
-public class HMoveState : TMoveState
+public class GMeleeState : TMeleeState
 {
-    public HMoveState(Tower tower, TowerFSM towerFSM, string stateName) : base(tower, towerFSM, stateName)
+    public GMeleeState(Tower tower, TowerFSM towerFSM, string stateName) : base(tower, towerFSM, stateName)
     {
     }
 

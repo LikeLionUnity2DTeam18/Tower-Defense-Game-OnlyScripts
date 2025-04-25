@@ -19,6 +19,14 @@ public class FSMLibrary
     public DSpecialS dSpecialS { get; private set; }
     #endregion
 
+    #region Guardian State
+    public GIdleState gIdleState { get; private set; }
+    public GMoveState gMoveState { get; private set; }
+    public GMeleeState gMeleeState { get; private set; }
+    public GRangeState gRangeState { get; private set; }
+    public GSpecialState gSpecialState { get; private set; }
+    #endregion
+
     #region Hyem State
     public HIdleState hIdleState { get; private set; }
     public HMoveState hMoveState { get; private set; }
@@ -32,17 +40,23 @@ public class FSMLibrary
     {
         towerState = new TowerState(tower, towerFSM);
 
-        idleState = new TIdleState(tower, towerFSM, "Idle");
+        /*idleState = new TIdleState(tower, towerFSM, "Idle");
         moveState = new TMoveState(tower, towerFSM, "Move");
         meleeState = new TMeleeState(tower, towerFSM, "Melee");
         rangeState = new TRangeState(tower, towerFSM, "Range");
-        specialState = new TSpecialState(tower, towerFSM, "Special");
+        specialState = new TSpecialState(tower, towerFSM, "Special");*/
 
         dIdleS = new DIdleS(tower, towerFSM, "Idle");
         dMoveS = new DMoveS(tower, towerFSM, "Move");
         dMeleeS = new DMeleeS(tower, towerFSM, "Melee");
         dRangeS = new DRangeS(tower, towerFSM, "Range");
         dSpecialS = new DSpecialS(tower, towerFSM, "Special");
+
+        gIdleState = new GIdleState(tower, towerFSM, "Idle");
+        gMoveState = new GMoveState(tower, towerFSM, "Move");
+        gMeleeState = new GMeleeState(tower, towerFSM, "Melee");
+        gRangeState = new GRangeState(tower, towerFSM, "Range");
+        gSpecialState = new GSpecialState(tower, towerFSM, "Special");
 
         hIdleState = new HIdleState(tower, towerFSM, "Idle");
         hMoveState = new HMoveState(tower, towerFSM, "Move");

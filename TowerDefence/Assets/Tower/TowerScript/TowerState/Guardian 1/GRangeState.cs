@@ -1,9 +1,9 @@
 using UnityEngine;
 
-public class HRangeState : TRangeState
+public class GRangeState : TRangeState
 {
-    protected Hyem hyem => tower as Hyem;
-    public HRangeState(Tower tower, TowerFSM towerFSM, string stateName) : base(tower, towerFSM, stateName)
+    protected Guardian guardian => tower as Guardian;
+    public GRangeState(Tower tower, TowerFSM towerFSM, string stateName) : base(tower, towerFSM, stateName)
     {
     }
 
@@ -16,8 +16,8 @@ public class HRangeState : TRangeState
         base.Update();
 
         if (triggerCalled && tower.nearestREnemy != null) 
-        {
-            hyem.StartShooting(tower.nearestREnemy.transform.position); 
+        { 
+            guardian.Shoot(guardian.firePoint.transform.position, tower.nearestREnemy.transform.position); 
             triggerCalled = false;
         }
     }

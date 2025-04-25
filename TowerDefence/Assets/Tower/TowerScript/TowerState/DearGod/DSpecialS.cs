@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class DSpecialS : TowerState
+public class DSpecialS : TSpecialState
 {
     public DSpecialS(Tower tower, TowerFSM towerFSM, string stateName) : base(tower, towerFSM, stateName)
     {
@@ -19,10 +19,5 @@ public class DSpecialS : TowerState
     public override void Update()
     {
         base.Update();
-        if (triggerCalled)
-        {
-            towerFSM.ChangeState(tower.fsmLibrary.dIdleS);
-            triggerCalled = false;
-        }
     }
 }

@@ -10,12 +10,16 @@ public class DeerGod : Tower
         base.Awake();
         
         fsmLibrary = new FSMLibrary(this, towerFSM);
+        idleState = fsmLibrary.dIdleS;
+        moveState = fsmLibrary.dMoveS;
+        meleeState = fsmLibrary.dMeleeS;
+        rangeState = fsmLibrary.dRangeS;
+        specialState = fsmLibrary.dSpecialS;
     }
     public override void Start()
     {
+        
         base.Start();
-        towerFSM.Init(fsmLibrary.dIdleS);
-        specialState = fsmLibrary.dSpecialS;
     }
 
     public override void Update()

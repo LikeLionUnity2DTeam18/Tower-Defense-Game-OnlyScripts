@@ -1,3 +1,4 @@
+using Unity.IO.LowLevel.Unsafe;
 using UnityEngine;
 
 public class TSpecialState : TowerState
@@ -13,10 +14,10 @@ public class TSpecialState : TowerState
     public override void Update()
     {
         base.Update();
-        if (triggerCalled)
+        if (triggerSpecial)
         {
-            towerFSM.ChangeState(tower.fsmLibrary.idleState);
-            triggerCalled = false;
+            towerFSM.ChangeState(tower.idleState);
+            triggerSpecial = false;
         }
     }
     public override void Exit()

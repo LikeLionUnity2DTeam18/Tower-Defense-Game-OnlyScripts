@@ -10,12 +10,16 @@ public class Guardian : Tower
         base.Awake();
 
         fsmLibrary = new FSMLibrary(this, towerFSM);
+        idleState = fsmLibrary.gIdleState;
+        moveState = fsmLibrary.gMoveState;
+        meleeState = fsmLibrary.gMeleeState;
+        rangeState = fsmLibrary.gRangeState;
+        specialState = fsmLibrary.gSpecialState;
     }
     public override void Start()
     {
+        
         base.Start();
-        towerFSM.Init(fsmLibrary.idleState);
-        specialState = fsmLibrary.specialState;
     }
 
     public override void Update()
