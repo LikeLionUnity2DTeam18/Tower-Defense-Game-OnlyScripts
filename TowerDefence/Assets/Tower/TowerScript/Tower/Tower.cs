@@ -1,4 +1,5 @@
 using UnityEngine;
+//ì• ë‹ˆë©”ì´ì…˜ì—ì„œ ì‚¬ìš©í•  ë ˆì´ì–´
 enum layer
 {
     Front,
@@ -6,38 +7,38 @@ enum layer
 }
 public class Tower : MonoBehaviour
 {
-    //ºñÄÜ °ü·Ã ¼³Á¤
+    //ë¹„ì½˜ ê´€ë ¨ ì„¤ì •
     public GameObject Beacon { get; set; }
 
-    //Å¸¿ö ½ºÅİ
+    //íƒ€ì›Œ ìŠ¤í…Ÿ
     [SerializeField] public float moveSpeed;
     [SerializeField] public float skillCoolDown;
     [SerializeField] public float timer;
 
 
-    //Å¸¿ö ¹æÇâ
-    public bool towerFront { get; private set; } = true;//¾ÕÀÎÁö µÚÀÎÁö
-    public bool towerRight { get; private set; } = true;//¿À¸¥ÂÊÀÎÁö ¿ŞÂÊÀÎÁö
+    //íƒ€ì›Œ ë°©í–¥
+    public bool towerFront { get; private set; } = true;//ì•ì¸ì§€ ë’¤ì¸ì§€
+    public bool towerRight { get; private set; } = true;//ì˜¤ë¥¸ìª½ì¸ì§€ ì™¼ìª½ì¸ì§€
     public Vector2 dir;
 
 
-    //Å¸¿ö °ø°İ ¹üÀ§
+    //íƒ€ì›Œ ê³µê²© ë²”ìœ„
     [SerializeField] private float meleeAttack = 1f;
     [SerializeField] private float rangedAttack = 5f;
-    [SerializeField] private float detectRange = 2f; //Å½Áö ¹üÀ§
-    public TowerEnemyTest nearestMEnemy { get; private set; } //±ÙÁ¢ Àû
-    public TowerEnemyTest nearestREnemy { get; private set; } //¿ø°Å¸® Àû
-    public TowerEnemyTest nearestEnemy { get; private set; } //°¡Àå °¡±î¿î Àû
+    [SerializeField] private float detectRange = 2f; //íƒì§€ ë²”ìœ„
+    public TowerEnemyTest nearestMEnemy { get; private set; } //ê·¼ì ‘ ì 
+    public TowerEnemyTest nearestREnemy { get; private set; } //ì›ê±°ë¦¬ ì 
+    public TowerEnemyTest nearestEnemy { get; private set; } //ê°€ì¥ ê°€ê¹Œìš´ ì 
 
-
-    //ÄÄÆ÷³ÍÆ®
-    protected SpriteRenderer towerSprite;     //ÇÃ¸³¿ë
+    protected TowerState specialState;
+    //ì»´í¬ë„ŒíŠ¸
+    protected SpriteRenderer towerSprite;     //í”Œë¦½ìš©
     public Animator anim {get; private set; }
     public Rigidbody2D rb { get; private set; }
 
 
-    //ÀÎ½ºÅÏ½º »ı¼ºÇØ¾ß ÇÒ °Íµé
-    public FSMLibrary fsmLibrary { get; set; } //FSM ¶óÀÌºê·¯¸®
+    //ì¸ìŠ¤í„´ìŠ¤ ìƒì„±í•´ì•¼ í•  ê²ƒë“¤
+    public FSMLibrary fsmLibrary { get; set; } //FSM ë¼ì´ë¸ŒëŸ¬ë¦¬
     protected TowerFSM towerFSM;
 
     public virtual void Awake()
@@ -57,6 +58,13 @@ public class Tower : MonoBehaviour
         towerFSM.currentState.Update();
 
         timer -= Time.deltaTime;
+        //íŠ¹ìˆ˜ëŠ¥ë ¥ ì‚¬ìš©
+        if (timer <= 0f && nearestREnemy != null)
+        {
+            towerFSM.ChangeState(specialState);
+            timer = skillCoolDown;
+        }
+
         ChangeDir();
         if(GetoutArea()) transform.position = Beacon.transform.position;
     }
@@ -79,25 +87,33 @@ public class Tower : MonoBehaviour
         }
         else
         {
-            nearestEnemy = FindNearestEnemyByOverlap(transform.position, detectRange, LayerMask.GetMask("Enemy"));
-            if (nearestEnemy != null) dir = (nearestEnemy.transform.position - transform.position).normalized; //Àû°úÀÇ °Å¸® °è»ê
-
             nearestMEnemy = FindNearestEnemyByOverlap(transform.position, meleeAttack, LayerMask.GetMask("Enemy"));
             if (nearestMEnemy != null)
             {
                 UpdateDirection(nearestMEnemy.transform.position);
+                dir = (nearestEnemy.transform.position - transform.position).normalized;
             }
             else if (nearestMEnemy == null)
             {
-                nearestREnemy = FindNearestEnemyByOverlap(transform.position, rangedAttack, LayerMask.GetMask("Enemy"));
-                if (nearestREnemy != null)
+                nearestEnemy = FindNearestEnemyByOverlap(transform.position, detectRange, LayerMask.GetMask("Enemy"));
+                if (nearestEnemy != null) 
                 {
-                    UpdateDirection(nearestREnemy.transform.position);
+                    UpdateDirection(nearestEnemy.transform.position);
+                    dir = (nearestEnemy.transform.position - transform.position).normalized;
                 }
+                else if(nearestEnemy == null)
+                {
+                    nearestREnemy = FindNearestEnemyByOverlap(transform.position, rangedAttack, LayerMask.GetMask("Enemy"));
+                    if (nearestREnemy != null)
+                    {
+                        UpdateDirection(nearestREnemy.transform.position);
+                        dir = (nearestREnemy.transform.position - transform.position).normalized;
+                    }
+                }  
             }
         }
 
-        //¾Õ, µÚ ¾Ö´Ï¸ŞÀÌ¼Ç º¯°æ
+        //ì•, ë’¤ ì• ë‹ˆë©”ì´ì…˜ ë³€ê²½
         if (towerFront == true)
         {
             anim.SetLayerWeight(1, 1);
@@ -108,12 +124,12 @@ public class Tower : MonoBehaviour
             anim.SetLayerWeight(1, 0);
             anim.SetLayerWeight(2, 1);
         }
-        //ÁÂ, ¿ì º¯°æ
+        //ì¢Œ, ìš° ë³€ê²½
         Flip();
     }
 
 
-    //°¡±î¿î Àû Å½Áö
+    //ê°€ê¹Œìš´ ì  íƒì§€
     public TowerEnemyTest FindNearestEnemyByOverlap(Vector3 origin, float radius, LayerMask enemyLayer)
     {
         Collider2D[] hits = Physics2D.OverlapCircleAll(origin, radius, enemyLayer);
@@ -141,7 +157,7 @@ public class Tower : MonoBehaviour
     }
 
 
-    //¹æÇâ ¼³Á¤
+    //ë°©í–¥ ì„¤ì •
     void UpdateDirection(Vector2 enemyPos)
     {
         if (enemyPos == null)
@@ -172,7 +188,7 @@ public class Tower : MonoBehaviour
         }
     }
 
-    //ÇÃ¸³
+    //í”Œë¦½
     void Flip()
     {
         if (towerRight)

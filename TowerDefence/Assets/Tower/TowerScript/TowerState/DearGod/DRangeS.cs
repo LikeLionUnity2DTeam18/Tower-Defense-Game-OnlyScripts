@@ -21,22 +21,18 @@ public class DRangeS : TowerState
     public override void Update()
     {
         base.Update();
-        tower.rb.linearVelocity = Vector2.zero;
-        if (triggerCalled)
+        if (triggerCalledEnd)
         {
-            if (tower.nearestREnemy != null)
-            {
-                deerGod.StartProjectile(deerGod.transform.position, tower.nearestREnemy.transform.position);
-                triggerCalled = false;
-            }
+            if (tower.nearestMEnemy != null) towerFSM.ChangeState(tower.fsmLibrary.dIdleS);
+            else if (tower.nearestEnemy != null) towerFSM.ChangeState(tower.fsmLibrary.dMoveS);
+            else if (tower.nearestREnemy == null) towerFSM.ChangeState(tower.fsmLibrary.dIdleS);
+            triggerCalledEnd = false;
         }
-    }
 
-    public override void AnimationEndTrigger()
-    {
-        base.AnimationEndTrigger();
-        if (tower.nearestMEnemy != null) towerFSM.ChangeState(tower.fsmLibrary.dIdleS);
-        else if (tower.nearestEnemy != null) towerFSM.ChangeState(tower.fsmLibrary.dMoveS);
-        else if (tower.nearestREnemy == null) towerFSM.ChangeState(tower.fsmLibrary.dIdleS);
+        if (triggerCalled && tower.nearestREnemy != null)
+        {
+            deerGod.StartProjectile(deerGod.transform.position, tower.nearestREnemy.transform.position);
+            triggerCalled = false;
+        }
     }
 }

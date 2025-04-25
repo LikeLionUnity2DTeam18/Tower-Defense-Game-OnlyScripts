@@ -14,12 +14,9 @@ public class TIdleState : TowerState
     public override void Update()
     {
         base.Update();
-        if (triggerCalledEnd) 
-        { 
-            if (tower.nearestMEnemy != null) towerFSM.ChangeState(tower.fsmLibrary.meleeState);
-            else if (tower.nearestEnemy != null) towerFSM.ChangeState(tower.fsmLibrary.moveState);
-            else if (tower.nearestREnemy != null) towerFSM.ChangeState(tower.fsmLibrary.rangeState);
-        }
+        if (tower.nearestMEnemy != null) towerFSM.ChangeState(tower.fsmLibrary.meleeState);
+        else if (tower.nearestEnemy != null) towerFSM.ChangeState(tower.fsmLibrary.moveState);
+        else if (tower.nearestREnemy != null) towerFSM.ChangeState(tower.fsmLibrary.rangeState);
     }
     public override void Exit()
     {

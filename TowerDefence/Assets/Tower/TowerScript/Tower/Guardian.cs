@@ -2,6 +2,7 @@ using UnityEngine;
 
 public class Guardian : Tower
 {
+    [Header("투사체")]
     [SerializeField] private GameObject projectile;
     [SerializeField] public Transform firePoint;
     public override void Awake()
@@ -14,16 +15,12 @@ public class Guardian : Tower
     {
         base.Start();
         towerFSM.Init(fsmLibrary.idleState);
+        specialState = fsmLibrary.specialState;
     }
 
     public override void Update()
     {
         base.Update();
-        if (timer <= 0f)
-        {
-            towerFSM.ChangeState(fsmLibrary.specialState);
-            timer = skillCoolDown;
-        }
     }
 
     public void Shoot(Vector2 startPos, Vector2 targetPos)

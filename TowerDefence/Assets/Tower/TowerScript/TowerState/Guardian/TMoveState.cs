@@ -14,8 +14,8 @@ public class TMoveState : TowerState
     public override void Update()
     {
         base.Update();
-        if (tower.nearestMEnemy != null) towerFSM.ChangeState(tower.fsmLibrary.idleState);
-        else if (tower.nearestEnemy == null) towerFSM.ChangeState(tower.fsmLibrary.idleState);
+        if (tower.nearestMEnemy != null) towerFSM.ChangeState(tower.fsmLibrary.meleeState);
+        else if (tower.nearestEnemy == null) towerFSM.ChangeState(tower.fsmLibrary.rangeState);
         tower.rb.linearVelocity = tower.dir * tower.moveSpeed;
     }
     public override void Exit()
