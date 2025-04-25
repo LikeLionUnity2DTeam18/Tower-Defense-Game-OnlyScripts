@@ -1,8 +1,8 @@
 using UnityEngine;
 
-public class TSpecialState : TowerState
+public class HSpecialState : TowerState
 {
-    public TSpecialState(Tower tower, TowerFSM towerFSM, string stateName) : base(tower, towerFSM, stateName)
+    public HSpecialState(Tower tower, TowerFSM towerFSM, string stateName) : base(tower, towerFSM, stateName)
     {
     }
 
@@ -15,7 +15,7 @@ public class TSpecialState : TowerState
         base.Update();
         if (triggerCalled)
         {
-            towerFSM.ChangeState(tower.fsmLibrary.idleState);
+            towerFSM.ChangeState(tower.fsmLibrary.hIdleState);
         }
     }
     public override void Exit()

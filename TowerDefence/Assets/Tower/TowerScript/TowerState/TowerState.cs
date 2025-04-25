@@ -28,16 +28,19 @@ public class TowerState
     {
         if(stateName != null) tower.anim.SetBool(stateName, true);
         else return;
-        //Debug.Log("ÇöÀç»óÅÂ" + towerFSM.currentState);
+        //Debug.Log("í˜„ì¬ìƒíƒœ" + towerFSM.currentState);
+        TriggerSet();
     }
     public virtual void Update()
     {
         tower.rb.linearVelocity = Vector2.zero;
+        //Debug.Log(triggerCalledEnd);
     }
     public virtual void Exit()
     {
         if (stateName != null) tower.anim.SetBool(stateName, false);
         else return;
+        TriggerSet();
     }
 
     public virtual void AnimationEndTrigger()
@@ -51,5 +54,12 @@ public class TowerState
     public virtual void AnimationTrigger()
     {
         triggerCalled = true;
+    }
+
+    private void TriggerSet()
+    {
+        triggerCalled = false;
+        triggerCalledStart = false;
+        triggerCalledEnd = false;
     }
 }

@@ -18,12 +18,18 @@ public class TowerProjectile : MonoBehaviour
     void Update()
     {
         if(isReady) transform.Translate(direction * speed * Time.deltaTime, Space.World);
+        if (Vector3.Distance(startPos, transform.position) > maxDistance)
+        {
+            isReady = false;
+            PoolManager.Instance.Return(gameObject);
+        }
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.layer == LayerMask.NameToLayer("Enemy") || Vector3.Distance(startPos, transform.position) > maxDistance)
+        if (collision.gameObject.layer == LayerMask.NameToLayer("Enemy"))
         {
+            isReady = false;
             PoolManager.Instance.Return(gameObject);
         }
     }
