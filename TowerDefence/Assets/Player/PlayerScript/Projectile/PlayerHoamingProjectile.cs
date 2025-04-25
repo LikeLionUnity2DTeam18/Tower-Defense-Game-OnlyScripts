@@ -6,7 +6,7 @@ using UnityEngine;
 /// </summary>
 public class PlayerHoamingProjectile : PlayerProjectile
 {
-    protected Transform target;
+    [SerializeField] protected Transform target;
     protected Vector2 destination;
 
     protected override void Awake()
