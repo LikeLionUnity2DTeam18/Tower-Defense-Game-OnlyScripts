@@ -22,6 +22,7 @@ public class DSpecialS : TowerState
         if (triggerCalled)
         {
             towerFSM.ChangeState(tower.fsmLibrary.dIdleS);
+            triggerCalled = false;
         }
     }
 }

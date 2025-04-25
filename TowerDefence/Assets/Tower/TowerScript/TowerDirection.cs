@@ -1,11 +1,11 @@
 using UnityEngine;
-
+//ì‚¬ë¶„ë©´
 public enum Quadrant
 {
-    Q1, // ¢Ö
-    Q2, // ¢Ø
-    Q3, // ¢×
-    Q4  // ¢Ù
+    Q1, // â†—
+    Q2, // â†–
+    Q3, // â†™
+    Q4  // â†˜
 }
 
 
@@ -16,13 +16,13 @@ public class TowerDirection : MonoBehaviour
         Vector2 dir = target - origin;
 
         if (dir.x >= 0 && dir.y >= 0)
-            return Quadrant.Q1; // ¢Ö
+            return Quadrant.Q1; // â†—
         else if (dir.x < 0 && dir.y >= 0)
-            return Quadrant.Q2; // ¢Ø
+            return Quadrant.Q2; // â†–
         else if (dir.x < 0 && dir.y < 0)
-            return Quadrant.Q3; // ¢×
+            return Quadrant.Q3; // â†™
         else // dir.x >= 0 && dir.y < 0
-            return Quadrant.Q4; // ¢Ù
+            return Quadrant.Q4; // â†˜
     }
 
 

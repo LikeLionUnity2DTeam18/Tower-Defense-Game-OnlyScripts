@@ -13,7 +13,11 @@ public class HMeleeState : TowerState
     public override void Update()
     {
         base.Update();
-        if (tower.nearestMEnemy == null && triggerCalledEnd) towerFSM.ChangeState(tower.fsmLibrary.hMoveState);
+        if (tower.nearestMEnemy == null && triggerCalledEnd) 
+        { 
+            towerFSM.ChangeState(tower.fsmLibrary.hMoveState); 
+            triggerCalledEnd = false;
+        }
     }
     public override void Exit()
     {

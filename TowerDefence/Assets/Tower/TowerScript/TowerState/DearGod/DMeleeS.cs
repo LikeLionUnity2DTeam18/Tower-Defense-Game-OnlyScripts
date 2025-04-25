@@ -19,6 +19,10 @@ public class DMeleeS : TowerState
     public override void Update()
     {
         base.Update();
-        if (tower.nearestMEnemy == null && triggerCalledEnd) towerFSM.ChangeState(tower.fsmLibrary.dMoveS);
+        if (tower.nearestMEnemy == null && triggerCalledEnd) 
+        { 
+            towerFSM.ChangeState(tower.fsmLibrary.dMoveS); 
+            triggerCalledEnd = false;
+        }
     }
 }

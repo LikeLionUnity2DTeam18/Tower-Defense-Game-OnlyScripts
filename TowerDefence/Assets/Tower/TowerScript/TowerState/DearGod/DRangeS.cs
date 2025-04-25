@@ -26,6 +26,7 @@ public class DRangeS : TowerState
             if (tower.nearestMEnemy != null) towerFSM.ChangeState(tower.fsmLibrary.dIdleS);
             else if (tower.nearestEnemy != null) towerFSM.ChangeState(tower.fsmLibrary.dMoveS);
             else if (tower.nearestREnemy == null) towerFSM.ChangeState(tower.fsmLibrary.dIdleS);
+            triggerCalledEnd = false;
         }
 
         if (triggerCalled && tower.nearestREnemy != null)

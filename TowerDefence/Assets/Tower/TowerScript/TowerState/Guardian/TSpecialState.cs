@@ -16,6 +16,7 @@ public class TSpecialState : TowerState
         if (triggerCalled)
         {
             towerFSM.ChangeState(tower.fsmLibrary.idleState);
+            triggerCalled = false;
         }
     }
     public override void Exit()

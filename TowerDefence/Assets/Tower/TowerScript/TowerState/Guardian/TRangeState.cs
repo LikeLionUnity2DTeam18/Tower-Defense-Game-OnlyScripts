@@ -19,6 +19,7 @@ public class TRangeState : TowerState
             if (tower.nearestMEnemy != null) towerFSM.ChangeState(tower.fsmLibrary.meleeState);
             else if (tower.nearestEnemy != null) towerFSM.ChangeState(tower.fsmLibrary.moveState);
             else if (tower.nearestREnemy == null) towerFSM.ChangeState(tower.fsmLibrary.idleState);
+            triggerCalledEnd = false;
         }
 
         if (triggerCalled && tower.nearestREnemy != null) 
