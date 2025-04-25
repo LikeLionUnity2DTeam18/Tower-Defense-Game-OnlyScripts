@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 
 /// <summary>
 /// Idle 상태
@@ -23,5 +23,13 @@ public class PlayerIdleState : PlayerAttackReadyState
     public override void Update()
     {
         base.Update();
+
+        // base.Update() 안에서 상태전이가 일어난 경우 현재 상태의 update 무시
+        if (stateMachine.currentState != this)
+            return;
+
+        // 이동중일땐 move로
+        if(player.hasDestination)
+            stateMachine.ChangeState(player.moveState);
     }
 }

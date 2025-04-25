@@ -14,13 +14,17 @@ public class TRangeState : TowerState
     public override void Update()
     {
         base.Update();
-        if (tower.nearestMEnemy != null) towerFSM.ChangeState(tower.fsmLibrary.idleState);
-        else if (tower.nearestEnemy != null) towerFSM.ChangeState(tower.fsmLibrary.idleState);
-        else if (tower.nearestREnemy == null) towerFSM.ChangeState(tower.fsmLibrary.idleState);
+        if (triggerCalledEnd)
+        {
+            if (tower.nearestMEnemy != null) towerFSM.ChangeState(tower.fsmLibrary.meleeState);
+            else if (tower.nearestEnemy != null) towerFSM.ChangeState(tower.fsmLibrary.moveState);
+            else if (tower.nearestREnemy == null) towerFSM.ChangeState(tower.fsmLibrary.idleState);
+            triggerCalledEnd = false;
+        }
 
         if (triggerCalled && tower.nearestREnemy != null) 
         { 
-            guardian.Shoot(tower.transform.position, tower.nearestREnemy.transform.position); 
+            guardian.Shoot(guardian.firePoint.transform.position, tower.nearestREnemy.transform.position); 
             triggerCalled = false;
         }
     }

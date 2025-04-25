@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 
 /// <summary>
 /// 주변에 적이 있는지 탐색하고, 있다면 공격으로 전환할 수 있는 상태
@@ -23,5 +23,10 @@ public class PlayerAttackReadyState : PlayerControllableState
     public override void Update()
     {
         base.Update();
+
+        if(Input.GetKeyDown(KeyCode.F))
+        {
+            stateMachine.ChangeState(player.attackState);
+        }
     }
 }

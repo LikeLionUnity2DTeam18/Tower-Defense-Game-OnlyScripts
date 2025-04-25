@@ -1,8 +1,8 @@
 using UnityEngine;
 
-public class TMeleeState : TowerState
+public class HMeleeState : TowerState
 {
-    public TMeleeState(Tower tower, TowerFSM towerFSM, string stateName) : base(tower, towerFSM, stateName)
+    public HMeleeState(Tower tower, TowerFSM towerFSM, string stateName) : base(tower, towerFSM, stateName)
     {
     }
 
@@ -13,9 +13,9 @@ public class TMeleeState : TowerState
     public override void Update()
     {
         base.Update();
-        if (tower.nearestMEnemy == null && triggerCalledEnd)
+        if (tower.nearestMEnemy == null && triggerCalledEnd) 
         { 
-            towerFSM.ChangeState(tower.fsmLibrary.moveState); 
+            towerFSM.ChangeState(tower.fsmLibrary.hMoveState); 
             triggerCalledEnd = false;
         }
     }
