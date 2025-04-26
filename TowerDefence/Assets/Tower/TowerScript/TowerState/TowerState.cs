@@ -34,8 +34,8 @@ public class TowerState
     }
     public virtual void Update()
     {
-        tower.rb.linearVelocity = Vector2.zero;
-        Debug.Log(triggerCalled);
+        tower.TowerStop();
+        //Debug.Log(triggerCalled);
     }
     public virtual void Exit()
     {
