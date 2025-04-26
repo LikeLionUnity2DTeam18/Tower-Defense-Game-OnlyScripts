@@ -8,7 +8,7 @@ enum layer
 public class Tower : MonoBehaviour
 {
     //타워 스텟
-    public TowerStats stats;
+    public TowerStats stats {get; private set; }
 
     //타이머
     [SerializeField] public float timer;
@@ -61,7 +61,7 @@ public class Tower : MonoBehaviour
     {
         towerFSM.currentState.Update();
 
-        timer -= Time.deltaTime;
+        if(timer > 0)timer -= Time.deltaTime;
         if (timer <= 0f && (nearestREnemy != null || nearestMEnemy != null || nearestEnemy != null))
         {
             timer = stats.cooldown.GetValue();
