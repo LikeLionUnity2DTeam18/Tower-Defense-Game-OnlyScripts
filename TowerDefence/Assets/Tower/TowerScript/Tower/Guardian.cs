@@ -6,6 +6,7 @@ public class Guardian : Tower
     [Header("투사체")]
     [SerializeField] private GameObject projectile;
     [SerializeField] public Transform firePoint;
+    [Header("특수스킬")]
     [SerializeField] public int SplashNum = 4;
     [SerializeField] public GameObject Splash;
     [SerializeField] public Transform firePoint1;
