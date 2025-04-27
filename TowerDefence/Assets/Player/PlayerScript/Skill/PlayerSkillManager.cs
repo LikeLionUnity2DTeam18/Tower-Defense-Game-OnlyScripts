@@ -4,7 +4,7 @@ public class PlayerSkillManager : MonoBehaviour
 {
 
 
-    public Skill qskill { get; private set; }
+    public WallSkill qskill { get; private set; }
 
     private void Awake()
     {
@@ -13,7 +13,7 @@ public class PlayerSkillManager : MonoBehaviour
 
     private void Start()
     {
-        qskill = GetComponent<Skill>();
+        qskill = GetComponent<WallSkill>();
     }
 
 

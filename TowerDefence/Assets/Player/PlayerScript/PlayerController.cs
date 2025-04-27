@@ -40,7 +40,7 @@ public class PlayerController : MonoBehaviour
     #endregion
 
 
-
+    public Vector2 mousePos { get; private set; }
 
     private void Awake()
     {
@@ -68,6 +68,7 @@ public class PlayerController : MonoBehaviour
     {
         stateMachine.Update();
         if (baseAttackTimer > 0) baseAttackTimer -= Time.deltaTime;
+        UpdateMousePos();
     }
 
 
@@ -131,7 +132,13 @@ public class PlayerController : MonoBehaviour
     private void CancelPreview(Skill _skill)
     {
         input.OnRightClick -= CancelPreviewLamda;
-        _skill.CancelPreview();
+        _skill.EndPreview();
         canUseSkill = true;
+    }
+
+    protected virtual void UpdateMousePos()
+    {
+        Vector2 screenMouse = Mouse.current.position.ReadValue();
+        mousePos = Camera.main.ScreenToWorldPoint(screenMouse);
     }
 }

@@ -2,19 +2,28 @@ using UnityEngine;
 
 public class Skill : MonoBehaviour
 {
-    PlayerController player;
-    PlayerInputHandler input;
+    protected PlayerController player;
+    protected PlayerInputHandler input;
+
+    protected Vector2 mousePos;
+
+    [Header("프리펩")]
+    [SerializeField] protected GameObject previewPrefab;
+    [SerializeField] protected GameObject skillPrefab;
+    protected PlayerSkillPreview previewScript;
 
     [Header("쿨타임 관련 정보")]
-    [SerializeField] private float cooldown;
-    public float cooldownTimer { get; private set; } = 0;
+    [SerializeField] protected float cooldown;
+    public float cooldownTimer { get; protected set; } = 0;
     protected bool isPreviewState = false;
+    protected bool canBeFlipX = false;
+    protected bool isDirectionSE = true;
 
 
     protected virtual void Start()
     {
         player = PlayerManager.Instance.Player;
-
+        input = player.input;
     }
 
 
@@ -24,6 +33,7 @@ public class Skill : MonoBehaviour
             cooldownTimer -= Time.deltaTime;
 
         DisplayPreview();
+        mousePos = player.mousePos;
     }
 
     public virtual bool CanUseSkill()
@@ -40,17 +50,54 @@ public class Skill : MonoBehaviour
         if (CanUseSkill() && !isPreviewState)
         {
             isPreviewState = true;
+            //input.OnRightClick += EndPreview;
+            if (canBeFlipX) input.GPressed += FlipPreviewX;
+
+            var go = PoolManager.Instance.Get(previewPrefab);
+            previewScript = go.GetComponent<PlayerSkillPreview>();
+            previewScript.SetPreview(mousePos);
+
+            InitializePreviewByMousePos();
+
             return true;
         }
         return false;
     }
 
     /// <summary>
-    /// 우클릭으로 미리보기상태 끝내기
+    /// 마우스 위치에 따라서 스킬 방향 / \ 
     /// </summary>
-    public virtual void CancelPreview()
+    protected void InitializePreviewByMousePos()
+    {
+        Vector2 dirToMouse = mousePos - (Vector2)player.transform.position;
+        Direction4Custom dir = DirectionHelper.ToDirection4Custom(dirToMouse);
+
+        previewScript.transform.localScale = Vector3.one; // / 모양으로 초기화
+        isDirectionSE = true;
+        switch (dir)
+        {
+            case Direction4Custom.SE: // 남동이나 북서쪽이면 / 모양
+            case Direction4Custom.NW:
+                break;
+            case Direction4Custom.NE: // 북동이나 남서쪽이면 \ 모양
+            case Direction4Custom.SW:
+                if (canBeFlipX)
+                    FlipPreviewX();
+                break;
+        }
+
+    }
+
+
+    /// <summary>
+    /// 미리보기 상태 종료( 우클릭 or 스킬 사용)
+    /// </summary>
+    public void EndPreview()
     {
         isPreviewState = false;
+        previewScript.Release();
+        //input.OnRightClick -= EndPreview;
+        if (canBeFlipX) input.GPressed -= FlipPreviewX;
     }
 
     /// <summary>
@@ -61,7 +108,8 @@ public class Skill : MonoBehaviour
         if (!isPreviewState)
             return;
         // 위치 미리보기
-        Debug.Log("스킬 미리보기 중");
+        previewScript.SetPreview(mousePos);
+
     }
 
 
@@ -75,6 +123,7 @@ public class Skill : MonoBehaviour
         if (isPreviewState)
         {
             UseSkill();
+            EndPreview();
             return true;
         }
         return false;
@@ -87,7 +136,12 @@ public class Skill : MonoBehaviour
     {
         Debug.Log("스킬 사용 완료");
         cooldownTimer = cooldown;
-        isPreviewState = false;
+    }
+
+    protected virtual void FlipPreviewX()
+    {
+        previewScript.FlipX();
+        isDirectionSE = !isDirectionSE;
     }
 
 }

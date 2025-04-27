@@ -126,6 +126,42 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Skill_W"",
+                    ""type"": ""Button"",
+                    ""id"": ""654524cd-0ec0-4880-95f5-3733509b6499"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Skill_E"",
+                    ""type"": ""Button"",
+                    ""id"": ""f8976de7-1458-4d33-9d98-b32f04df349b"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Skill_R"",
+                    ""type"": ""Button"",
+                    ""id"": ""70eae8d0-5fab-4eca-837a-2415c07a58fd"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""FlipSkill_G"",
+                    ""type"": ""Button"",
+                    ""id"": ""918d5678-9f1f-46f9-a1cf-8dd99d06ec5b"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -216,6 +252,50 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""action"": ""RightClick"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""4c502850-301c-47db-a8a9-b008aabb2e80"",
+                    ""path"": ""<Keyboard>/w"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Skill_W"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""abc706e3-0f39-4963-83ca-c9eb741f1734"",
+                    ""path"": ""<Keyboard>/e"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Skill_E"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""88468508-0be4-45c6-90ba-4fed96bcf236"",
+                    ""path"": ""<Keyboard>/r"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Skill_R"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""40557da9-283d-4d16-ad2c-f356b3e3fe87"",
+                    ""path"": ""<Keyboard>/g"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""FlipSkill_G"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -245,6 +325,10 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         m_PlayerControl_LeftClick = m_PlayerControl.FindAction("LeftClick", throwIfNotFound: true);
         m_PlayerControl_RightClick = m_PlayerControl.FindAction("RightClick", throwIfNotFound: true);
         m_PlayerControl_Skill_Q = m_PlayerControl.FindAction("Skill_Q", throwIfNotFound: true);
+        m_PlayerControl_Skill_W = m_PlayerControl.FindAction("Skill_W", throwIfNotFound: true);
+        m_PlayerControl_Skill_E = m_PlayerControl.FindAction("Skill_E", throwIfNotFound: true);
+        m_PlayerControl_Skill_R = m_PlayerControl.FindAction("Skill_R", throwIfNotFound: true);
+        m_PlayerControl_FlipSkill_G = m_PlayerControl.FindAction("FlipSkill_G", throwIfNotFound: true);
     }
 
     ~@PlayerControls()
@@ -329,6 +413,10 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
     private readonly InputAction m_PlayerControl_LeftClick;
     private readonly InputAction m_PlayerControl_RightClick;
     private readonly InputAction m_PlayerControl_Skill_Q;
+    private readonly InputAction m_PlayerControl_Skill_W;
+    private readonly InputAction m_PlayerControl_Skill_E;
+    private readonly InputAction m_PlayerControl_Skill_R;
+    private readonly InputAction m_PlayerControl_FlipSkill_G;
     /// <summary>
     /// Provides access to input actions defined in input action map "PlayerControl".
     /// </summary>
@@ -356,6 +444,22 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         /// Provides access to the underlying input action "PlayerControl/Skill_Q".
         /// </summary>
         public InputAction @Skill_Q => m_Wrapper.m_PlayerControl_Skill_Q;
+        /// <summary>
+        /// Provides access to the underlying input action "PlayerControl/Skill_W".
+        /// </summary>
+        public InputAction @Skill_W => m_Wrapper.m_PlayerControl_Skill_W;
+        /// <summary>
+        /// Provides access to the underlying input action "PlayerControl/Skill_E".
+        /// </summary>
+        public InputAction @Skill_E => m_Wrapper.m_PlayerControl_Skill_E;
+        /// <summary>
+        /// Provides access to the underlying input action "PlayerControl/Skill_R".
+        /// </summary>
+        public InputAction @Skill_R => m_Wrapper.m_PlayerControl_Skill_R;
+        /// <summary>
+        /// Provides access to the underlying input action "PlayerControl/FlipSkill_G".
+        /// </summary>
+        public InputAction @FlipSkill_G => m_Wrapper.m_PlayerControl_FlipSkill_G;
         /// <summary>
         /// Provides access to the underlying input action map instance.
         /// </summary>
@@ -394,6 +498,18 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @Skill_Q.started += instance.OnSkill_Q;
             @Skill_Q.performed += instance.OnSkill_Q;
             @Skill_Q.canceled += instance.OnSkill_Q;
+            @Skill_W.started += instance.OnSkill_W;
+            @Skill_W.performed += instance.OnSkill_W;
+            @Skill_W.canceled += instance.OnSkill_W;
+            @Skill_E.started += instance.OnSkill_E;
+            @Skill_E.performed += instance.OnSkill_E;
+            @Skill_E.canceled += instance.OnSkill_E;
+            @Skill_R.started += instance.OnSkill_R;
+            @Skill_R.performed += instance.OnSkill_R;
+            @Skill_R.canceled += instance.OnSkill_R;
+            @FlipSkill_G.started += instance.OnFlipSkill_G;
+            @FlipSkill_G.performed += instance.OnFlipSkill_G;
+            @FlipSkill_G.canceled += instance.OnFlipSkill_G;
         }
 
         /// <summary>
@@ -417,6 +533,18 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @Skill_Q.started -= instance.OnSkill_Q;
             @Skill_Q.performed -= instance.OnSkill_Q;
             @Skill_Q.canceled -= instance.OnSkill_Q;
+            @Skill_W.started -= instance.OnSkill_W;
+            @Skill_W.performed -= instance.OnSkill_W;
+            @Skill_W.canceled -= instance.OnSkill_W;
+            @Skill_E.started -= instance.OnSkill_E;
+            @Skill_E.performed -= instance.OnSkill_E;
+            @Skill_E.canceled -= instance.OnSkill_E;
+            @Skill_R.started -= instance.OnSkill_R;
+            @Skill_R.performed -= instance.OnSkill_R;
+            @Skill_R.canceled -= instance.OnSkill_R;
+            @FlipSkill_G.started -= instance.OnFlipSkill_G;
+            @FlipSkill_G.performed -= instance.OnFlipSkill_G;
+            @FlipSkill_G.canceled -= instance.OnFlipSkill_G;
         }
 
         /// <summary>
@@ -498,5 +626,33 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnSkill_Q(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "Skill_W" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnSkill_W(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "Skill_E" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnSkill_E(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "Skill_R" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnSkill_R(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "FlipSkill_G" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnFlipSkill_G(InputAction.CallbackContext context);
     }
 }
