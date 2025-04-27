@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using UnityEngine;
 
 public class PlayerStat
 {
@@ -41,20 +40,20 @@ public class PlayerStat
         float additive = 0f;
         float multiplicate = 1f;
 
-        foreach(var mod in modifiers)
+        foreach (var mod in modifiers)
         {
-            if(mod.mode == PlayerStatModifierMode.additive)
+            if (mod.mode == PlayerStatModifierMode.additive)
             {
                 additive += mod.value;
             }
-            else if(mod.mode == PlayerStatModifierMode.multiplicate)
+            else if (mod.mode == PlayerStatModifierMode.multiplicate)
             {
                 multiplicate *= mod.value;
             }
         }
 
         lastValue = (baseValue + additive) * multiplicate;
-        
+
         isChanged = false;
         return lastValue;
 

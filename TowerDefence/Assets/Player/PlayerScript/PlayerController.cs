@@ -26,6 +26,8 @@ public class PlayerController : MonoBehaviour
 
     [SerializeField] private GameObject baseAttack;
     public GameObject BaseAttack => baseAttack;
+    public float baseAttackTimer { get; private set; } = 0f;
+    public void ResetBaseAttackTimer() => baseAttackTimer = 1 / BaseAttackSpeed;
 
 
     #region 플레이어 스탯
@@ -33,8 +35,8 @@ public class PlayerController : MonoBehaviour
     private PlayerStatManager stats;
     public float MoveSpeed => stats.moveSpeed.GetValue();
     public float BaseAttackDamage => stats.baseAttack.GetValue();
-    public float AttackSpeed => stats.attackSpeed.GetValue();
-    public float AttackRange => stats.attackRange.GetValue();
+    public float BaseAttackSpeed => stats.baseattackSpeed.GetValue();
+    public float BaseAttackRange => stats.baseattackRange.GetValue();
     #endregion
 
 
@@ -65,6 +67,7 @@ public class PlayerController : MonoBehaviour
     void Update()
     {
         stateMachine.Update();
+        if (baseAttackTimer > 0) baseAttackTimer -= Time.deltaTime;
     }
 
 

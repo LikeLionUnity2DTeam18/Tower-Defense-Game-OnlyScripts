@@ -47,4 +47,7 @@ public class PlayerControllableState : PlayerState
         Debug.Log($"마우스 클릭 : {destination}");
         player.SetDestination(destination);
     }
+
+
+
 }
