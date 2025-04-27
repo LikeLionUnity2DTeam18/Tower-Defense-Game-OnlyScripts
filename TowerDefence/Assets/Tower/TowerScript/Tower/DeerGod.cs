@@ -5,6 +5,8 @@ public class DeerGod : Tower
 {
     [Header("투사체")]
     [SerializeField] private GameObject projectile;
+    [Header("특수스킬")]
+    [SerializeField] private GameObject flowerPrefab;
     public override void Awake()
     {
         base.Awake();
@@ -51,4 +53,14 @@ public class DeerGod : Tower
             yield return new WaitForSeconds(interval);
         }
     }
+
+    public void FlowerSpawn()
+    {
+        Vector2 randomOffset = Random.insideUnitCircle * 3f;
+
+        GameObject flower = PoolManager.Instance.Get(flowerPrefab);
+        if(Beacon !=null) flower.transform.position = Beacon.transform.position + (Vector3)randomOffset;
+        else if(Beacon == null) flower.transform.position = transform.position + (Vector3)randomOffset;
+    }
+
 }
