@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 /// <summary>
@@ -19,14 +20,31 @@ public class PlayerProjectile : MonoBehaviour
     protected float travelTimer;
     protected float damage;
 
+    protected bool isReleased = false; // 풀로 리턴됐는지 여부를 체크
+    protected bool isHoaming = false; // 유도미사일은 콜라이더 트리거체크 안함
+    private int enemyLayer;
+
+    Coroutine releaseCouritine;
+
     protected virtual void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
+        enemyLayer = LayerMask.NameToLayer("Enemy");
     }
 
     protected virtual void OnEnable()
     {
         travelTimer = travelTime;
+        isReleased = false;
+    }
+
+    protected virtual void OnDisable()
+    {
+        if (releaseCouritine != null)
+        {
+            StopCoroutine(releaseCouritine);
+            releaseCouritine = null;
+        }
     }
 
     protected virtual void Update()
@@ -35,7 +53,7 @@ public class PlayerProjectile : MonoBehaviour
 
         if (travelTimer < 0)
         {
-            // 풀로 리턴
+            Release();
         }
 
         rb.linearVelocity = direction.normalized * speed;
@@ -54,8 +72,60 @@ public class PlayerProjectile : MonoBehaviour
     protected virtual void RotateToMovingDirection()
     {
         float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
-        transform.rotation = Quaternion.Euler(0, 0, angle );
+        transform.rotation = Quaternion.Euler(0, 0, angle);
     }
 
-    public bool IsSamePosition(Vector2 a, Vector2 b) => Vector2.Distance(a, b) < 0.1f;
+    public bool IsSamePosition(Vector2 a, Vector2 b) => Vector2.Distance(a, b) < 0.2f;
+
+    /// <summary>
+    /// 오브젝트 풀로 리턴, 풀로 리턴할 때 OnBecameInvisible가 중복호출 되는 경우가 있어서 중복호출 체크
+    /// </summary>
+    public void Release()
+    {
+        if (!isReleased)
+        {
+            isReleased = true;
+            PoolManager.Instance.Return(gameObject);
+        }
+    }
+
+    protected virtual void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (isHoaming) // 유도 투사체는 콜라이더체크 안함
+            return;
+
+        if (collision.gameObject.layer != enemyLayer)
+            return;
+
+        var target = collision.gameObject.GetComponent<EnemyController>();
+        if (target != null)
+        {
+            target.TakeDamage(1);
+            Release();
+        }
+    }
+
+    protected virtual void OnBecameInvisible()
+    {
+        if (gameObject.activeInHierarchy)
+            releaseCouritine = StartCoroutine(ReleaseAfterSeconds(3f));
+    }
+
+    protected virtual void OnBecameVisible()
+    {
+        if (releaseCouritine != null)
+        {
+            StopCoroutine(releaseCouritine);
+            releaseCouritine = null;
+        }
+    }
+
+
+
+
+    IEnumerator ReleaseAfterSeconds(float _seconds)
+    {
+        yield return new WaitForSeconds(_seconds);
+        Release();
+    }
 }

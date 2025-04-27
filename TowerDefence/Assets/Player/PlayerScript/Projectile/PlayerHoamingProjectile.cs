@@ -6,16 +6,18 @@ using UnityEngine;
 /// </summary>
 public class PlayerHoamingProjectile : PlayerProjectile
 {
-    [SerializeField] protected Transform target;
+    protected EnemyController target;
     protected Vector2 destination;
 
     protected override void Awake()
     {
         base.Awake();
+        isHoaming = true;
     }
 
-    public virtual void Initialize(Transform _target)
+    public virtual void Initialize(Vector2 _position, EnemyController _target)
     {
+        transform.position = _position;
         target = _target;
     }
 
@@ -29,17 +31,28 @@ public class PlayerHoamingProjectile : PlayerProjectile
     {
         if (target != null)
         {
-            destination = target.position;
+            destination = target.transform.position;
         }
 
         direction = destination - (Vector2)transform.position;
         RotateToMovingDirection();
         rb.linearVelocity = direction.normalized * speed;
 
-        if(IsSamePosition(destination, (Vector2)transform.position))
+        HoamingCollisionCheck();
+    }
+
+    protected override void OnTriggerEnter2D(Collider2D collision)
+    {
+        // 유도 투사체는 충돌체크 필요없음
+    }
+
+    protected virtual void HoamingCollisionCheck()
+    {
+        if (IsSamePosition(destination, (Vector2)transform.position))
         {
-            // 풀로 리턴
-            Debug.Log($"명중! {damage}의 데미지");
+
+            target?.TakeDamage(1);
+            Release();
         }
     }
 }
