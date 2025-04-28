@@ -18,7 +18,8 @@ public class Skill : MonoBehaviour
     protected bool isPreviewState = false;
     protected bool canBeFlipX = false;
     protected bool isDirectionSE = true;
-    protected Direction4Custom previewDirection;
+    public Direction4Custom previewDirection {get; protected set;}
+    protected Vector2 skillCenterPosition;
 
 
     protected virtual void Start()
@@ -122,6 +123,7 @@ public class Skill : MonoBehaviour
     {
         if (isPreviewState)
         {
+            skillCenterPosition = mousePos;
             UseSkill();
             EndPreview();
             return true;

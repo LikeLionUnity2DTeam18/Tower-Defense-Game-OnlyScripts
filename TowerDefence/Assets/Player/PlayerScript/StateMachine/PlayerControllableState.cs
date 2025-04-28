@@ -9,6 +9,7 @@ using UnityEngine.InputSystem;
 public class PlayerControllableState : PlayerState
 {
     private System.Action qSkillLamda;
+    private System.Action wSkillLamda;
 
     public PlayerControllableState(PlayerController _player, int animBoolParam) : base(_player, animBoolParam)
     {
@@ -18,10 +19,12 @@ public class PlayerControllableState : PlayerState
     {
         base.Enter();
 
-        qSkillLamda = () => player.UseSkill(player.skill.wskill);
+        qSkillLamda = () => player.UseSkill(player.skill.qskill);
+        wSkillLamda = () => player.UseSkill(player.skill.wskill);
 
         input.OnLeftClick += SetDestination;
         input.OnSkillQPressed += qSkillLamda;
+        input.OnSkillWPressed += wSkillLamda;
     }
 
     public override void Exit()
@@ -29,6 +32,7 @@ public class PlayerControllableState : PlayerState
         base.Exit();
         input.OnLeftClick -= SetDestination;
         input.OnSkillQPressed -= qSkillLamda;
+        input.OnSkillWPressed -= wSkillLamda;
     }
 
     public override void Update()
