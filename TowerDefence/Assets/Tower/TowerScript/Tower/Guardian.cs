@@ -36,7 +36,7 @@ public class Guardian : Tower
     {
         Vector2 dir = (targetPos - startPos).normalized;
         float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
-        GameObject spear = PoolManager.Instance.Get(projectile);
+        GameObject spear = SpawnWithStats(projectile);
         spear.transform.position = firePoint.position;
         spear.transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
         spear.GetComponent<TowerProjectile>().Init(dir);
@@ -51,7 +51,7 @@ public class Guardian : Tower
 
         for (int i = 0; i < SplashNum; i++)
         {
-            GameObject ring = PoolManager.Instance.Get(Splash);
+            GameObject ring = SpawnWithStats(Splash);
             ring.transform.position = centerPos; // 중앙에 생성
 
             float angle = 2 * Mathf.PI * i / SplashNum;

@@ -9,6 +9,7 @@ public class DraggableIcon : MonoBehaviour
     [SerializeField] private float Radius;
     [SerializeField] private LayerMask whatIsBeacon;
     public GameObject DetectedBeacon { get; private set; }
+    private Beacon beacon;
     private TowerIcon icon;
 
     private void Awake()
@@ -36,9 +37,12 @@ public class DraggableIcon : MonoBehaviour
         dragging = false;
         if (IsBeaconDetected())
         {
-            DetectedBeacon.GetComponent<Beacon>().WhichTower(icon.type);
-            PoolManager.Instance.Return(gameObject);
-            transform.DOKill();
+            if(beacon.isActive == false)
+            {
+                beacon.WhichTower(icon.type);
+                PoolManager.Instance.Return(gameObject);
+                transform.DOKill();
+            }
         }
     }
 
@@ -48,6 +52,7 @@ public class DraggableIcon : MonoBehaviour
         if (hit != null)
         {
             DetectedBeacon = hit.gameObject;
+            beacon = hit.GetComponent<Beacon>();
             return true;
         }
         DetectedBeacon = null;
@@ -86,8 +91,11 @@ public class DraggableIcon : MonoBehaviour
     {
         if (IsBeaconDetected())
         {
-            DetectedBeacon.GetComponent<Beacon>().WhichTower(icon.type);
-            PoolManager.Instance.Return(gameObject);
+            if(beacon.isActive==false)
+            {
+                beacon.WhichTower(icon.type);
+                PoolManager.Instance.Return(gameObject);
+            }
         }
     }
     public void StartDrag(Vector3 mousePos)

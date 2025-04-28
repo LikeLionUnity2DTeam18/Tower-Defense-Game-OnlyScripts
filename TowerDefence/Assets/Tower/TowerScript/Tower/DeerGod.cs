@@ -46,7 +46,7 @@ public class DeerGod : Tower
         for (int i = 1; i <= spikeCount; i++)
         {
             Vector2 spawnPos = startPos + dir * distanceBetweenSpikes * i;
-            GameObject spike = PoolManager.Instance.Get(projectile);
+            GameObject spike = SpawnWithStats(projectile);
             spike.transform.position = spawnPos;
             spike.transform.rotation = Quaternion.identity;
 
@@ -58,7 +58,7 @@ public class DeerGod : Tower
     {
         Vector2 randomOffset = Random.insideUnitCircle * 3f;
 
-        GameObject flower = PoolManager.Instance.Get(flowerPrefab);
+        GameObject flower = SpawnWithStats(flowerPrefab);
         if(Beacon !=null) flower.transform.position = Beacon.transform.position + (Vector3)randomOffset;
         else if(Beacon == null) flower.transform.position = transform.position + (Vector3)randomOffset;
     }

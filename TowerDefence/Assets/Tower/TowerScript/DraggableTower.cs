@@ -3,17 +3,23 @@ using UnityEngine;
 public class DraggableTower : MonoBehaviour
 {
     public GameObject swapPrefab;
+    public Tower tower;
+    private void Awake()
+    {
+        tower = GetComponent<Tower>();
+    }
     void OnMouseDown()
     {
         SwapObject();
     }
 
-    void SwapObject()//¿ÀºêÁ§Æ®Ç®·Î ¹Ù²Ù±â
+    void SwapObject()   //ì•„ì´ì½˜ìœ¼ë¡œ ë³€ê²½
     {
         GameObject newObj = PoolManager.Instance.Get(swapPrefab);
         newObj.transform.position = transform.position;
+        tower.beacon.isActive = false;
 
-        // µå·¡±× »óÅÂ¸¦ ³Ñ°ÜÁÖ±â À§ÇØ °­Á¦·Î µå·¡±× ½ÃÀÛ
+        // ë“œë˜ê·¸ ìƒíƒœë¥¼ ë„˜ê²¨ì£¼ê¸° ìœ„í•´ ê°•ì œë¡œ ë“œë˜ê·¸ ì‹œì‘
         DraggableIcon dragScript = newObj.GetComponent<DraggableIcon>();
         if (dragScript != null)
         {
