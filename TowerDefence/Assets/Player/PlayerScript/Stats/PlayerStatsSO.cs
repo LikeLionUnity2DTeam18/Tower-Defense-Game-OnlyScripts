@@ -14,7 +14,7 @@ public class PlayerStatsSO : ScriptableObject
 {
     public float baseAttackDamage;
     public float moveSpeed;
-    public float attackSpeed; // 초당 공격 횟수
-    public float attackRange;
+    public float baseattackSpeed; // 초당 공격 횟수
+    public float baseattackRange;
 
 }
