@@ -3,8 +3,10 @@ using UnityEngine;
 
 
 //적을 향해 발사
-public class TowerProjectile : MonoBehaviour
+public class TowerProjectile : TowerEntity
 {
+    //발사체의 속도, 방향, 거리 설정
+
     private Vector3 startPos;
     public float maxDistance = 20f;
     private Vector2 direction;
@@ -23,10 +25,11 @@ public class TowerProjectile : MonoBehaviour
         anim = GetComponent<Animator>();
     }
 
-    void Update()
+    protected override void Update()
     {
+        base.Update();
         //애니메이션 실행 후 발사
-        if(isReady) transform.Translate(direction * speed * Time.deltaTime, Space.World);
+        if (isReady) transform.Translate(direction * speed * Time.deltaTime, Space.World);
 
 
         //거리가 멀어지면 지우기

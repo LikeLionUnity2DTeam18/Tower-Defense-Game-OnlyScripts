@@ -5,6 +5,10 @@ enum layer
     Front,
     Back,
 }
+public interface IStatReceiver  
+{
+    void SetStats(Tower tower,TowerStats stats);
+}
 public class Tower : MonoBehaviour
 {
     //타워 스텟
@@ -16,6 +20,7 @@ public class Tower : MonoBehaviour
 
     //비콘 관련 설정
     public GameObject Beacon { get; set; }
+    public Beacon beacon { get; set; }
 
     //타워 방향
     public bool towerFront { get; private set; } = true;//앞인지 뒤인지
@@ -69,7 +74,7 @@ public class Tower : MonoBehaviour
         }
 
         ChangeDir();
-        if(GetoutArea()) transform.position = Beacon.transform.position;
+        if(GetoutArea() && nearestMEnemy == null) transform.position = Beacon.transform.position;
     }
 
     void OnDrawGizmosSelected()
@@ -88,37 +93,31 @@ public class Tower : MonoBehaviour
     //거리에 따른 탐지 
     private void ChangeDir()
     {
-        if (GetoutArea())
+        nearestMEnemy = FindNearestEnemyByOverlap(transform.position, stats.meleeDistance.GetValue(), LayerMask.GetMask("Enemy"));
+        if (nearestMEnemy != null)
         {
-            UpdateDirection(Beacon.transform.position);
+            UpdateDirection(nearestMEnemy.transform.position);
+            dir = (nearestMEnemy.transform.position - transform.position).normalized;
         }
-        else
+        else if (nearestMEnemy == null)
         {
-            nearestMEnemy = FindNearestEnemyByOverlap(transform.position, stats.meleeDistance.GetValue(), LayerMask.GetMask("Enemy"));
-            if (nearestMEnemy != null)
+            nearestEnemy = FindNearestEnemyByOverlap(transform.position, stats.moveDistance.GetValue(), LayerMask.GetMask("Enemy"));
+            if (nearestEnemy != null) 
             {
-                UpdateDirection(nearestMEnemy.transform.position);
-                dir = (nearestMEnemy.transform.position - transform.position).normalized;
+                UpdateDirection(nearestEnemy.transform.position);
+                dir = (nearestEnemy.transform.position - transform.position).normalized;
             }
-            else if (nearestMEnemy == null)
+            else if(nearestEnemy == null)
             {
-                nearestEnemy = FindNearestEnemyByOverlap(transform.position, stats.moveDistance.GetValue(), LayerMask.GetMask("Enemy"));
-                if (nearestEnemy != null) 
+                nearestREnemy = FindNearestEnemyByOverlap(transform.position, stats.rangeDistance.GetValue(), LayerMask.GetMask("Enemy"));
+                if (nearestREnemy != null)
                 {
-                    UpdateDirection(nearestEnemy.transform.position);
-                    dir = (nearestEnemy.transform.position - transform.position).normalized;
+                    UpdateDirection(nearestREnemy.transform.position);
+                    dir = (nearestREnemy.transform.position - transform.position).normalized;
                 }
-                else if(nearestEnemy == null)
-                {
-                    nearestREnemy = FindNearestEnemyByOverlap(transform.position, stats.rangeDistance.GetValue(), LayerMask.GetMask("Enemy"));
-                    if (nearestREnemy != null)
-                    {
-                        UpdateDirection(nearestREnemy.transform.position);
-                        dir = (nearestREnemy.transform.position - transform.position).normalized;
-                    }
-                }  
-            }
+            }  
         }
+        
 
         //앞, 뒤 애니메이션 변경
         if (towerFront == true)
@@ -217,7 +216,8 @@ public class Tower : MonoBehaviour
             return false;
         }
     }
-    
+
+    //타워 움직임 관련
     public void TowerMovement()
     {
         rb.linearVelocity = dir * stats.speed.GetValue();
@@ -226,6 +226,19 @@ public class Tower : MonoBehaviour
     {
         rb.linearVelocity = Vector2.zero;
     }
+    
+    //스탯 전달
+    public GameObject SpawnWithStats(GameObject prefab)
+    {
+        GameObject obj = PoolManager.Instance.Get(prefab);
+
+        if (obj.TryGetComponent<IStatReceiver>(out var receiver))
+        {
+            receiver.SetStats(this,this.stats);
+        }
+        return obj;
+    }
+
 
     public void AnimationTriggerEnd()
     {

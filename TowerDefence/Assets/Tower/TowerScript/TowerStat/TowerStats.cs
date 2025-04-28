@@ -2,6 +2,9 @@ using UnityEngine;
 
 public class TowerStats : MonoBehaviour
 {
+    //참조
+    DraggableTower Dtower; //드래그 타워 스크립트 참조
+
     [Header("기본적인 스탯")]
     public TStat hp;
     public TStat melee;
@@ -17,7 +20,10 @@ public class TowerStats : MonoBehaviour
     [SerializeField]
     private int currentHealth;
 
-
+    protected virtual void Awake()
+    {
+        Dtower = GetComponent<DraggableTower>();
+    }
 
     protected virtual void Start()
     {
@@ -50,6 +56,6 @@ public class TowerStats : MonoBehaviour
 
     protected virtual void Die()
     {
-
+        Dtower.ToIcon();
     }
 }

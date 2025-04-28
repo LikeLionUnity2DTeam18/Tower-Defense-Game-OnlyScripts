@@ -1,13 +1,14 @@
 using DG.Tweening;
 using UnityEngine;
 
-public class TowerStay : MonoBehaviour
+public class TowerStay : TowerEntity
 {
     [SerializeField] protected float duration = 10f;
     [SerializeField] protected float timer = 10f;
 
-    protected virtual void Update()
+    protected override void Update()
     {
+        base.Update();
         Timer();
         DurationEnd();
     }

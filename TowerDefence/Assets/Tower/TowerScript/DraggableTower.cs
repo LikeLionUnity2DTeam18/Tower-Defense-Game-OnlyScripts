@@ -1,24 +1,39 @@
 using UnityEngine;
+using DG.Tweening;
 
 public class DraggableTower : MonoBehaviour
 {
     public GameObject swapPrefab;
+    private GameObject newObj;  //ìŠ¤ì™‘í•  ì˜¤ë¸Œì íŠ¸
+    [HideInInspector]
+    private Tower tower;
+    private void Awake()
+    {
+        tower = GetComponent<Tower>();
+    }
     void OnMouseDown()
     {
         SwapObject();
     }
 
-    void SwapObject()//¿ÀºêÁ§Æ®Ç®·Î ¹Ù²Ù±â
+    public void SwapObject()   //ì•„ì´ì½˜ìœ¼ë¡œ ë³€ê²½
     {
-        GameObject newObj = PoolManager.Instance.Get(swapPrefab);
-        newObj.transform.position = transform.position;
+        ToIcon();
 
-        // µå·¡±× »óÅÂ¸¦ ³Ñ°ÜÁÖ±â À§ÇØ °­Á¦·Î µå·¡±× ½ÃÀÛ
+        // ë“œë˜ê·¸ ìƒíƒœë¥¼ ë„˜ê²¨ì£¼ê¸° ìœ„í•´ ê°•ì œë¡œ ë“œë˜ê·¸ ì‹œì‘
         DraggableIcon dragScript = newObj.GetComponent<DraggableIcon>();
         if (dragScript != null)
         {
             dragScript.StartDrag(Input.mousePosition);
         }
+    }
+
+    public void ToIcon()
+    {
+        newObj = PoolManager.Instance.Get(swapPrefab);
+        newObj.transform.position = transform.position;
+        if (tower.beacon != null) tower.beacon.isActive = false;
         PoolManager.Instance.Return(gameObject);
+        transform.DOKill();
     }
 }

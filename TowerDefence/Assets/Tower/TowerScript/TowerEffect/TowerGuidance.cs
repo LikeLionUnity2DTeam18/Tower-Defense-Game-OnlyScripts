@@ -1,12 +1,13 @@
 using UnityEngine;
 
-public class TowerGuidance : MonoBehaviour
+public class TowerGuidance : TowerEntity
 {
     private GameObject target;
     private float speed = 3f;
     private float distance = 5f;
-    protected virtual void Update()
+    protected override void Update()
     {
+        base.Update();
         target = FindNearestEnemyByOverlap(transform.position, distance, LayerMask.GetMask("Enemy"));
         transform.Translate(Dir() * speed * Time.deltaTime);
     }
