@@ -1,9 +1,12 @@
 using UnityEngine;
+using DG.Tweening;
 
 public class DraggableTower : MonoBehaviour
 {
     public GameObject swapPrefab;
-    public Tower tower;
+    private GameObject newObj;  //스왑할 오브젝트
+    [HideInInspector]
+    private Tower tower;
     private void Awake()
     {
         tower = GetComponent<Tower>();
@@ -13,11 +16,9 @@ public class DraggableTower : MonoBehaviour
         SwapObject();
     }
 
-    void SwapObject()   //아이콘으로 변경
+    public void SwapObject()   //아이콘으로 변경
     {
-        GameObject newObj = PoolManager.Instance.Get(swapPrefab);
-        newObj.transform.position = transform.position;
-        tower.beacon.isActive = false;
+        ToIcon();
 
         // 드래그 상태를 넘겨주기 위해 강제로 드래그 시작
         DraggableIcon dragScript = newObj.GetComponent<DraggableIcon>();
@@ -25,6 +26,14 @@ public class DraggableTower : MonoBehaviour
         {
             dragScript.StartDrag(Input.mousePosition);
         }
+    }
+
+    public void ToIcon()
+    {
+        newObj = PoolManager.Instance.Get(swapPrefab);
+        newObj.transform.position = transform.position;
+        if (tower.beacon != null) tower.beacon.isActive = false;
         PoolManager.Instance.Return(gameObject);
+        transform.DOKill();
     }
 }

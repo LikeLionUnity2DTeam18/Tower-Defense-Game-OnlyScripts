@@ -35,6 +35,14 @@ public class FSMLibrary
     public HSpecialState hSpecialState { get; private set; }
     #endregion
 
+    #region WatchDog State
+    public WIdleState wIdleState { get; private set; }
+    public WMoveState wMoveState { get; private set; }
+    public WMeleeState wMeleeState { get; private set; }
+    public WRangeState wRangeState { get; private set; }
+    public WSpecialState wSpecialState { get; private set; }
+    #endregion
+
 
     public FSMLibrary(Tower tower,TowerFSM towerFSM)
     {
@@ -63,5 +71,11 @@ public class FSMLibrary
         hMeleeState = new HMeleeState(tower, towerFSM, "Melee");
         hRangeState = new HRangeState(tower, towerFSM, "Range");
         hSpecialState = new HSpecialState(tower, towerFSM, "Special");
+
+        wIdleState = new WIdleState(tower, towerFSM, "Idle");
+        wMoveState = new WMoveState(tower, towerFSM, "Move");
+        wMeleeState = new WMeleeState(tower, towerFSM, "Melee");
+        wRangeState = new WRangeState(tower, towerFSM, "Range");
+        wSpecialState = new WSpecialState(tower, towerFSM, "Special");
     }
 }
