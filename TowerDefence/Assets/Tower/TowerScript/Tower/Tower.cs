@@ -5,6 +5,10 @@ enum layer
     Front,
     Back,
 }
+public interface IStatReceiver  
+{
+    void SetStats(Tower tower,TowerStats stats);
+}
 public class Tower : MonoBehaviour
 {
     //타워 스텟
@@ -16,6 +20,7 @@ public class Tower : MonoBehaviour
 
     //비콘 관련 설정
     public GameObject Beacon { get; set; }
+    public Beacon beacon { get; set; }
 
     //타워 방향
     public bool towerFront { get; private set; } = true;//앞인지 뒤인지
@@ -217,7 +222,8 @@ public class Tower : MonoBehaviour
             return false;
         }
     }
-    
+
+    //타워 움직임 관련
     public void TowerMovement()
     {
         rb.linearVelocity = dir * stats.speed.GetValue();
@@ -226,6 +232,19 @@ public class Tower : MonoBehaviour
     {
         rb.linearVelocity = Vector2.zero;
     }
+    
+    //스탯 전달
+    public GameObject SpawnWithStats(GameObject prefab)
+    {
+        GameObject obj = PoolManager.Instance.Get(prefab);
+
+        if (obj.TryGetComponent<IStatReceiver>(out var receiver))
+        {
+            receiver.SetStats(this,this.stats);
+        }
+        return obj;
+    }
+
 
     public void AnimationTriggerEnd()
     {
