@@ -18,7 +18,7 @@ public class PlayerControllableState : PlayerState
     {
         base.Enter();
 
-        qSkillLamda = () => player.UseSkill(player.skill.qskill);
+        qSkillLamda = () => player.UseSkill(player.skill.wskill);
 
         input.OnLeftClick += SetDestination;
         input.OnSkillQPressed += qSkillLamda;
