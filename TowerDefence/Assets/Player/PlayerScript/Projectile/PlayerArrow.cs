@@ -2,9 +2,11 @@ using UnityEngine;
 
 public class PlayerArrow : PlayerHoamingProjectile
 {
-    public void Initialize(Transform _target, float _damage)
+    public void Initialize(Vector2 _position, EnemyController _target, float _damage)
     {
-        base.Initialize(_target);
+        base.Initialize(_position, _target);
         damage = _damage;
     }
+
+
 }

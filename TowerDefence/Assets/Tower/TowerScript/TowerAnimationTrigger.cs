@@ -24,6 +24,11 @@ public class TowerAnimationTrigger : MonoBehaviour
         if (tower != null)
             tower.AnimationTrigger();
     }
+    public void AnimationTriggerSpecialwt()
+    {
+        if (tower != null)
+            tower.AnimationTriggerSpeical();
+    }
 
     public void AnimationTriggerEnd()
     {

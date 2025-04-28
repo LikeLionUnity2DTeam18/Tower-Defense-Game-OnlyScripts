@@ -1,6 +1,5 @@
-﻿using UnityEngine;
-using UnityEngine.InputSystem;
 using System;
+using UnityEngine;
 
 public class PlayerInputHandler : MonoBehaviour
 {
@@ -10,6 +9,10 @@ public class PlayerInputHandler : MonoBehaviour
 
     // 이벤트 방식
     public event Action OnSkillQPressed;
+    public event Action OnSkillWPressed;
+    public event Action OnSkillEPressed;
+    public event Action OnSkillRPressed;
+    public event Action GPressed;
     public event Action OnLeftClick;
     public event Action OnRightClick;
 
@@ -19,6 +22,10 @@ public class PlayerInputHandler : MonoBehaviour
 
         // 이벤트 등록
         inputActions.PlayerControl.Skill_Q.performed += _ => OnSkillQPressed?.Invoke();
+        inputActions.PlayerControl.Skill_W.performed += _ => OnSkillWPressed?.Invoke();
+        inputActions.PlayerControl.Skill_E.performed += _ => OnSkillEPressed?.Invoke();
+        inputActions.PlayerControl.Skill_R.performed += _ => OnSkillRPressed?.Invoke();
+        inputActions.PlayerControl.FlipSkill_G.performed += _ => GPressed?.Invoke();
         inputActions.PlayerControl.LeftClick.performed += _ => OnLeftClick?.Invoke();
         inputActions.PlayerControl.RightClick.performed += _ => OnRightClick?.Invoke();
     }

@@ -1,6 +1,8 @@
 using System.Collections;
 using UnityEngine;
 
+
+//적을 향해 발사
 public class TowerProjectile : MonoBehaviour
 {
     private Vector3 startPos;
@@ -10,6 +12,7 @@ public class TowerProjectile : MonoBehaviour
     protected bool isReady = false;
     protected Animator anim;
 
+    //날아갈 방향 설정
     public void Init(Vector2 dir)
     {
         direction = dir;

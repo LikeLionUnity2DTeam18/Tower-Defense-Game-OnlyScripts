@@ -1,9 +1,9 @@
 using UnityEngine;
 
-public class HSpecialState : TSpecialState
+public class GSpecialState : TSpecialState
 {
-    protected Hyem hyem => tower as Hyem;
-    public HSpecialState(Tower tower, TowerFSM towerFSM, string stateName) : base(tower, towerFSM, stateName)
+    protected Guardian guardian => tower as Guardian;
+    public GSpecialState(Tower tower, TowerFSM towerFSM, string stateName) : base(tower, towerFSM, stateName)
     {
     }
 
@@ -16,7 +16,7 @@ public class HSpecialState : TSpecialState
         base.Update();
         if (triggerCalledStart)
         {
-            hyem.CastIceCone();
+            guardian.Restraint();
             triggerCalledStart = false;
         }
     }

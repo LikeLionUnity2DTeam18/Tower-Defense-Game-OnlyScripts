@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class DIdleS : TowerState
+public class DIdleS : TIdleState
 {
     public DIdleS(Tower tower, TowerFSM towerFSM, string stateName) : base(tower, towerFSM, stateName)
     {
@@ -19,8 +19,5 @@ public class DIdleS : TowerState
     public override void Update()
     {
         base.Update();
-        if (tower.nearestMEnemy != null) towerFSM.ChangeState(tower.fsmLibrary.dMeleeS);
-        else if (tower.nearestEnemy != null) towerFSM.ChangeState(tower.fsmLibrary.dMoveS);
-        else if (tower.nearestREnemy != null) towerFSM.ChangeState(tower.fsmLibrary.dRangeS);
     }
 }

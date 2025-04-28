@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class DMoveS : TowerState
+public class DMoveS : TMoveState
 {
     public DMoveS(Tower tower, TowerFSM towerFSM, string stateName) : base(tower, towerFSM, stateName)
     {
@@ -19,8 +19,5 @@ public class DMoveS : TowerState
     public override void Update()
     {
         base.Update();
-        if (tower.nearestMEnemy != null) towerFSM.ChangeState(tower.fsmLibrary.dIdleS);
-        else if (tower.nearestEnemy == null) towerFSM.ChangeState(tower.fsmLibrary.dIdleS);
-        tower.rb.linearVelocity = tower.dir * tower.moveSpeed;
     }
 }

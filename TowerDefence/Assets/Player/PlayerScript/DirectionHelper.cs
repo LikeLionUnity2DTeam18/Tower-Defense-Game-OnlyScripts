@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 
 /// <summary>
 /// 벡터에서 방향, 방향에서 벡터를 편하게 변환하는데 쓰는 클래스
@@ -70,8 +70,10 @@ public static class DirectionHelper
         }
     }
 
-    public static int ToAnimParam(Direction4Custom dir)
+    public static Vector2 ToAnimParamVector(Vector2 dir)
     {
-        return (int)dir;
+        Direction4Custom direction = ToDirection4Custom(dir);
+        return ToAnimParamVector(direction);
     }
+
 }

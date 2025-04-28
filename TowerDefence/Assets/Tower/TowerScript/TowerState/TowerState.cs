@@ -10,6 +10,7 @@ public class TowerState
     protected bool triggerCalledEnd;
     protected bool triggerCalledStart;
     protected bool triggerCalled;
+    protected bool triggerSpecial;
     public TowerState(Tower tower,TowerFSM towerFSM, string stateName)
     {
         this.tower = tower;
@@ -33,8 +34,8 @@ public class TowerState
     }
     public virtual void Update()
     {
-        tower.rb.linearVelocity = Vector2.zero;
-        //Debug.Log(triggerCalledEnd);
+        tower.TowerStop();
+        //Debug.Log(triggerCalled);
     }
     public virtual void Exit()
     {
@@ -55,11 +56,16 @@ public class TowerState
     {
         triggerCalled = true;
     }
+    public virtual void AnimationSpecialTrigger()
+    {
+        triggerSpecial = true;
+    }
 
     private void TriggerSet()
     {
         triggerCalled = false;
         triggerCalledStart = false;
         triggerCalledEnd = false;
+        triggerSpecial = false;
     }
 }

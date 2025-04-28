@@ -15,7 +15,7 @@ public class TMeleeState : TowerState
         base.Update();
         if (tower.nearestMEnemy == null && triggerCalledEnd)
         { 
-            towerFSM.ChangeState(tower.fsmLibrary.moveState); 
+            towerFSM.ChangeState(tower.moveState); 
             triggerCalledEnd = false;
         }
     }

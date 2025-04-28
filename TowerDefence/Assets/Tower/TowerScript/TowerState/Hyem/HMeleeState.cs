@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class HMeleeState : TowerState
+public class HMeleeState : TMeleeState
 {
     public HMeleeState(Tower tower, TowerFSM towerFSM, string stateName) : base(tower, towerFSM, stateName)
     {
@@ -13,11 +13,6 @@ public class HMeleeState : TowerState
     public override void Update()
     {
         base.Update();
-        if (tower.nearestMEnemy == null && triggerCalledEnd) 
-        { 
-            towerFSM.ChangeState(tower.fsmLibrary.hMoveState); 
-            triggerCalledEnd = false;
-        }
     }
     public override void Exit()
     {
