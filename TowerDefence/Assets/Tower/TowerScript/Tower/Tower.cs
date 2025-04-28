@@ -74,7 +74,7 @@ public class Tower : MonoBehaviour
         }
 
         ChangeDir();
-        if(GetoutArea()) transform.position = Beacon.transform.position;
+        if(GetoutArea() && nearestMEnemy == null) transform.position = Beacon.transform.position;
     }
 
     void OnDrawGizmosSelected()
@@ -93,37 +93,31 @@ public class Tower : MonoBehaviour
     //거리에 따른 탐지 
     private void ChangeDir()
     {
-        if (GetoutArea())
+        nearestMEnemy = FindNearestEnemyByOverlap(transform.position, stats.meleeDistance.GetValue(), LayerMask.GetMask("Enemy"));
+        if (nearestMEnemy != null)
         {
-            UpdateDirection(Beacon.transform.position);
+            UpdateDirection(nearestMEnemy.transform.position);
+            dir = (nearestMEnemy.transform.position - transform.position).normalized;
         }
-        else
+        else if (nearestMEnemy == null)
         {
-            nearestMEnemy = FindNearestEnemyByOverlap(transform.position, stats.meleeDistance.GetValue(), LayerMask.GetMask("Enemy"));
-            if (nearestMEnemy != null)
+            nearestEnemy = FindNearestEnemyByOverlap(transform.position, stats.moveDistance.GetValue(), LayerMask.GetMask("Enemy"));
+            if (nearestEnemy != null) 
             {
-                UpdateDirection(nearestMEnemy.transform.position);
-                dir = (nearestMEnemy.transform.position - transform.position).normalized;
+                UpdateDirection(nearestEnemy.transform.position);
+                dir = (nearestEnemy.transform.position - transform.position).normalized;
             }
-            else if (nearestMEnemy == null)
+            else if(nearestEnemy == null)
             {
-                nearestEnemy = FindNearestEnemyByOverlap(transform.position, stats.moveDistance.GetValue(), LayerMask.GetMask("Enemy"));
-                if (nearestEnemy != null) 
+                nearestREnemy = FindNearestEnemyByOverlap(transform.position, stats.rangeDistance.GetValue(), LayerMask.GetMask("Enemy"));
+                if (nearestREnemy != null)
                 {
-                    UpdateDirection(nearestEnemy.transform.position);
-                    dir = (nearestEnemy.transform.position - transform.position).normalized;
+                    UpdateDirection(nearestREnemy.transform.position);
+                    dir = (nearestREnemy.transform.position - transform.position).normalized;
                 }
-                else if(nearestEnemy == null)
-                {
-                    nearestREnemy = FindNearestEnemyByOverlap(transform.position, stats.rangeDistance.GetValue(), LayerMask.GetMask("Enemy"));
-                    if (nearestREnemy != null)
-                    {
-                        UpdateDirection(nearestREnemy.transform.position);
-                        dir = (nearestREnemy.transform.position - transform.position).normalized;
-                    }
-                }  
-            }
+            }  
         }
+        
 
         //앞, 뒤 애니메이션 변경
         if (towerFront == true)

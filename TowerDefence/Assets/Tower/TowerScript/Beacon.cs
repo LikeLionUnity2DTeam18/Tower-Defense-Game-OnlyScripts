@@ -5,8 +5,8 @@ public enum TowerType
     DeerGod,
     Guardian,
     Hyem,
+    WatchDog,
     Spider,
-    Watchdog,
     Darkmur,
     Element,
     Orbs,
@@ -56,6 +56,9 @@ public class Beacon : MonoBehaviour
                     break;
                 case TowerType.Hyem:
                     SpawnTower(TowerType.Hyem);
+                    break;
+                case TowerType.WatchDog:
+                    SpawnTower(TowerType.WatchDog);
                     break;
             }
         }
