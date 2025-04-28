@@ -76,4 +76,17 @@ public static class DirectionHelper
         return ToAnimParamVector(direction);
     }
 
+    public static Direction4Custom FlipX(Direction4Custom dir)
+    {
+        Direction4Custom filppeddir = dir switch
+        {
+            Direction4Custom.NE => Direction4Custom.NW,
+            Direction4Custom.NW => Direction4Custom.NE,
+            Direction4Custom.SE => Direction4Custom.SW,
+            Direction4Custom.SW => Direction4Custom.SE,
+            _ => dir
+
+        };
+        return filppeddir;
+    }
 }
