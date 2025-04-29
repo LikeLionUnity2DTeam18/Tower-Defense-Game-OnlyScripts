@@ -143,4 +143,5 @@ public class PlayerController : MonoBehaviour
         Vector2 screenMouse = Mouse.current.position.ReadValue();
         mousePos = Camera.main.ScreenToWorldPoint(screenMouse);
     }
+
 }

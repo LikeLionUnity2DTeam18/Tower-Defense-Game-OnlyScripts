@@ -13,6 +13,7 @@ public class PlayerIdleState : PlayerAttackReadyState
     public override void Enter()
     {
         base.Enter();
+        rb.linearVelocity = Vector2.zero;
     }
 
     public override void Exit()
