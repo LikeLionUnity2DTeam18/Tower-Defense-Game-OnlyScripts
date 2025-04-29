@@ -21,6 +21,10 @@ public class GoldController : MonoBehaviour
         {
             model.SpendGold(20);
         }
+        if(Input.GetKeyDown(KeyCode.J)) //몬스터 죽으면 그 자리에 골드 표시
+        {
+            EventManager.Trigger<MonsterDied>(new MonsterDied(100,new Vector3(1,1,1)));
+        }
     }
     public void OnMonsterDied(MonsterDied evt)
     {
@@ -28,13 +32,11 @@ public class GoldController : MonoBehaviour
     }
      private void OnEnable()
     {
-        EventManager.AddListener<GoldChanged>(view.OnGoldChanged);
         EventManager.AddListener<MonsterDied>(OnMonsterDied);
     }
 
     private void OnDisable()
     {
-        EventManager.RemoveListener<GoldChanged>(view.OnGoldChanged);
         EventManager.RemoveListener<MonsterDied>(OnMonsterDied);
     }
 

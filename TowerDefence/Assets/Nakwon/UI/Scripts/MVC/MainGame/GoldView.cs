@@ -8,4 +8,14 @@ public class GoldView : MonoBehaviour
     {
         goldText.text = evt.NewGold.ToString();
     }
+
+    private void OnEnable()
+    {
+        EventManager.AddListener<GoldChanged>(OnGoldChanged);
+    }
+
+    private void OnDisable()
+    {
+        EventManager.RemoveListener<GoldChanged>(OnGoldChanged);
+    }
 }
