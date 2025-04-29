@@ -1,11 +1,11 @@
 using DG.Tweening;
+using System;
 using UnityEngine;
 using static UnityEngine.GraphicsBuffer;
 
 public class WatchDog : Tower
 {
     public GameObject wave;
-    private GameObject test;
     public Transform pos;
 
     public override void Awake()
@@ -40,10 +40,12 @@ public class WatchDog : Tower
         }
     }
 
-    public void CreateWave()
+    public void CreateWave(Vector2 startPos, Vector2 targetPos)
     {
-        test = SpawnWithStats(wave);
+        Vector2 dir = (targetPos - startPos).normalized;
+        float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
+        GameObject test = SpawnWithStats(wave);
         test.transform.position = pos.position;
-        test.transform.rotation = Quaternion.Euler(0, 0, Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg);
+        test.transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
     }
 }
