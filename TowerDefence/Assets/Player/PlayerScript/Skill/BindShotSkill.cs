@@ -28,7 +28,7 @@ public class BindShotSkill : Skill
 
     private void CreateCasterSkillEffect()
     {
-        Vector3 effectPosition = player.transform.position + new Vector3(0.75f, 2f, 0);
+        Vector3 effectPosition = player.transform.position + new Vector3(0.3f, 2f, 0);
         bool isEast = previewDirection == Direction4Custom.SE || previewDirection == Direction4Custom.NE;
         GameObject go = PoolManager.Instance.Get(casterPrefab);
         go.GetComponent<BindShotCasterEffectController>().SetEffect(effectPosition, isEast, this);

@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class BindShotCasterEffectController : MonoBehaviour
+public class BindShotCasterEffectController : MonoBehaviour, ISkillAnimationEvents
 {
     private bool isReleased = false;
     BindShotSkill skill;
@@ -22,6 +22,7 @@ public class BindShotCasterEffectController : MonoBehaviour
             //transform.localScale = tmpScale;
             transform.Rotate(0, 180, 0);
         }
+
         this.skill = skill;
     }
 
@@ -35,13 +36,18 @@ public class BindShotCasterEffectController : MonoBehaviour
 
     }
 
-    private void TriggerSkillAnimationEvent()
+    public void OnCasterEffectTrigger()
     {
         skill.CreateSkillObject();
     }
 
-    private void OnAnimationEnd()
+    public void OnAnimationEnd()
     {
         Release();
+    }
+
+    public void OnSkillHitAnimation()
+    {
+
     }
 }
