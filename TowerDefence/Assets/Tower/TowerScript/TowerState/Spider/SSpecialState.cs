@@ -1,9 +1,9 @@
 using UnityEngine;
 
-public class WSpecialState : TSpecialState
+public class SSpecialState : TSpecialState
 {
-    protected WatchDog watchDog => tower as WatchDog;
-    public WSpecialState(Tower tower, TowerFSM towerFSM, string stateName) : base(tower, towerFSM, stateName)
+    protected Spider spider => tower as Spider;
+    public SSpecialState(Tower tower, TowerFSM towerFSM, string stateName) : base(tower, towerFSM, stateName)
     {
     }
 
@@ -16,7 +16,7 @@ public class WSpecialState : TSpecialState
         base.Update();
         if (triggerCalledStart)
         {
-            watchDog.CreateWave(watchDog.pos.transform.position,tower.nearestREnemy.transform.position);
+            //spider.
             triggerCalledStart = false;
         }
     }
