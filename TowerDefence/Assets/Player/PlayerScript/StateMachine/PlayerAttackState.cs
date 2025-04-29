@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class PlayerAttackState : PlayerControllableState
+public class PlayerAttackState : PlayerCanUseSkillState
 {
     Vector2 direction;
     EnemyController target;
