@@ -60,6 +60,9 @@ public class Beacon : MonoBehaviour
                 case TowerType.WatchDog:
                     SpawnTower(TowerType.WatchDog);
                     break;
+                case TowerType.Spider:
+                    SpawnTower(TowerType.Spider);
+                    break;
             }
         }
     }
