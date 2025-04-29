@@ -62,6 +62,13 @@ public class PlayerState
         anim.SetFloat(PlayerAnimationParams.MoveY, animDirection.y);
     }
 
+    protected void SetAnimationDirection(Direction4Custom direction)
+    {
+        Vector2 animDirection = DirectionHelper.ToAnimParamVector(direction);
+        anim.SetFloat(PlayerAnimationParams.MoveX, animDirection.x);
+        anim.SetFloat(PlayerAnimationParams.MoveY, animDirection.y);
+    }
+
     public virtual void Exit()
     {
         if (animBoolParam != 0)

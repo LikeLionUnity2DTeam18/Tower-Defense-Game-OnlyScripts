@@ -18,6 +18,8 @@ public class Skill : MonoBehaviour
     protected bool isPreviewState = false;
     protected bool canBeFlipX = false;
     protected bool isDirectionSE = true;
+    public Direction4Custom previewDirection {get; protected set;}
+    protected Vector2 skillCenterPosition;
 
 
     protected virtual void Start()
@@ -50,7 +52,6 @@ public class Skill : MonoBehaviour
         if (CanUseSkill() && !isPreviewState)
         {
             isPreviewState = true;
-            //input.OnRightClick += EndPreview;
             if (canBeFlipX) input.GPressed += FlipPreviewX;
 
             var go = PoolManager.Instance.Get(previewPrefab);
@@ -72,6 +73,8 @@ public class Skill : MonoBehaviour
         Vector2 dirToMouse = mousePos - (Vector2)player.transform.position;
         Direction4Custom dir = DirectionHelper.ToDirection4Custom(dirToMouse);
 
+        previewDirection = dir;
+
         previewScript.transform.localScale = Vector3.one; // / 모양으로 초기화
         isDirectionSE = true;
         switch (dir)
@@ -81,8 +84,7 @@ public class Skill : MonoBehaviour
                 break;
             case Direction4Custom.NE: // 북동이나 남서쪽이면 \ 모양
             case Direction4Custom.SW:
-                if (canBeFlipX)
-                    FlipPreviewX();
+                FlipPreviewX();
                 break;
         }
 
@@ -96,7 +98,6 @@ public class Skill : MonoBehaviour
     {
         isPreviewState = false;
         previewScript.Release();
-        //input.OnRightClick -= EndPreview;
         if (canBeFlipX) input.GPressed -= FlipPreviewX;
     }
 
@@ -122,6 +123,7 @@ public class Skill : MonoBehaviour
     {
         if (isPreviewState)
         {
+            skillCenterPosition = mousePos;
             UseSkill();
             EndPreview();
             return true;

@@ -1,0 +1,47 @@
+using UnityEngine;
+
+public class BindShotCasterEffectController : MonoBehaviour
+{
+    private bool isReleased = false;
+    BindShotSkill skill;
+
+    private void OnEnable()
+    {
+        isReleased = false;
+        transform.localScale = Vector3.one;
+        transform.rotation = Quaternion.identity;
+    }
+
+    public void SetEffect(Vector2 position, bool isEast, BindShotSkill skill)
+    {
+        transform.position = position;
+        if(!isEast)
+        {
+            //Vector3 tmpScale = transform.localScale;
+            //tmpScale.x *= -1;
+            //transform.localScale = tmpScale;
+            transform.Rotate(0, 180, 0);
+        }
+        this.skill = skill;
+    }
+
+    private void Release()
+    {
+        if(!isReleased)
+        {
+            isReleased = true;
+            PoolManager.Instance.Return(gameObject);
+        }
+
+    }
+
+    private void TriggerSkillAnimationEvent()
+    {
+        skill.CreateSkillObject();
+    }
+
+    private void OnAnimationEnd()
+    {
+        Release();
+    }
+}
