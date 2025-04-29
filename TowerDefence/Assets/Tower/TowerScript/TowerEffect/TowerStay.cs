@@ -26,9 +26,9 @@ public class TowerStay : TowerEntity
 
     public void ResetProjectile()
     {
+        DOTween.Kill(this);
         PoolManager.Instance.Return(gameObject);
         timer = duration;
-        transform.DOKill();
     }
 
     //가까운 적 찾기

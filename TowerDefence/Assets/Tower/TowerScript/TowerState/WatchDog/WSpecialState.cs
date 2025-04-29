@@ -16,7 +16,7 @@ public class WSpecialState : TSpecialState
         base.Update();
         if (triggerCalledStart)
         {
-            watchDog.CreateWave();
+            watchDog.CreateWave(watchDog.pos.transform.position,tower.nearestREnemy.transform.position);
             triggerCalledStart = false;
         }
     }
