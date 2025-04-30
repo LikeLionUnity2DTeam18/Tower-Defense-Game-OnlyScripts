@@ -66,6 +66,7 @@ public class FireBreathController : PlayerSkillEntity, ISkillAnimationEvents
         base.OnDurationEnd();
         anim.SetTrigger(nameof(OnDurationEnd));
         canDamage = false;
+        EventManager.Trigger(new PlayerFireBreathEnded());
     }
 
     /// <summary>

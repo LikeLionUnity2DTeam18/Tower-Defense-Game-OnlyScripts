@@ -12,11 +12,13 @@ public class PlayerFireBreathState : PlayerMovableState
     {
         base.Enter();
         InitializeAnimation();
+        EventManager.AddListener<PlayerFireBreathEnded>(OnFireBreathEnd);
     }
 
     public override void Exit()
     {
         base.Exit();
+        EventManager.RemoveListener<PlayerFireBreathEnded>(OnFireBreathEnd);
     }
 
     public override void Update()
@@ -55,5 +57,10 @@ public class PlayerFireBreathState : PlayerMovableState
         else
             anim.SetBool(PlayerAnimationParams.Idle, true);
 
+    }
+
+    private void OnFireBreathEnd(PlayerFireBreathEnded _)
+    {
+        stateMachine.ChangeState(player.idleState);
     }
 }

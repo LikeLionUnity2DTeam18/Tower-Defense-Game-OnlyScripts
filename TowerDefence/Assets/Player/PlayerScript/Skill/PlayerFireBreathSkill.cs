@@ -1,16 +1,29 @@
 using UnityEngine;
 
-public class PlayerFireBreathSkill : MonoBehaviour
+public class PlayerFireBreathSkill : Skill
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    [SerializeField] float duration;
+    [SerializeField] float damage;
+    [SerializeField] float damageInterval;
+    [SerializeField] float length;
+
+    protected override void Start()
     {
-        
+        base.Start();
+        hasPreviewState = false;
     }
 
-    // Update is called once per frame
-    void Update()
+    protected override void UseSkill()
     {
-        
+        base.UseSkill();
+        CreateSkillObject();
+        player.stateMachine.ChangeState(player.breathState);
+    }
+
+    private void CreateSkillObject()
+    {
+        var go = PoolManager.Instance.Get(skillPrefab);
+        var obj = go.GetComponent<FireBreathController>();
+        obj.SetFireBreath(skillCenterPosition, duration, damage, damageInterval, length);
     }
 }
