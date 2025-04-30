@@ -6,6 +6,10 @@ public class Hyem_Projectile : TowerProjectile
     {
         if (collision.gameObject.layer == LayerMask.NameToLayer("Enemy"))
         {
+            collision.TryGetComponent<TowerStats>(out TowerStats targetStats);
+            stats?.DoRangeDamage(targetStats);
+
+
             isReady = false;
             anim.SetBool("Break", true);
             if (isReady == true)

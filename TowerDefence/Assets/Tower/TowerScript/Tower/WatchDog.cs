@@ -47,5 +47,6 @@ public class WatchDog : Tower
         GameObject test = SpawnWithStats(wave);
         test.transform.position = pos.position;
         test.transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
+        test.GetComponent<WatchDog_Stay>().RendReset();
     }
 }

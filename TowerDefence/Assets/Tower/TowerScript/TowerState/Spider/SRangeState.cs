@@ -22,9 +22,14 @@ public class SRangeState : TRangeState
         }
         if (triggerCalled3 && tower.nearestREnemy != null) 
         {
+            triggerCalled3 = false;
             spider.SpinWheel();
             spider.anim.SetBool("Off", false);
-            triggerCalled3 = false;
+        }
+        if (triggerCalled5)
+        {
+            triggerCalled5 = false;
+            tower.DoRangeDamage();
         }
     }
     public override void Exit()

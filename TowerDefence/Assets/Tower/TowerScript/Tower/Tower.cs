@@ -1,3 +1,5 @@
+using System;
+using System.Collections.Generic;
 using UnityEngine;
 //애니메이션에서 사용할 레이어
 enum layer
@@ -161,7 +163,27 @@ public class Tower : MonoBehaviour
         }
         return nearest;
     }
+    //범위 내 모든 적 데미지
+    private void DamageAllEnemiesInRange(Vector3 origin, float radius, LayerMask enemyLayer, Action<TowerStats> damageFunc)
+    {
+        Collider2D[] hits = Physics2D.OverlapCircleAll(origin, radius, enemyLayer);
 
+        foreach (var hit in hits)
+        {
+            if (hit.TryGetComponent<TestEnemyStats>(out var target))
+            {
+                damageFunc(target);
+            }
+        }
+    }
+    public void DoMeleeDamage()
+    {
+        DamageAllEnemiesInRange(transform.position, stats.meleeDistance.GetValue(), LayerMask.GetMask("Enemy"), stats.DoMeleeDamage);
+    }
+    public void DoRangeDamage()
+    {
+        DamageAllEnemiesInRange(transform.position, stats.meleeDistance.GetValue(), LayerMask.GetMask("Enemy"), stats.DoRangeDamage);
+    }
 
     //방향 설정
     void UpdateDirection(Vector2 enemyPos)
