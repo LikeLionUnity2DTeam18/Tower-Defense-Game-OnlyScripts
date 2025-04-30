@@ -7,20 +7,7 @@ public class GoldPopUp : MonoBehaviour
     [SerializeField] private GameObject moneyPopupPrefab; // "+50" 프리팹
     [SerializeField] private RectTransform popupsRoot;    // Canvas 안 PopupsRoot
 
-    private void OnEnable()
-    {
-        EventManager.AddListener<MonsterDied>(OnMonsterDied);
-    }
 
-    private void OnDisable()
-    {
-        EventManager.RemoveListener<MonsterDied>(OnMonsterDied);
-    }
-
-    private void OnMonsterDied(MonsterDied evt)
-    {
-        CreateMoneyPopup(evt.Position, evt.RewardGold);
-    }
 
     private void CreateMoneyPopup(Vector3 worldPos, int goldAmount)
     {
@@ -33,7 +20,7 @@ public class GoldPopUp : MonoBehaviour
 
         // 3. 텍스트 내용 설정
         TextMeshProUGUI text = popup.GetComponent<TextMeshProUGUI>();
-        text.text = $"+{goldAmount}";
+        text.text = $"+{goldAmount}G";
 
         // 4. DOTween 애니메이션 설정
         RectTransform rect = popup.GetComponent<RectTransform>();
@@ -42,5 +29,20 @@ public class GoldPopUp : MonoBehaviour
         seq.Append(rect.DOMoveY(rect.position.y + 100f, 1f))  // 1초 동안 위로 100 이동
            .Join(text.DOFade(0f, 1f))                         // 동시에 1초 동안 페이드아웃
            .OnComplete(() => Destroy(popup));                // 끝나면 삭제
+    }
+
+    private void OnMonsterDied(MonsterDied evt)
+    {
+        CreateMoneyPopup(evt.Position, evt.RewardGold);
+    }
+
+    private void OnEnable()
+    {
+        EventManager.AddListener<MonsterDied>(OnMonsterDied);
+    }
+
+    private void OnDisable()
+    {
+        EventManager.RemoveListener<MonsterDied>(OnMonsterDied);
     }
 }
