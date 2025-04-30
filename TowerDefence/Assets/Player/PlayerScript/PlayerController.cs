@@ -17,6 +17,7 @@ public class PlayerController : MonoBehaviour
     public PlayerMoveState moveState { get; private set; }
     public PlayerAttackState attackState { get; private set; }
     public PlayerBindShotState bindShotState { get; private set; }
+    public PlayerFireBreathState breathState { get; private set; }
     #endregion
 
     public Direction4Custom lastDir { get; private set; } = Direction4Custom.SE; // 마지막으로 바라보고 있던 방향
@@ -59,6 +60,7 @@ public class PlayerController : MonoBehaviour
         moveState = new PlayerMoveState(this, PlayerAnimationParams.Move);
         attackState = new PlayerAttackState(this, PlayerAnimationParams.Attack);
         bindShotState = new PlayerBindShotState(this, PlayerAnimationParams.Attack);
+        breathState = new PlayerFireBreathState(this, 0);
 
         stateMachine.Initialize(idleState);
         canUseSkill = true;
@@ -113,6 +115,11 @@ public class PlayerController : MonoBehaviour
 
     public void UseSkill(Skill _skill)
     {
+        // 미리보기 상태가 없는 스킬인 경우 바로 사용 
+        if(canUseSkill && !_skill.hasPreviewState)
+        {
+            _skill.TryUseSkillWithoutPreview();
+        }
         // 스킬 위치 미리보기 상태중에는 다른 스킬 사용 불가
         if (canUseSkill)
         {
@@ -143,4 +150,5 @@ public class PlayerController : MonoBehaviour
         Vector2 screenMouse = Mouse.current.position.ReadValue();
         mousePos = Camera.main.ScreenToWorldPoint(screenMouse);
     }
+
 }
