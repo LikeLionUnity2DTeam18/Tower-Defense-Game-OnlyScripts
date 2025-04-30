@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class BindShotSkill : Skill
+public class PlayerBindShotSkill : Skill
 {
     [Header("프리펩")]
     [SerializeField] protected GameObject skillPrefabN;

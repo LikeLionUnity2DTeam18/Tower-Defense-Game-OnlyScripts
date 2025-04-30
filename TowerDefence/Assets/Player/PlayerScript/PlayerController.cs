@@ -115,6 +115,11 @@ public class PlayerController : MonoBehaviour
 
     public void UseSkill(Skill _skill)
     {
+        // 미리보기 상태가 없는 스킬인 경우 바로 사용 
+        if(canUseSkill && !_skill.hasPreviewState)
+        {
+            _skill.TryUseSkillWithoutPreview();
+        }
         // 스킬 위치 미리보기 상태중에는 다른 스킬 사용 불가
         if (canUseSkill)
         {

@@ -3,7 +3,7 @@ using UnityEngine;
 public class BindShotCasterEffectController : MonoBehaviour, ISkillAnimationEvents
 {
     private bool isReleased = false;
-    BindShotSkill skill;
+    PlayerBindShotSkill skill;
 
     private void OnEnable()
     {
@@ -12,7 +12,7 @@ public class BindShotCasterEffectController : MonoBehaviour, ISkillAnimationEven
         transform.rotation = Quaternion.identity;
     }
 
-    public void SetEffect(Vector2 position, bool isEast, BindShotSkill skill)
+    public void SetEffect(Vector2 position, bool isEast, PlayerBindShotSkill skill)
     {
         transform.position = position;
         if(!isEast)
