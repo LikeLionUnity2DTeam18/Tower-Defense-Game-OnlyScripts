@@ -74,7 +74,7 @@ public class Tower : MonoBehaviour
         }
 
         ChangeDir();
-        if(GetoutArea() && nearestMEnemy == null) transform.position = Beacon.transform.position;
+        if(GetoutArea() && nearestREnemy == null) transform.position = Beacon.transform.position;
     }
 
     void OnDrawGizmosSelected()

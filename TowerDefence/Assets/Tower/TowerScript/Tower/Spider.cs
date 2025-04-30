@@ -1,14 +1,18 @@
 using DG.Tweening;
+using NUnit.Framework.Internal;
 using System;
+using System.Collections;
 using UnityEngine;
+using static UnityEditor.PlayerSettings;
 using static UnityEngine.GraphicsBuffer;
 
 public class Spider : Tower
 {
     public GameObject proj;
-    public Transform pos;
+    public Transform posRight;
+    public Transform posLeft;
     [SerializeField] private float arcHeight = 2f;
-    [SerializeField] private float duration = 2f;   // 한 바퀴 도는 시간
+    [SerializeField] private float duration = 1f;   // 한 바퀴 도는 시간
     public Tween spinTween; // 트윈 저장용
     public override void Awake()
     {
@@ -56,6 +60,22 @@ public class Spider : Tower
                                 anim.SetBool("Off", true);
                              }
                          });
+    }
+
+    public void Slash()
+    {
+
+        float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
+        GameObject slash = SpawnWithStats(proj);
+        if(towerRight)
+        {
+            slash.transform.position = posRight.position;
+        }
+        else
+        {
+            slash.transform.position = posLeft.position;
+        }
+        slash.transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
     }
 }
 
