@@ -1,9 +1,9 @@
 using UnityEngine;
 
-public class HRangeState : TRangeState
+public class DMRangeState : TRangeState
 {
-    protected Hyem hyem => tower as Hyem;
-    public HRangeState(Tower tower, TowerFSM towerFSM, string stateName) : base(tower, towerFSM, stateName)
+    protected Darkmur darkmur => tower as Darkmur;
+    public DMRangeState(Tower tower, TowerFSM towerFSM, string stateName) : base(tower, towerFSM, stateName)
     {
     }
 
@@ -18,7 +18,7 @@ public class HRangeState : TRangeState
         if (triggerCalled3 && tower.nearestREnemy != null) 
         {
             triggerCalled3 = false;
-            hyem.StartShooting(tower.nearestREnemy.transform.position); 
+            darkmur.StartShooting(tower.nearestREnemy.transform.position);
         }
     }
     public override void Exit()

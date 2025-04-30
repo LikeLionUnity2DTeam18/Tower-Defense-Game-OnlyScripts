@@ -22,10 +22,10 @@ public class DRangeS : TRangeState
     {
         base.Update();
 
-        if (triggerCalled && tower.nearestREnemy != null)
+        if (triggerCalled3 && tower.nearestREnemy != null)
         {
+            triggerCalled3 = false;
             deerGod.StartProjectile(deerGod.transform.position, tower.nearestREnemy.transform.position);
-            triggerCalled = false;
         }
     }
 }

@@ -1,9 +1,9 @@
 using UnityEngine;
 
-public class WSpecialState : TSpecialState
+public class DMSpecialState : TSpecialState
 {
-    protected WatchDog watchDog => tower as WatchDog;
-    public WSpecialState(Tower tower, TowerFSM towerFSM, string stateName) : base(tower, towerFSM, stateName)
+    protected Darkmur darkmur => tower as Darkmur;
+    public DMSpecialState(Tower tower, TowerFSM towerFSM, string stateName) : base(tower, towerFSM, stateName)
     {
     }
 
@@ -16,8 +16,8 @@ public class WSpecialState : TSpecialState
         base.Update();
         if (triggerCalled2)
         {
-            watchDog.CreateWave(watchDog.pos.transform.position,tower.nearestREnemy.transform.position);
             triggerCalled2 = false;
+            if (!darkmur.isClone) darkmur.Clone();
         }
     }
     public override void Exit()

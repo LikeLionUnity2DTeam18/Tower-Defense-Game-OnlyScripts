@@ -14,10 +14,10 @@ public class SSpecialState : TSpecialState
     public override void Update()
     {
         base.Update();
-        if (triggerCalledStart)
+        if (triggerCalled2)
         {
             spider.Slash();
-            triggerCalledStart = false;
+            triggerCalled2 = false;
         }
     }
     public override void Exit()

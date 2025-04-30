@@ -13,12 +13,12 @@ public class TRangeState : TowerState
     public override void Update()
     {
         base.Update();
-        if (triggerCalledEnd)
+        if (triggerCalled1)
         {
+            triggerCalled1 = false;
             if (tower.nearestMEnemy != null) towerFSM.ChangeState(tower.meleeState);
             else if (tower.nearestEnemy != null) towerFSM.ChangeState(tower.moveState);
             else if (tower.nearestREnemy == null) towerFSM.ChangeState(tower.idleState);
-            triggerCalledEnd = false;
         }
     }
     public override void Exit()

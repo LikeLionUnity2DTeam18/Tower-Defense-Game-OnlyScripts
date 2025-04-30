@@ -20,11 +20,11 @@ public class SRangeState : TRangeState
             spider.spinTween.Kill();
             towerFSM.ChangeState(tower.idleState);
         }
-        if (triggerCalled && tower.nearestREnemy != null) 
+        if (triggerCalled3 && tower.nearestREnemy != null) 
         {
             spider.SpinWheel();
             spider.anim.SetBool("Off", false);
-            triggerCalled = false;
+            triggerCalled3 = false;
         }
     }
     public override void Exit()
