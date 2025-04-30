@@ -1,7 +1,7 @@
 using DG.Tweening;
 using UnityEngine;
 
-public class WatchDog_Splash : TowerStay
+public class WatchDog_Stay : TowerStay
 {
     Renderer rend;
     Material mat;
@@ -10,15 +10,16 @@ public class WatchDog_Splash : TowerStay
         rend = GetComponent<Renderer>();
         mat = rend.material;
     }
-    private void Start()
-    {
-        mat.DOFloat(0f,"_Cutoff", 0.1f).SetTarget(this);
-    }
     protected override void DurationEnd()
     {
         if (timer <= 0)
         {
             mat.DOFloat(0.5f, "_Cutoff", 0.5f).SetTarget(this).OnComplete(ResetProjectile);
         }
+    }
+
+    public void RendReset()
+    {
+        mat.DOFloat(0f, "_Cutoff", 0.1f).SetTarget(this);
     }
 }

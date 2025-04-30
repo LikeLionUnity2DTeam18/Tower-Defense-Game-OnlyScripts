@@ -13,6 +13,12 @@ public class TMeleeState : TowerState
     public override void Update()
     {
         base.Update();
+
+        if (triggerCalled5)
+        {
+            triggerCalled5 = false;
+            tower.DoMeleeDamage();
+        }
         if (tower.nearestMEnemy == null && triggerCalled1)
         { 
             triggerCalled1 = false;

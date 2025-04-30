@@ -5,13 +5,13 @@ using UnityEngine;
 [System.Serializable]
 public class TStat
 {
-    [SerializeField] private int baseValue;
+    [SerializeField] private float baseValue;
 
 
     public List<int> modifiers;
-    public int GetValue()
+    public float GetValue()
     {
-        int finalValue = baseValue;
+        float finalValue = baseValue;
 
         foreach (int modifier in modifiers)
         {
