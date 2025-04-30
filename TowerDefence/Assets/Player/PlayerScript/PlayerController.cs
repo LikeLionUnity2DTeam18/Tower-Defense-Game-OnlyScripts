@@ -73,6 +73,8 @@ public class PlayerController : MonoBehaviour
         stateMachine.Update();
         if (baseAttackTimer > 0) baseAttackTimer -= Time.deltaTime;
         UpdateMousePos();
+
+        
     }
 
 
@@ -101,15 +103,6 @@ public class PlayerController : MonoBehaviour
 
 
 
-    // 임시 테스트용
-    public void Shoot()
-    {
-        var obj = Instantiate(baseAttack, transform.position, Quaternion.identity);
-        Vector2 mousePos = Mouse.current.position.ReadValue();
-        Vector2 destination = Camera.main.ScreenToWorldPoint(mousePos);
-        Vector2 dir = destination - (Vector2)transform.position;
-        obj.GetComponent<PlayerProjectile>().Initialize(dir, 3);
-    }
 
     private System.Action CancelPreviewLamda;
 
