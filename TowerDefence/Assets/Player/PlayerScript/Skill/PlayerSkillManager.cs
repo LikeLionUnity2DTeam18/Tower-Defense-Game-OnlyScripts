@@ -3,8 +3,13 @@ using UnityEngine;
 public class PlayerSkillManager : MonoBehaviour
 {
 
+    
+    public PlayerBindShotSkill qskill { get; private set; }
+    
+    public WallSkill wskill { get; private set; }
 
-    public WallSkill qskill { get; private set; }
+    public PlayerFireBreathSkill rskill { get; private set; }
+    
 
     private void Awake()
     {
@@ -13,7 +18,9 @@ public class PlayerSkillManager : MonoBehaviour
 
     private void Start()
     {
-        qskill = GetComponent<WallSkill>();
+        qskill = GetComponent<PlayerBindShotSkill>();
+        wskill = GetComponent<WallSkill>();
+        rskill = GetComponent<PlayerFireBreathSkill>();
     }
 
 

@@ -6,18 +6,25 @@ public class Skill : MonoBehaviour
     protected PlayerInputHandler input;
 
     protected Vector2 mousePos;
+    protected Vector2 previewPos;
+    protected Vector2 skillCenterPosition;
 
     [Header("프리펩")]
     [SerializeField] protected GameObject previewPrefab;
     [SerializeField] protected GameObject skillPrefab;
+    [SerializeField] protected GameObject rangePrefab;
     protected PlayerSkillPreview previewScript;
+    protected PlayerSkillRangeController rangeScript;
 
-    [Header("쿨타임 관련 정보")]
+    [Header("스킬 공통 정보")]
     [SerializeField] protected float cooldown;
+    [SerializeField] protected float skillRange;
     public float cooldownTimer { get; protected set; } = 0;
+    public bool hasPreviewState { get; protected set; } = true;
     protected bool isPreviewState = false;
     protected bool canBeFlipX = false;
     protected bool isDirectionSE = true;
+    public Direction4Custom previewDirection {get; protected set;}
 
 
     protected virtual void Start()
@@ -32,7 +39,8 @@ public class Skill : MonoBehaviour
         if (cooldownTimer > 0)
             cooldownTimer -= Time.deltaTime;
 
-        DisplayPreview();
+        UpdateDisplayPreview();
+        UpdateSkillRangeDisplay();
         mousePos = player.mousePos;
     }
 
@@ -50,13 +58,14 @@ public class Skill : MonoBehaviour
         if (CanUseSkill() && !isPreviewState)
         {
             isPreviewState = true;
-            //input.OnRightClick += EndPreview;
             if (canBeFlipX) input.GPressed += FlipPreviewX;
 
             var go = PoolManager.Instance.Get(previewPrefab);
             previewScript = go.GetComponent<PlayerSkillPreview>();
             previewScript.SetPreview(mousePos);
 
+            rangeScript = PoolManager.Instance.Get(rangePrefab).GetComponent<PlayerSkillRangeController>();
+            rangeScript.SetSkillRangeDisplay(player.transform.position, skillRange);
             InitializePreviewByMousePos();
 
             return true;
@@ -72,6 +81,8 @@ public class Skill : MonoBehaviour
         Vector2 dirToMouse = mousePos - (Vector2)player.transform.position;
         Direction4Custom dir = DirectionHelper.ToDirection4Custom(dirToMouse);
 
+        previewDirection = dir;
+
         previewScript.transform.localScale = Vector3.one; // / 모양으로 초기화
         isDirectionSE = true;
         switch (dir)
@@ -81,8 +92,7 @@ public class Skill : MonoBehaviour
                 break;
             case Direction4Custom.NE: // 북동이나 남서쪽이면 \ 모양
             case Direction4Custom.SW:
-                if (canBeFlipX)
-                    FlipPreviewX();
+                FlipPreviewX();
                 break;
         }
 
@@ -96,20 +106,35 @@ public class Skill : MonoBehaviour
     {
         isPreviewState = false;
         previewScript.Release();
-        //input.OnRightClick -= EndPreview;
+        rangeScript.Release();
         if (canBeFlipX) input.GPressed -= FlipPreviewX;
     }
 
     /// <summary>
-    /// 스킬 사용 위치 미리보기
+    /// 스킬 사용 위치 미리보기 업데이트
     /// </summary>
-    protected virtual void DisplayPreview()
+    protected virtual void UpdateDisplayPreview()
     {
         if (!isPreviewState)
             return;
         // 위치 미리보기
-        previewScript.SetPreview(mousePos);
 
+        if(IsInRangeBetweenMouseAndPlayer()) // 마우스 위치가 사정거리 안이면 그위치에 표시
+            previewPos = mousePos;
+        else // 사정거리 밖이면 마우스방향으로 사정거리까지 가고 표시
+        {
+            Vector2 toMouse = mousePos - (Vector2)(player.transform.position);
+            previewPos = (Vector2)player.transform.position + toMouse.normalized * skillRange;
+        }
+
+        previewScript.SetPreview(previewPos);
+    }
+
+    protected virtual void UpdateSkillRangeDisplay()
+    {
+        if (!isPreviewState) return;
+
+        rangeScript.SetSkillRangeDisplay(player.transform.position, skillRange);
     }
 
 
@@ -122,11 +147,21 @@ public class Skill : MonoBehaviour
     {
         if (isPreviewState)
         {
+            skillCenterPosition = previewPos;
             UseSkill();
             EndPreview();
             return true;
         }
         return false;
+    }
+
+    public virtual bool TryUseSkillWithoutPreview()
+    {
+        if (hasPreviewState) return false;
+
+        skillCenterPosition = previewPos;
+        UseSkill();
+        return true;
     }
 
     /// <summary>
@@ -142,6 +177,11 @@ public class Skill : MonoBehaviour
     {
         previewScript.FlipX();
         isDirectionSE = !isDirectionSE;
+    }
+
+    protected bool IsInRangeBetweenMouseAndPlayer()
+    {
+        return Vector2.Distance(mousePos, player.transform.position) <= skillRange;
     }
 
 }

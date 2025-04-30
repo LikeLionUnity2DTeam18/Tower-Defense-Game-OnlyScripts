@@ -1,6 +1,5 @@
 using DG.Tweening;
 using System.Collections;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class DeerGod_flower : TowerStay
@@ -62,7 +61,7 @@ public class DeerGod_flower : TowerStay
         for (int i = 1; i <= spikeCount; i++)
         {
             Vector2 spawnPos = startPos + dir * distanceBetweenSpikes * i;
-            GameObject spike = PoolManager.Instance.Get(projectile);
+            GameObject spike = tower.SpawnWithStats(projectile);
             spike.transform.position = spawnPos;
             spike.transform.rotation = Quaternion.identity;
 

@@ -25,6 +25,6 @@ public class WallSkill : Skill
         Debug.Log("벽스킬");
         var go = PoolManager.Instance.Get(skillPrefab);
         var wallScript = go.GetComponent<WallSkillController>();
-        wallScript.SetWall(mousePos, HP, duration, isDirectionSE);
+        wallScript.SetWall(skillCenterPosition, HP, duration, isDirectionSE);
     }
 }

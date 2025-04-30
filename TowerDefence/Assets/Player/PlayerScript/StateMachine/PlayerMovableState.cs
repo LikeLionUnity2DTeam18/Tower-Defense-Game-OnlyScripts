@@ -1,16 +1,12 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-
-/// <summary>
-/// 플레이어의 모든 조작이 가능한 상태
-/// AttackReady(Idle, Move의 부모), Attack에서 상속
-/// </summary>
-public class PlayerControllableState : PlayerState
+public class PlayerMovableState : PlayerState
 {
-    private System.Action qSkillLamda;
 
-    public PlayerControllableState(PlayerController _player, int animBoolParam) : base(_player, animBoolParam)
+    Vector2 direction;
+
+    public PlayerMovableState(PlayerController _player, int animBoolParam) : base(_player, animBoolParam)
     {
     }
 
@@ -18,22 +14,38 @@ public class PlayerControllableState : PlayerState
     {
         base.Enter();
 
-        qSkillLamda = () => player.UseSkill(player.skill.qskill);
 
         input.OnLeftClick += SetDestination;
-        input.OnSkillQPressed += qSkillLamda;
     }
 
     public override void Exit()
     {
         base.Exit();
         input.OnLeftClick -= SetDestination;
-        input.OnSkillQPressed -= qSkillLamda;
     }
 
     public override void Update()
     {
         base.Update();
+
+        HandleMove();
+
+    }
+
+    private void HandleMove()
+    {
+        if (player.hasDestination)
+        {
+            direction = (player.destination - (Vector2)player.transform.position).normalized;
+            rb.linearVelocity = direction * player.MoveSpeed;
+
+
+            if (IsSamePosition(player.destination, player.transform.position))
+            {
+                rb.linearVelocity = Vector2.zero;
+                player.ResetDestination();
+            }
+        }
     }
 
     /// <summary>
@@ -47,7 +59,4 @@ public class PlayerControllableState : PlayerState
         Debug.Log($"마우스 클릭 : {destination}");
         player.SetDestination(destination);
     }
-
-
-
 }

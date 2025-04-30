@@ -51,7 +51,7 @@ public class Hyem : Tower
             Vector2 dir = (targetPos - (Vector2)point.position).normalized;
             float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
 
-            GameObject spear = PoolManager.Instance.Get(projectile);
+            GameObject spear = SpawnWithStats(projectile);
             spear.transform.position = point.position;
             spear.GetComponent<TowerProjectile>().Init(dir);
 
@@ -90,7 +90,7 @@ public class Hyem : Tower
             {
                 Vector2 spawnPos = (Vector2)firePoint.position + waveDir.normalized * distance;
 
-                GameObject pillar = PoolManager.Instance.Get(icePillarPrefab);
+                GameObject pillar = SpawnWithStats(icePillarPrefab);
                 pillar.transform.position = spawnPos;
 
                 pillar.transform.localScale = Vector3.one * scale;
