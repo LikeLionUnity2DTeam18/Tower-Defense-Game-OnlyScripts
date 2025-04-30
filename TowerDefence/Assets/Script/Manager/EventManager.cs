@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -14,24 +14,9 @@ using UnityEngine;
 /// 이벤트를 사용할 메서드 정의
 ///     OnPlayerHealthChanged(PlayerHealthChanged event)
 /// </summary>
-public class EventManager : MonoBehaviour
+public class EventManager
 {
-    // 싱글톤
-    public static EventManager Instance { get; private set; }
-    private void Awake()
-    {
-        if (Instance != null && Instance != this)
-        {
-            Destroy(gameObject);
-            return;
-        }
-
-        Instance = this;
-        DontDestroyOnLoad(gameObject);
-    }
-
     
-
     private static readonly Dictionary<Type, Delegate> _eventTable = new();
 
     public static void AddListener<T>(Action<T> listener)
