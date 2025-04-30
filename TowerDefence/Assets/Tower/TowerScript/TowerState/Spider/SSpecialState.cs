@@ -16,7 +16,7 @@ public class SSpecialState : TSpecialState
         base.Update();
         if (triggerCalledStart)
         {
-            //spider.
+            spider.Slash();
             triggerCalledStart = false;
         }
     }

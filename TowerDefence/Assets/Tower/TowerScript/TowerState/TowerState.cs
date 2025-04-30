@@ -29,13 +29,12 @@ public class TowerState
     {
         if(stateName != null) tower.anim.SetBool(stateName, true);
         else return;
-        //Debug.Log("현재상태" + towerFSM.currentState);
+        Debug.Log("현재상태" + towerFSM.currentState);
         TriggerSet();
     }
     public virtual void Update()
     {
         tower.TowerStop();
-        //Debug.Log(triggerCalled);
     }
     public virtual void Exit()
     {

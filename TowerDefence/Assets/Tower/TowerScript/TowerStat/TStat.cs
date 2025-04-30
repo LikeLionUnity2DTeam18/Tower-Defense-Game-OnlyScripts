@@ -27,8 +27,6 @@ public class TStat
         baseValue = _value;
     }
 
-
-
     public void AddModifier(int _modifier)
     {
         modifiers.Add(_modifier);
