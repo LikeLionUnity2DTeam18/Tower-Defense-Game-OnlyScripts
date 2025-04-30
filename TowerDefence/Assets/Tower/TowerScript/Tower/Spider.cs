@@ -54,7 +54,7 @@ public class Spider : Tower
         spinTween = transform.DOPath(path, duration, PathType.CatmullRom)
                          .SetEase(Ease.InOutSine)
                          .OnComplete(() => {
-                             fsmLibrary.sRangeState.AnimationEndTrigger();
+                             fsmLibrary.sRangeState.AnimationTrigger1();
                              if (nearestREnemy != null)
                              {
                                 anim.SetBool("Off", true);

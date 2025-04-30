@@ -51,6 +51,14 @@ public class FSMLibrary
     public SSpecialState sSpecialState { get; private set; }
     #endregion
 
+    #region Darkmur State
+    public DMIdleState dmIdleState { get; private set; }
+    public DMMoveState dmMoveState { get; private set; }
+    public DMMeleeState dmMeleeState { get; private set; }
+    public DMRangeState dmRangeState { get; private set; }
+    public DMSpecialState dmSpecialState { get; private set; }
+    #endregion
+
 
     public FSMLibrary(Tower tower,TowerFSM towerFSM)
     {
@@ -91,5 +99,11 @@ public class FSMLibrary
         sMeleeState = new SMeleeState(tower, towerFSM, "Melee");
         sRangeState = new SRangeState(tower, towerFSM, "Range");
         sSpecialState = new SSpecialState(tower, towerFSM, "Special");
+
+        dmIdleState = new DMIdleState(tower, towerFSM, "Idle");
+        dmMoveState = new DMMoveState(tower, towerFSM, "Move");
+        dmMeleeState = new DMMeleeState(tower, towerFSM, "Melee");
+        dmRangeState = new DMRangeState(tower, towerFSM, "Range");
+        dmSpecialState = new DMSpecialState(tower, towerFSM, "Special");
     }
 }

@@ -15,10 +15,10 @@ public class GRangeState : TRangeState
     {
         base.Update();
 
-        if (triggerCalled && tower.nearestREnemy != null) 
+        if (triggerCalled3 && tower.nearestREnemy != null) 
         { 
             guardian.Shoot(guardian.firePoint.transform.position, tower.nearestREnemy.transform.position); 
-            triggerCalled = false;
+            triggerCalled3 = false;
         }
     }
     public override void Exit()
