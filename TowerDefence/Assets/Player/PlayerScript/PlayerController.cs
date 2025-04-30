@@ -17,6 +17,7 @@ public class PlayerController : MonoBehaviour
     public PlayerMoveState moveState { get; private set; }
     public PlayerAttackState attackState { get; private set; }
     public PlayerBindShotState bindShotState { get; private set; }
+    public PlayerFireBreathState breathState { get; private set; }
     #endregion
 
     public Direction4Custom lastDir { get; private set; } = Direction4Custom.SE; // 마지막으로 바라보고 있던 방향
@@ -59,6 +60,7 @@ public class PlayerController : MonoBehaviour
         moveState = new PlayerMoveState(this, PlayerAnimationParams.Move);
         attackState = new PlayerAttackState(this, PlayerAnimationParams.Attack);
         bindShotState = new PlayerBindShotState(this, PlayerAnimationParams.Attack);
+        breathState = new PlayerFireBreathState(this, 0);
 
         stateMachine.Initialize(idleState);
         canUseSkill = true;
