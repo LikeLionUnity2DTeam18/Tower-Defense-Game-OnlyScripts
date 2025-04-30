@@ -20,6 +20,7 @@ public class Skill : MonoBehaviour
     [SerializeField] protected float cooldown;
     [SerializeField] protected float skillRange;
     public float cooldownTimer { get; protected set; } = 0;
+    public bool hasPreviewState { get; protected set; } = true;
     protected bool isPreviewState = false;
     protected bool canBeFlipX = false;
     protected bool isDirectionSE = true;
@@ -152,6 +153,15 @@ public class Skill : MonoBehaviour
             return true;
         }
         return false;
+    }
+
+    public virtual bool TryUseSkillWithoutPreview()
+    {
+        if (hasPreviewState) return false;
+
+        skillCenterPosition = previewPos;
+        UseSkill();
+        return true;
     }
 
     /// <summary>

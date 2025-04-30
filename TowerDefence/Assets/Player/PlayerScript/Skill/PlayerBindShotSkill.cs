@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class BindShotSkill : Skill
+public class PlayerBindShotSkill : Skill
 {
     [Header("프리펩")]
     [SerializeField] protected GameObject skillPrefabN;
@@ -26,6 +26,10 @@ public class BindShotSkill : Skill
         player.stateMachine.ChangeState(player.bindShotState);
     }
 
+    /// <summary>
+    /// 미리보기 상태에서 키 한번 더 입력 시 스킬 시전, 시전자 머리위에 시전동작 프리펩 생성
+    /// 시전동작 애니메이션 이벤트에서 CreateSkillObject() 호출
+    /// </summary>
     private void CreateCasterSkillEffect()
     {
         Vector3 effectPosition = player.transform.position + new Vector3(0.3f, 2f, 0);
@@ -34,6 +38,9 @@ public class BindShotSkill : Skill
         go.GetComponent<BindShotCasterEffectController>().SetEffect(effectPosition, isEast, this);
     }
 
+    /// <summary>
+    /// 시전동작 애니매이션 이벤트로 호출돼서 스킬사용지점에 스킬효과 생성
+    /// </summary>
     public void CreateSkillObject()
     {
         GameObject go;
