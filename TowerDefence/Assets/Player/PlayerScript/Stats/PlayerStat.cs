@@ -23,21 +23,21 @@ public class PlayerStat
     {
         this.baseValue = _baseValue;
         isChanged = true;
-        OnValueChanged();
+        OnValueChanged?.Invoke();
     }
 
     public void AddModifier(PlayerStatModifier modifier)
     {
         modifiers.Add(modifier);
         isChanged = true;
-        OnValueChanged();
+        OnValueChanged?.Invoke();
     }
 
     public void RemoveModifier(PlayerStatModifier modifier)
     {
         modifiers.Remove(modifier);
         isChanged = true;
-        OnValueChanged();
+        OnValueChanged?.Invoke();
     }
 
     public float GetValue()
