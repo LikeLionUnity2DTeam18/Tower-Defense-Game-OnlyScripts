@@ -14,10 +14,10 @@ public class TSpecialState : TowerState
     public override void Update()
     {
         base.Update();
-        if (triggerSpecial)
+        if (triggerCalled4)
         {
+            triggerCalled4 = false;
             towerFSM.ChangeState(tower.idleState);
-            triggerSpecial = false;
         }
     }
     public override void Exit()

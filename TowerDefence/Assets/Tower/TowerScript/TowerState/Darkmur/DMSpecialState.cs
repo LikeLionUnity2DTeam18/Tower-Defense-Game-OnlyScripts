@@ -1,9 +1,9 @@
 using UnityEngine;
 
-public class SSpecialState : TSpecialState
+public class DMSpecialState : TSpecialState
 {
-    protected Spider spider => tower as Spider;
-    public SSpecialState(Tower tower, TowerFSM towerFSM, string stateName) : base(tower, towerFSM, stateName)
+    protected Darkmur darkmur => tower as Darkmur;
+    public DMSpecialState(Tower tower, TowerFSM towerFSM, string stateName) : base(tower, towerFSM, stateName)
     {
     }
 
@@ -16,8 +16,8 @@ public class SSpecialState : TSpecialState
         base.Update();
         if (triggerCalled2)
         {
-            spider.Slash();
             triggerCalled2 = false;
+            if (!darkmur.isClone) darkmur.Clone();
         }
     }
     public override void Exit()

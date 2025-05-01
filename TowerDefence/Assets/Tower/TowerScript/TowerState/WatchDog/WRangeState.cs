@@ -15,10 +15,15 @@ public class WRangeState : TRangeState
     {
         base.Update();
 
-        if (triggerCalled && tower.nearestREnemy != null) 
+        if (triggerCalled3 && tower.nearestREnemy != null) 
         {
+            triggerCalled3 = false;
             watchDog.ShieldBash();
-            triggerCalled = false;
+        }
+        if (triggerCalled5)
+        {
+            triggerCalled5 = false;
+            tower.DoRangeDamage();
         }
     }
     public override void Exit()

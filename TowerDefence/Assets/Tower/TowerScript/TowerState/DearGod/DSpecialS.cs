@@ -23,13 +23,13 @@ public class DSpecialS : TSpecialState
     public override void Update()
     {
         base.Update();
-        if (triggerCalledStart)
+        if (triggerCalled2)
         {
             deerGod.transform.DOKill();
             deerGod.transform.DOMoveY(deerGod.transform.position.y + 2f, 0f).SetEase(Ease.OutQuad);
-            triggerCalledStart = false;
+            triggerCalled2 = false;
         }
-        if (triggerCalled)
+        if (triggerCalled3)
         {
             deerGod.transform.DOKill();
             deerGod.transform
@@ -38,7 +38,7 @@ public class DSpecialS : TSpecialState
                 .OnComplete(() => {
                     deerGod.FlowerSpawn();
                 });
-            triggerCalled = false;
+            triggerCalled3 = false;
         }
     }
 }

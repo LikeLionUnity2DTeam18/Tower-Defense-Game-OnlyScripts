@@ -1,7 +1,14 @@
 using UnityEngine;
 
-public class Guardian_Projectile : TowerProjectile
+public class darkmur_Projectile : TowerProjectile
 {
+    public override void Init(Vector2 dir)
+    {
+        direction = dir;
+        startPos = transform.position;
+        isReady = true;
+    }
+
     protected override void OnTriggerEnter2D(Collider2D collision)
     {
         base.OnTriggerEnter2D(collision);

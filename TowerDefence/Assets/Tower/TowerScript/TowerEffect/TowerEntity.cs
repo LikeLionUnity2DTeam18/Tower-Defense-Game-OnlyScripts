@@ -12,13 +12,13 @@ public class TowerEntity : MonoBehaviour,IStatReceiver
     }
     protected virtual void Update()
     {
-        if(stats != null)
+        /*if(stats != null)
         {
             Debug.Log("Attack: " + stats.melee.GetValue());
         }
         else
         {
             Debug.Log("Stats not set");
-        }
+        }*/
     }
 }
