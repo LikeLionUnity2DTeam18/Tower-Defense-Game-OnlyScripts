@@ -11,6 +11,7 @@ public class PlayerFireBreathState : PlayerMovableState
     public override void Enter()
     {
         base.Enter();
+        Debug.Log("브레스 스태이트");
         InitializeAnimation();
         EventManager.AddListener<PlayerFireBreathEnded>(OnFireBreathEnd);
     }

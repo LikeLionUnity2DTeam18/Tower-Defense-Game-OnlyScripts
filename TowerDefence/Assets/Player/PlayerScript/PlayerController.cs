@@ -33,12 +33,14 @@ public class PlayerController : MonoBehaviour
 
 
     #region 플레이어 스탯
-    [SerializeField] private PlayerStatsSO baseStats;
-    private PlayerStatManager stats;
+    [SerializeField] private PlayerLevelTable levelTable;
+    public PlayerStatManager stats { get; private set; }
     public float MoveSpeed => stats.moveSpeed.GetValue();
-    public float BaseAttackDamage => stats.baseAttack.GetValue();
+    public float BaseAttackDamage => stats.baseAttackDamage.GetValue();
     public float BaseAttackSpeed => stats.baseattackSpeed.GetValue();
     public float BaseAttackRange => stats.baseattackRange.GetValue();
+    public float SkillPower => stats.skillPower.GetValue();
+    public int Level => stats.level;
     #endregion
 
 
@@ -50,7 +52,7 @@ public class PlayerController : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         anim = GetComponentInChildren<Animator>();
         stateMachine = new PlayerStateMachine();
-        stats = new PlayerStatManager(Instantiate(baseStats));
+        stats = new PlayerStatManager(Instantiate(levelTable));
         skill = GetComponentInChildren<PlayerSkillManager>();
 
     }
@@ -73,6 +75,12 @@ public class PlayerController : MonoBehaviour
         stateMachine.Update();
         if (baseAttackTimer > 0) baseAttackTimer -= Time.deltaTime;
         UpdateMousePos();
+
+        // 레벨업 테스트
+        if(Input.GetKeyDown(KeyCode.U))
+        {
+            stats.LevelUp();
+        }
     }
 
 
@@ -101,15 +109,6 @@ public class PlayerController : MonoBehaviour
 
 
 
-    // 임시 테스트용
-    public void Shoot()
-    {
-        var obj = Instantiate(baseAttack, transform.position, Quaternion.identity);
-        Vector2 mousePos = Mouse.current.position.ReadValue();
-        Vector2 destination = Camera.main.ScreenToWorldPoint(mousePos);
-        Vector2 dir = destination - (Vector2)transform.position;
-        obj.GetComponent<PlayerProjectile>().Initialize(dir, 3);
-    }
 
     private System.Action CancelPreviewLamda;
 
