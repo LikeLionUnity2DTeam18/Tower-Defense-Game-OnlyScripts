@@ -1,4 +1,7 @@
 using UnityEngine;
+using UnityEngine.UIElements;
+
+public enum BindShotStatTypes { Damage, BindTime, CastingTime}
 
 public class PlayerBindShotSkill : Skill
 {
@@ -7,15 +10,30 @@ public class PlayerBindShotSkill : Skill
     [SerializeField] protected GameObject casterPrefab;
 
     [Header("구속의 사격 정보")]
-    [SerializeField] private float damage;
-    [SerializeField] private float bindTime;
-    [SerializeField] private float castingTime;
-    public float CastingTime => castingTime;
+    [SerializeField] private float initial_damage;
+    [SerializeField] private float initial_bindTime;
+    [SerializeField] private float initial_castingTime;
+
+    private PlayerStat damage;
+    private PlayerStat bindTime;
+    private PlayerStat castingTime;
+
+    public float Damage => damage.GetValue();
+    public float BindTime => bindTime.GetValue();
+    public float CastingTime => castingTime.GetValue();
 
     protected override void Start()
     {
         base.Start();
         canBeFlipX = false;
+        InitilizeStats();
+    }
+
+    private void InitilizeStats()
+    {
+        damage = new PlayerStat(initial_damage);
+        bindTime = new PlayerStat(initial_bindTime);
+        castingTime = new PlayerStat(initial_castingTime);
     }
 
     protected override void UseSkill()
@@ -49,6 +67,31 @@ public class PlayerBindShotSkill : Skill
         else
             go = PoolManager.Instance.Get(skillPrefab);
 
-        go.GetComponent<BindShotController>().SetBindShot(skillCenterPosition, damage, bindTime, previewDirection);
+        go.GetComponent<BindShotController>().SetBindShot(skillCenterPosition, Damage, BindTime, previewDirection);
+    }
+
+    public void AddModifier(BindShotStatTypes type, PlayerStatModifier modifier)
+    {
+        PlayerStat targetStat = GetStatType(type);
+
+        targetStat?.AddModifier(modifier);
+    }
+
+
+    public void RemoveModifier(BindShotStatTypes type, PlayerStatModifier modifier)
+    {
+        PlayerStat targetStat = GetStatType(type);
+
+        targetStat?.RemoveModifier(modifier);
+    }
+    private PlayerStat GetStatType(BindShotStatTypes type)
+    {
+        return type switch
+        {
+            BindShotStatTypes.Damage => damage,
+            BindShotStatTypes.BindTime => bindTime,
+            BindShotStatTypes.CastingTime => castingTime,
+            _ => null
+        };
     }
 }
