@@ -1,7 +1,8 @@
 public enum PlayerStatTypes
 {
     baseAttackDamage,
-    moveSpeed,
     baseattackSpeed,
-    baseattackRange
+    baseattackRange,
+    skillPower,
+    moveSpeed
 }
