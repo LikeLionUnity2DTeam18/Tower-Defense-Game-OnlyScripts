@@ -1,8 +1,8 @@
 using UnityEngine;
 
-public class Bloody_IdleState : EnemyState
+public class BountyHunter_IdleState : EnemyState
 {
-    public Bloody_IdleState(EnemyController enemy, EnemyStateMachine stateMachine) : base(enemy, stateMachine)
+    public BountyHunter_IdleState(EnemyController enemy, EnemyStateMachine stateMachine) : base(enemy, stateMachine)
     {
     }
 
@@ -20,19 +20,17 @@ public class Bloody_IdleState : EnemyState
         stateTimer = 1f;
         enemy.Animator.speed = 1f;
     }
-
     public override void LogicUpdate()
     {
         base.LogicUpdate();
 
         if (stateTimer <= 0f)
         {
-            stateMachine.ChangeState(new Bloody_MoveState(enemy, stateMachine));
+            stateMachine.ChangeState(new BountyHunter_MoveState(enemy, stateMachine));
         }
     }
-
     public override void Exit()
     {
-       
+
     }
 }

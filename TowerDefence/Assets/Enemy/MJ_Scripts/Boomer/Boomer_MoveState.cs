@@ -1,9 +1,10 @@
 using UnityEngine;
 
-public class Blocker_MoveState : EnemyState
+public class Boomer_MoveState : EnemyState
 {
-    public Blocker_MoveState(EnemyController enemy, EnemyStateMachine stateMachine)
-        : base(enemy, stateMachine) { }
+    public Boomer_MoveState(EnemyController enemy, EnemyStateMachine stateMachine) : base(enemy, stateMachine)
+    {
+    }
 
     public override void Enter()
     {
@@ -18,7 +19,6 @@ public class Blocker_MoveState : EnemyState
         enemy.SpriteRenderer.flipX = enemy.MoveDir.x < 0;
         enemy.Animator.speed = 1.5f;
     }
-
     public override void LogicUpdate()
     {
         base.LogicUpdate();
@@ -27,16 +27,19 @@ public class Blocker_MoveState : EnemyState
 
         if (distance <= enemy.TargetRange)
         {
-            stateMachine.ChangeState(new Blocker_AttackState(enemy, stateMachine));
+            // 타겟 범위 도달 → 자폭 준비 상태로 전환
+            stateMachine.ChangeState(new Boomer_ExplodeReadyState(enemy, stateMachine));
         }
         else
         {
             enemy.transform.Translate(enemy.MoveDir * enemy.Data.moveSpeed * Time.deltaTime);
         }
-    }
 
+    }
     public override void Exit()
     {
         
     }
+
+    
 }

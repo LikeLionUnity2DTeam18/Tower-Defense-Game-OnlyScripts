@@ -1,8 +1,8 @@
 using UnityEngine;
 
-public class Bloody_IdleState : EnemyState
+public class Boomer_IdleState : EnemyState
 {
-    public Bloody_IdleState(EnemyController enemy, EnemyStateMachine stateMachine) : base(enemy, stateMachine)
+    public Boomer_IdleState(EnemyController enemy, EnemyStateMachine stateMachine) : base(enemy, stateMachine)
     {
     }
 
@@ -27,12 +27,13 @@ public class Bloody_IdleState : EnemyState
 
         if (stateTimer <= 0f)
         {
-            stateMachine.ChangeState(new Bloody_MoveState(enemy, stateMachine));
+            stateMachine.ChangeState(new Boomer_MoveState(enemy, stateMachine));
         }
     }
 
     public override void Exit()
     {
-       
+        
     }
+
 }

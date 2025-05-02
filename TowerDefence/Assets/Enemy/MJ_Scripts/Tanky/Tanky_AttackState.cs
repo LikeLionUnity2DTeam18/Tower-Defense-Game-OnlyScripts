@@ -1,9 +1,9 @@
 using System.Collections;
 using UnityEngine;
 
-public class Bloody_AttackState : EnemyState
+public class Tanky_AttackState : EnemyState
 {
-    public Bloody_AttackState(EnemyController enemy, EnemyStateMachine stateMachine) : base(enemy, stateMachine)
+    public Tanky_AttackState(EnemyController enemy, EnemyStateMachine stateMachine) : base(enemy, stateMachine)
     {
     }
 
@@ -46,22 +46,21 @@ public class Bloody_AttackState : EnemyState
                 effectSR.flipX = enemy.MoveDir.x < 0;
             }
 
-            Object.Destroy(effect, 0.5f); // 이펙트가 자동으로 사라지도록 설정
+            Object.Destroy(effect, 1f); // 이펙트가 자동으로 사라지도록 설정
         }
 
-        yield return new WaitForSeconds(0.1f);
+        yield return new WaitForSeconds(1f);
 
         // 원래 위치로 되돌리기
         enemy.transform.position = originalPos;
     }
-
     public override void LogicUpdate()
     {
         base.LogicUpdate();
 
         if (stateTimer <= 0f)
         {
-            stateMachine.ChangeState(new Bloody_IdleState(enemy, stateMachine));
+            stateMachine.ChangeState(new Tanky_IdleState(enemy, stateMachine));
         }
     }
 
@@ -69,4 +68,6 @@ public class Bloody_AttackState : EnemyState
     {
         
     }
+
+    
 }

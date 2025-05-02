@@ -10,14 +10,13 @@ public class Bloody_MoveState : EnemyState
     {
         if (enemy.MoveDir.y > 0)
         {
-            enemy.Animator.Play("Idle_front");
-            enemy.SpriteRenderer.flipX = enemy.MoveDir.x < 0;
+            enemy.Animator.Play("Idle_back");
         }
         else
         {
-            enemy.Animator.Play("Idle_back");
-            enemy.SpriteRenderer.flipX = enemy.MoveDir.x < 0;
+            enemy.Animator.Play("Idle_front");
         }
+        enemy.SpriteRenderer.flipX = enemy.MoveDir.x < 0;
         enemy.Animator.speed = 1.5f;
     }
 
@@ -29,7 +28,7 @@ public class Bloody_MoveState : EnemyState
 
         if (distance <= enemy.TargetRange)
         {
-            stateMachine.ChangeState(new Blocker_AttackState(enemy, stateMachine));
+            stateMachine.ChangeState(new Bloody_AttackState(enemy, stateMachine));
         }
         else
         {
@@ -39,6 +38,6 @@ public class Bloody_MoveState : EnemyState
 
     public override void Exit()
     {
-        Debug.Log("Move 상태 종료");
+
     }
 }
