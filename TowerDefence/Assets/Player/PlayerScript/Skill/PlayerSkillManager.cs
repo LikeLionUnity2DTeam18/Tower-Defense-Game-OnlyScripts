@@ -8,6 +8,8 @@ public class PlayerSkillManager : MonoBehaviour
     
     public PlayerWallSkill wskill { get; private set; }
 
+    public PlayerPowerUpSkill eskill { get; private set; }
+
     public PlayerFireBreathSkill rskill { get; private set; }
     
 
@@ -20,6 +22,7 @@ public class PlayerSkillManager : MonoBehaviour
     {
         qskill = GetComponent<PlayerBindShotSkill>();
         wskill = GetComponent<PlayerWallSkill>();
+        eskill = GetComponent<PlayerPowerUpSkill>();
         rskill = GetComponent<PlayerFireBreathSkill>();
     }
 
