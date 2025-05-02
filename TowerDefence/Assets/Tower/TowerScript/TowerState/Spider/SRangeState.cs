@@ -1,3 +1,4 @@
+using DG.Tweening;
 using UnityEngine;
 
 public class SRangeState : TRangeState
@@ -14,11 +15,21 @@ public class SRangeState : TRangeState
     public override void Update()
     {
         base.Update();
-
-        if (triggerCalled && tower.nearestREnemy != null) 
+        if(tower.nearestREnemy == null)
         {
-            //spider.
-            triggerCalled = false;
+            spider.spinTween.Kill();
+            towerFSM.ChangeState(tower.idleState);
+        }
+        if (triggerCalled3 && tower.nearestREnemy != null) 
+        {
+            triggerCalled3 = false;
+            spider.SpinWheel();
+            spider.anim.SetBool("Off", false);
+        }
+        if (triggerCalled5)
+        {
+            triggerCalled5 = false;
+            tower.DoRangeDamage();
         }
     }
     public override void Exit()

@@ -17,10 +17,11 @@ public class WallSkillController : PlayerSkillEntity
     public void SetWall(Vector2 position, float HP, float duration, bool isDirectionSE)
     {
         Debug.Log($"벽 생성됨, {position}, hp {HP} duration {duration}");
-        SetEntity(true);
+
         transform.position = position;
         this.HP = HP;
         this.durationTimer = duration;
+        SetEntity(true);
         this.isDirectionSE = isDirectionSE;
         if (!isDirectionSE)
         {

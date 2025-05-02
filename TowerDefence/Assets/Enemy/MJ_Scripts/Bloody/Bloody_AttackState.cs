@@ -12,14 +12,13 @@ public class Bloody_AttackState : EnemyState
         stateTimer = 1f;
         if (enemy.MoveDir.y > 0)
         {
-            enemy.Animator.Play("Idle_front");
-            enemy.SpriteRenderer.flipX = enemy.MoveDir.x < 0;
+            enemy.Animator.Play("Idle_back");
         }
         else
         {
-            enemy.Animator.Play("Idle_back");
-            enemy.SpriteRenderer.flipX = enemy.MoveDir.x < 0;
+            enemy.Animator.Play("Idle_front");
         }
+        enemy.SpriteRenderer.flipX = enemy.MoveDir.x < 0;
         enemy.StartCoroutine(AttackEffect());
     }
 
@@ -31,17 +30,22 @@ public class Bloody_AttackState : EnemyState
         Vector3 attackOffset = new Vector3(0.1f * enemy.MoveDir.x, 0.1f * enemy.MoveDir.y, 0f);
         enemy.transform.position += attackOffset;
 
-        // 이펙트나 사운드 재생 가능!
-        // 예: PlaySound("AttackSFX"); or Instantiate(effectPrefab, enemy.transform.position, Quaternion.identity);
-
         // 이펙트 생성
-        if (enemy.attackEffectPrefab != null)
+        if (enemy.Data.attackEffectPrefab != null)
         {
-            Vector3 effectPos = enemy.effectSpawnPoint != null ?
-                                enemy.effectSpawnPoint.position :
-                                enemy.transform.position; //스폰 포인트가 비어있으면 유닛 위치에서, 아닐 시 스폰 포인트에서 연출 재생
 
-            GameObject effect = Object.Instantiate(enemy.attackEffectPrefab, effectPos, Quaternion.identity);
+            Vector2 effectOffset = enemy.MoveDir * 0.3f;
+            Vector2 effectPos = (Vector2)enemy.transform.position + effectOffset;
+
+            GameObject effect = Object.Instantiate(enemy.Data.attackEffectPrefab, effectPos, Quaternion.identity);
+
+            SpriteRenderer effectSR = effect.GetComponent<SpriteRenderer>();
+            if (effectSR != null)
+            {
+                // 왼쪽 방향이면 flipX = true
+                effectSR.flipX = enemy.MoveDir.x < 0;
+            }
+
             Object.Destroy(effect, 0.5f); // 이펙트가 자동으로 사라지도록 설정
         }
 
@@ -57,12 +61,12 @@ public class Bloody_AttackState : EnemyState
 
         if (stateTimer <= 0f)
         {
-            stateMachine.ChangeState(new Blocker_IdleState(enemy, stateMachine));
+            stateMachine.ChangeState(new Bloody_IdleState(enemy, stateMachine));
         }
     }
 
     public override void Exit()
     {
-        Debug.Log("Attack 상태 종료");
+        
     }
 }

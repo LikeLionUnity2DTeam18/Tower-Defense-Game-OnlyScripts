@@ -63,6 +63,12 @@ public class Beacon : MonoBehaviour
                 case TowerType.Spider:
                     SpawnTower(TowerType.Spider);
                     break;
+                case TowerType.Darkmur:
+                    SpawnTower(TowerType.Darkmur);
+                    break;
+                case TowerType.Element:
+                    SpawnTower(TowerType.Element);
+                    break;
             }
         }
     }

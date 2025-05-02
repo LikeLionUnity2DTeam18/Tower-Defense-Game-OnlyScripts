@@ -18,7 +18,7 @@ public class TowerStats : MonoBehaviour
 
 
     [SerializeField]
-    private int currentHealth;
+    private float currentHealth;
 
     protected virtual void Awake()
     {
@@ -32,24 +32,24 @@ public class TowerStats : MonoBehaviour
 
     public virtual void DoMeleeDamage(TowerStats _targetStats)
     {
-        int totalDamage = melee.GetValue();
+        float totalDamage = melee.GetValue();
         _targetStats.TakeDamage(totalDamage);
     }
     public virtual void DoRangeDamage(TowerStats _targetStats)
     {
-        int totalDamage = range.GetValue();
+        float totalDamage = range.GetValue();
         _targetStats.TakeDamage(totalDamage);
     }
     public virtual void DoSpecialDamage(TowerStats _targetStats)
     {
-        int totalDamage = special.GetValue();
+        float totalDamage = special.GetValue();
         _targetStats.TakeDamage(totalDamage);
     }
 
-    public virtual void TakeDamage(int _damage)
+    public virtual void TakeDamage(float _damage)
     {
         currentHealth -= _damage;
-
+        Debug.Log("데미지"+_damage);
         if (currentHealth < 0)
             Die();
     }

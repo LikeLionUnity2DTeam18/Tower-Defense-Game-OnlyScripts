@@ -13,6 +13,7 @@ public class DraggableTower : MonoBehaviour
     }
     void OnMouseDown()
     {
+        if(!enabled) return;
         SwapObject();
     }
 

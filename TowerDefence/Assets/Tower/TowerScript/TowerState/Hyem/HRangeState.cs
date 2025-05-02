@@ -15,10 +15,10 @@ public class HRangeState : TRangeState
     {
         base.Update();
 
-        if (triggerCalled && tower.nearestREnemy != null) 
+        if (triggerCalled3 && tower.nearestREnemy != null) 
         {
+            triggerCalled3 = false;
             hyem.StartShooting(tower.nearestREnemy.transform.position); 
-            triggerCalled = false;
         }
     }
     public override void Exit()

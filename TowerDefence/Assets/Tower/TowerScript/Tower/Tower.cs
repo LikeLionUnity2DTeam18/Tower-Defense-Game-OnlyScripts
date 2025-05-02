@@ -1,3 +1,5 @@
+using System;
+using System.Collections.Generic;
 using UnityEngine;
 //애니메이션에서 사용할 레이어
 enum layer
@@ -12,7 +14,7 @@ public interface IStatReceiver
 public class Tower : MonoBehaviour
 {
     //타워 스텟
-    public TowerStats stats {get; private set; }
+    public TowerStats stats {get; protected set; }
 
     //타이머
     [SerializeField] public float timer;
@@ -41,8 +43,8 @@ public class Tower : MonoBehaviour
 
     //컴포넌트
     protected SpriteRenderer towerSprite;     //플립용
-    public Animator anim {get; private set; }
-    public Rigidbody2D rb { get; private set; }
+    public Animator anim {get; protected set; }
+    public Rigidbody2D rb { get; protected set; }
 
 
     //인스턴스 생성해야 할 것들
@@ -54,9 +56,16 @@ public class Tower : MonoBehaviour
         towerSprite = GetComponent<SpriteRenderer>();
         anim = GetComponent<Animator>();
         rb = GetComponent<Rigidbody2D>();
-        stats = GetComponent<TowerStats>();
+        stats = ResolveStats();
         towerFSM = new TowerFSM();
     }
+
+    //Hook 메서드 (필요 시 자식에서 override)
+    protected virtual TowerStats ResolveStats()
+    {
+        return GetComponent<TowerStats>();
+    }
+
     public virtual void Start()
     {
         towerFSM.Init(idleState);
@@ -66,6 +75,7 @@ public class Tower : MonoBehaviour
     {
         towerFSM.currentState.Update();
 
+        //n초마다 특수스킬 발동
         if(timer > 0)timer -= Time.deltaTime;
         if (timer <= 0f && (nearestREnemy != null || nearestMEnemy != null || nearestEnemy != null))
         {
@@ -74,7 +84,7 @@ public class Tower : MonoBehaviour
         }
 
         ChangeDir();
-        if(GetoutArea() && nearestMEnemy == null) transform.position = Beacon.transform.position;
+        if(GetoutArea() && nearestREnemy == null) transform.position = Beacon.transform.position;
     }
 
     void OnDrawGizmosSelected()
@@ -91,7 +101,7 @@ public class Tower : MonoBehaviour
     }
 
     //거리에 따른 탐지 
-    private void ChangeDir()
+    protected void ChangeDir()
     {
         nearestMEnemy = FindNearestEnemyByOverlap(transform.position, stats.meleeDistance.GetValue(), LayerMask.GetMask("Enemy"));
         if (nearestMEnemy != null)
@@ -117,23 +127,31 @@ public class Tower : MonoBehaviour
                 }
             }  
         }
-        
 
-        //앞, 뒤 애니메이션 변경
-        if (towerFront == true)
-        {
-            anim.SetLayerWeight(1, 1);
-            anim.SetLayerWeight(2, 0);
-        }
-        else if (towerFront == false)
-        {
-            anim.SetLayerWeight(1, 0);
-            anim.SetLayerWeight(2, 1);
-        }
         //좌, 우 변경
         Flip();
     }
 
+    public void UpDown()
+    {
+        //앞 레이어만 있을 경우 레이어 변경 안함
+        if (anim.layerCount <= 1) return;
+
+        //앞 뒤 변경
+        if (!anim.IsInTransition(1) && !anim.IsInTransition(2))
+        {
+            if (towerFront)
+            {
+                anim.SetLayerWeight(1, 1f);
+                anim.SetLayerWeight(2, 0f);
+            }
+            else
+            {
+                anim.SetLayerWeight(1, 0f);
+                anim.SetLayerWeight(2, 1f);
+            }
+        }
+    }
 
     //가까운 적 탐지
     public GameObject FindNearestEnemyByOverlap(Vector3 origin, float radius, LayerMask enemyLayer)
@@ -156,7 +174,27 @@ public class Tower : MonoBehaviour
         }
         return nearest;
     }
+    //범위 내 모든 적 데미지
+    private void DamageAllEnemiesInRange(Vector3 origin, float radius, LayerMask enemyLayer, Action<TowerStats> damageFunc)
+    {
+        Collider2D[] hits = Physics2D.OverlapCircleAll(origin, radius, enemyLayer);
 
+        foreach (var hit in hits)
+        {
+            if (hit.TryGetComponent<TestEnemyStats>(out var target))
+            {
+                damageFunc(target);
+            }
+        }
+    }
+    public void DoMeleeDamage()
+    {
+        DamageAllEnemiesInRange(transform.position, stats.meleeDistance.GetValue(), LayerMask.GetMask("Enemy"), stats.DoMeleeDamage);
+    }
+    public void DoRangeDamage()
+    {
+        DamageAllEnemiesInRange(transform.position, stats.meleeDistance.GetValue(), LayerMask.GetMask("Enemy"), stats.DoRangeDamage);
+    }
 
     //방향 설정
     void UpdateDirection(Vector2 enemyPos)
@@ -240,20 +278,24 @@ public class Tower : MonoBehaviour
     }
 
 
-    public void AnimationTriggerEnd()
+    public void AnimationTrigger1()
     {
-        towerFSM.currentState.AnimationEndTrigger();
+        towerFSM.currentState.AnimationTrigger1();
     }
-    public void AnimationTriggerStart()
+    public void AnimationTrigger2()
     {
-        towerFSM.currentState.AnimationStartTrigger();
+        towerFSM.currentState.AnimationTrigger2();
     }
-    public void AnimationTrigger()
+    public void AnimationTrigger3()
     {
-        towerFSM.currentState.AnimationTrigger();
+        towerFSM.currentState.AnimationTrigger3();
     }
-    public void AnimationTriggerSpeical()
+    public void AnimationTrigger4()
     {
-        towerFSM.currentState.AnimationSpecialTrigger();
+        towerFSM.currentState.AnimationTrigger4();
+    }
+    public void AnimationTrigger5()
+    {
+        towerFSM.currentState.AnimationTrigger5();
     }
 }

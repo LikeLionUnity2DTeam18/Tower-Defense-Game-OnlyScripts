@@ -11,14 +11,13 @@ public class Blocker_AttackState : EnemyState
         stateTimer = 1f;
         if (enemy.MoveDir.y > 0)
         {
-            enemy.Animator.Play("Idle_front");
-            enemy.SpriteRenderer.flipX = enemy.MoveDir.x < 0;
+            enemy.Animator.Play("Idle_back");
         }
         else
         {
-            enemy.Animator.Play("Idle_back");
-            enemy.SpriteRenderer.flipX = enemy.MoveDir.x < 0;
+            enemy.Animator.Play("Idle_front");
         }
+        enemy.SpriteRenderer.flipX = enemy.MoveDir.x < 0;
         enemy.StartCoroutine(AttackEffect());
     }
 
@@ -51,6 +50,6 @@ public class Blocker_AttackState : EnemyState
 
     public override void Exit()
     {
-        Debug.Log("Attack 상태 종료");
+        
     }
 }

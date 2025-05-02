@@ -14,10 +14,10 @@ public class HSpecialState : TSpecialState
     public override void Update()
     {
         base.Update();
-        if (triggerCalledStart)
+        if (triggerCalled2)
         {
             hyem.CastIceCone();
-            triggerCalledStart = false;
+            triggerCalled2 = false;
         }
     }
     public override void Exit()

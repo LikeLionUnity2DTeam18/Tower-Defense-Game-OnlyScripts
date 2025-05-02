@@ -51,6 +51,28 @@ public class FSMLibrary
     public SSpecialState sSpecialState { get; private set; }
     #endregion
 
+    #region Darkmur State
+    public DMIdleState dmIdleState { get; private set; }
+    public DMMoveState dmMoveState { get; private set; }
+    public DMMeleeState dmMeleeState { get; private set; }
+    public DMRangeState dmRangeState { get; private set; }
+    public DMSpecialState dmSpecialState { get; private set; }
+    #endregion
+
+    #region Element State
+    public EIdleState eIdleState { get; private set; }
+    public EFIdleState efIdleState { get; private set; }
+    public EWIdleState ewIdleState { get; private set; }
+    public EMoveState eMoveState { get; private set; }
+    public EMeleeState eMeleeState { get; private set; }
+    public ERangeState eRangeState { get; private set; }
+    public EFRangeState efRangeState { get; private set; }
+    public EWRangeState ewRangeState { get; private set; }
+    public ESpecialState eSpecialState { get; private set; }
+    public EFSpecialState efSpecialState { get; private set; }
+    public EWSpecialState ewSpecialState { get; private set; }
+    #endregion
+
 
     public FSMLibrary(Tower tower,TowerFSM towerFSM)
     {
@@ -91,5 +113,23 @@ public class FSMLibrary
         sMeleeState = new SMeleeState(tower, towerFSM, "Melee");
         sRangeState = new SRangeState(tower, towerFSM, "Range");
         sSpecialState = new SSpecialState(tower, towerFSM, "Special");
+
+        dmIdleState = new DMIdleState(tower, towerFSM, "Idle");
+        dmMoveState = new DMMoveState(tower, towerFSM, "Move");
+        dmMeleeState = new DMMeleeState(tower, towerFSM, "Melee");
+        dmRangeState = new DMRangeState(tower, towerFSM, "Range");
+        dmSpecialState = new DMSpecialState(tower, towerFSM, "Special");
+
+        eIdleState = new EIdleState(tower, towerFSM, "Idle");
+        efIdleState = new EFIdleState(tower, towerFSM, "Idle");
+        ewIdleState = new EWIdleState(tower, towerFSM, "Idle");
+        eMoveState = new EMoveState(tower, towerFSM, "Move");
+        eMeleeState = new EMeleeState(tower, towerFSM, "Melee");
+        eRangeState = new ERangeState(tower, towerFSM, "Range");
+        efRangeState = new EFRangeState(tower, towerFSM, "Range");
+        ewRangeState = new EWRangeState(tower, towerFSM, "Range");
+        eSpecialState = new ESpecialState(tower, towerFSM, "Special");
+        efSpecialState = new EFSpecialState(tower, towerFSM, "Special");
+        ewSpecialState = new EWSpecialState(tower, towerFSM, "Special");
     }
 }

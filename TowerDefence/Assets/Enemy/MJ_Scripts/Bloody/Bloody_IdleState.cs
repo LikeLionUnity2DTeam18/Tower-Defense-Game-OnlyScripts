@@ -10,15 +10,14 @@ public class Bloody_IdleState : EnemyState
     {
         if (enemy.MoveDir.y > 0)
         {
-            enemy.Animator.Play("Idle_front");
-            enemy.SpriteRenderer.flipX = enemy.MoveDir.x < 0;
+            enemy.Animator.Play("Idle_back");
         }
         else
         {
-            enemy.Animator.Play("Idle_back");
-            enemy.SpriteRenderer.flipX = enemy.MoveDir.x < 0;
+            enemy.Animator.Play("Idle_front");
         }
-        stateTimer = 2f;
+        enemy.SpriteRenderer.flipX = enemy.MoveDir.x < 0;
+        stateTimer = 1f;
         enemy.Animator.speed = 1f;
     }
 
@@ -34,6 +33,6 @@ public class Bloody_IdleState : EnemyState
 
     public override void Exit()
     {
-        Debug.Log("Idle 상태 종료");
+       
     }
 }

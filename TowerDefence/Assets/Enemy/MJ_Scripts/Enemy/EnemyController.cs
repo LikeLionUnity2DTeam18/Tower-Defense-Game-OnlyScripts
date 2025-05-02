@@ -7,19 +7,20 @@ public class EnemyController : MonoBehaviour
     public Animator Animator { get; private set; }
     public SpriteRenderer SpriteRenderer { get; private set; }
     public Vector2 MoveDir { get; private set; }
-    public float TargetRange => targetRange;
+    public float currentHP { get; private set; }
+    public float TargetRange => Data.targetRange;
 
     private EnemyStateMachine stateMachine;
-    public GameObject attackEffectPrefab; // 이펙트 프리팹
     public Transform effectSpawnPoint;    // 이펙트 생성 위치 (optional)
-
-    //머가 문제라는거지
-
-    [SerializeField] private float targetRange = 0.5f;
 
     public void Initialize(EnemyData data)
     {
+
         Data = data;
+
+        //Debug.Log($"[Initialize] 생성된 적 이름: {Data.enemyName}, 타입: {Data.enemyType}");
+
+        currentHP = data.maxHealth;
         Animator = GetComponent<Animator>();
         stateMachine = GetComponent<EnemyStateMachine>();
         SpriteRenderer = GetComponent<SpriteRenderer>();
@@ -31,12 +32,22 @@ public class EnemyController : MonoBehaviour
 
         MoveDir = (EnemyTarget.TargetPostion - (Vector2)transform.position).normalized;
 
-        stateMachine.Initialize(new Blocker_MoveState(this, stateMachine));
+        var initialState = EnemyStateFactory.CreateInitialState(this, stateMachine);
+
+        if (initialState != null)
+        {
+            stateMachine.Initialize(initialState);
+        }
     }
 
     public void TakeDamage(float dmg)
     {
-        // 체력 감소 처리 후 죽음 상태로 전환
-        //stateMachine.ChangeState(new DeadState(this, stateMachine));
+        currentHP -= dmg;
+
+        if (currentHP <= 0f)
+        {
+            currentHP = 0f; // 혹시 모를 음수 방지
+            //stateMachine.ChangeState(new DeadState(this, stateMachine)); // 나중에 DeadState 연결
+        }
     }
 }

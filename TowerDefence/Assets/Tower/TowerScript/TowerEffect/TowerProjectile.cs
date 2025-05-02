@@ -7,15 +7,15 @@ public class TowerProjectile : TowerEntity
 {
     //발사체의 속도, 방향, 거리 설정
 
-    private Vector3 startPos;
+    protected Vector3 startPos;
     public float maxDistance = 20f;
-    private Vector2 direction;
+    protected Vector2 direction;
     public float speed = 10f;
     protected bool isReady = false;
     protected Animator anim;
 
     //날아갈 방향 설정
-    public void Init(Vector2 dir)
+    public virtual void Init(Vector2 dir)
     {
         direction = dir;
         startPos = transform.position;
@@ -25,7 +25,7 @@ public class TowerProjectile : TowerEntity
         anim = GetComponent<Animator>();
     }
 
-    protected override void Update()
+    public override void Update()
     {
         base.Update();
         //애니메이션 실행 후 발사

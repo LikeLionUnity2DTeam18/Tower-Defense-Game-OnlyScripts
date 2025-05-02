@@ -14,10 +14,12 @@ public class WSpecialState : TSpecialState
     public override void Update()
     {
         base.Update();
-        if (triggerCalledStart)
+        if (triggerCalled2)
         {
-            watchDog.CreateWave(watchDog.pos.transform.position,tower.nearestREnemy.transform.position);
-            triggerCalledStart = false;
+            if (tower.nearestREnemy != null) watchDog.CreateWave(watchDog.pos.transform.position,tower.nearestREnemy.transform.position);
+            else if(tower.nearestMEnemy) watchDog.CreateWave(watchDog.pos.transform.position, tower.nearestMEnemy.transform.position);
+            else watchDog.CreateWave(watchDog.pos.transform.position, tower.nearestEnemy.transform.position);
+            triggerCalled2 = false;
         }
     }
     public override void Exit()
