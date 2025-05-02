@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class TowerGuidance : TowerEntity
 {
-    private GameObject target;
+    protected GameObject target;
     private float speed = 3f;
     private float distance = 5f;
     public override void Update()

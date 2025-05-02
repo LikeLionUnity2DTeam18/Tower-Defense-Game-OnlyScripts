@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
+using static UnityEngine.GraphicsBuffer;
 
 public class Guardian_Guidance : TowerGuidance
 {
@@ -8,10 +9,8 @@ public class Guardian_Guidance : TowerGuidance
     [SerializeField] private float timer = 10f;
     private bool isShrinking;
 
-    private float tickRate = 0.1f; // 데미지 주기 간격 (초)
+    private float tickRate = 0.5f; // 데미지 주기 간격 (초)
     private float tickTimer = 0f;
-
-    private HashSet<TowerStats> enemiesInRange = new HashSet<TowerStats>();
 
     public override void Update()
     {
@@ -40,16 +39,17 @@ public class Guardian_Guidance : TowerGuidance
         timer = duration;
         isShrinking = false;
         tickTimer = 0f;
+        transform.DOKill(transform);
         transform.localScale = Vector3.one;
-        transform.DOKill();
-        enemiesInRange.Clear();
     }
 
     public void Shirink()
     {
         float shrinkTime = 1f;
         transform.DOScale(Vector3.zero, shrinkTime)
-            .SetEase(Ease.InBack)
+            .SetUpdate(true)  // 렌더링 독립적 실행 (렉 방지)
+            .SetAutoKill(true)
+            .SetLink(gameObject, LinkBehaviour.KillOnDisable)
             .OnComplete(() =>
             {
                 PoolManager.Instance.Return(gameObject);
@@ -57,38 +57,16 @@ public class Guardian_Guidance : TowerGuidance
             });
     }
 
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        if (collision.gameObject.layer != LayerMask.NameToLayer("Enemy")) return;
-
-        if (collision.TryGetComponent<TowerStats>(out TowerStats targetStats))
-        {
-            enemiesInRange.Add(targetStats);
-        }
-    }
-
-    private void OnTriggerExit2D(Collider2D collision)
-    {
-        if (collision.TryGetComponent<TowerStats>(out TowerStats targetStats))
-        {
-            enemiesInRange.Remove(targetStats);
-        }
-    }
-
     private void DoTickDamage()
     {
         tickTimer += Time.deltaTime;
-        if (tickTimer >= tickRate)
-        {
-            foreach (var enemy in enemiesInRange)
-            {
-                if (enemy != null)
-                {
-                    stats?.DoSpecialDamage(enemy);
-                }
-            }
+        if (tickTimer < tickRate) return;
 
-            tickTimer = 0f;
+        if (target != null && target.TryGetComponent<TowerStats>(out var statsTarget))
+        {
+            stats?.DoSpecialDamage(statsTarget);
         }
+
+        tickTimer = 0f;
     }
 }

@@ -1,10 +1,5 @@
 using DG.Tweening;
-using NUnit.Framework.Internal;
-using System;
-using System.Collections;
 using UnityEngine;
-using static UnityEditor.PlayerSettings;
-using static UnityEngine.GraphicsBuffer;
 
 public class Spider : Tower
 {
