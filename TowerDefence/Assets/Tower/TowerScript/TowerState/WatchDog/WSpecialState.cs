@@ -17,8 +17,8 @@ public class WSpecialState : TSpecialState
         if (triggerCalled2)
         {
             if (tower.nearestREnemy != null) watchDog.CreateWave(watchDog.pos.transform.position,tower.nearestREnemy.transform.position);
-            else if(tower.nearestMEnemy) watchDog.CreateWave(watchDog.pos.transform.position, tower.nearestMEnemy.transform.position);
-            else watchDog.CreateWave(watchDog.pos.transform.position, tower.nearestEnemy.transform.position);
+            else if(tower.nearestMEnemy != null) watchDog.CreateWave(watchDog.pos.transform.position, tower.nearestMEnemy.transform.position);
+            else if(tower.nearestEnemy != null)watchDog.CreateWave(watchDog.pos.transform.position, tower.nearestEnemy.transform.position);
             triggerCalled2 = false;
         }
     }

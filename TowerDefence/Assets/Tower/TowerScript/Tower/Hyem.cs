@@ -12,12 +12,11 @@ public class Hyem : Tower
     [Header("특수스킬")]
     [SerializeField] private GameObject icePillarPrefab;
     [SerializeField] private Transform firePoint;
-    [SerializeField] private int waveCount = 5;
-    [SerializeField] private int pillarsPerLine = 5;        // 각 줄당 기둥 개수
-    [SerializeField] private float maxDistance = 5f;
-    [SerializeField] private float spreadAngle = 10f;       // 파동 퍼짐 각도
-    [SerializeField] private float minScale = 0.5f;         // 가장 가까운 기둥 크기
-    [SerializeField] private float maxScale = 1.5f;         // 가장 먼 기둥 크기
+    private static readonly float[] angles = { -15f, 0f, 15f }; // 3개 spreadAngle = 30
+    private static readonly float[] distances = { 1f, 3f, 5f}; // 4개 maxDistance = 6
+    private static readonly float[] scales = { 1f, 2f, 3f }; // 1~3 구간 비례
+    private static readonly WaitForSeconds shortWait = new WaitForSeconds(0.1f);
+    private WaitForSeconds delayWait;
     public override void Awake()
     {
         base.Awake();
@@ -32,6 +31,7 @@ public class Hyem : Tower
     public override void Start()
     {
         base.Start();
+        delayWait = new WaitForSeconds(delayBetweenShots);
     }
 
     public override void Update()
@@ -48,14 +48,11 @@ public class Hyem : Tower
     {
         foreach (var point in firePoints)
         {
-            Vector2 dir = (targetPos - (Vector2)point.position).normalized;
-            float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
-
             GameObject spear = SpawnWithStats(projectile);
             spear.transform.position = point.position;
             spear.GetComponent<TowerProjectile>().Init(dir);
 
-            yield return new WaitForSeconds(delayBetweenShots);
+            yield return delayWait;
         }
     }
 
@@ -67,36 +64,29 @@ public class Hyem : Tower
 
     private IEnumerator IceConeCoroutine()
     {
-        // N갈래 방향 계산
-        Vector2[] waveDirs = new Vector2[waveCount];
-        float angleStep = spreadAngle / (waveCount - 1);
-        float startAngle = -spreadAngle / 2f;
+        Vector2 baseDir = dir;
 
-        for (int i = 0; i < waveCount; i++)
+        Vector2[] waveDirs = new Vector2[3];
+        for (int i = 0; i < 3; i++)
         {
-            float angleOffset = startAngle + (angleStep * i);
-            waveDirs[i] = Quaternion.Euler(0, 0, angleOffset) * dir;
+            waveDirs[i] = Quaternion.Euler(0, 0, angles[i]) * baseDir;
         }
 
-        // 거리별 생성
-        for (int j = 0; j < pillarsPerLine; j++)
+        for (int j = 0; j < 3; j++)
         {
-            float distance = Mathf.Lerp(1f, maxDistance, (float)j / (pillarsPerLine - 1));
-
-            // 거리 비례 크기 계산
-            float scale = Mathf.Lerp(minScale, maxScale, distance / maxDistance);
+            float dist = distances[j];
+            float scale = scales[j];
 
             foreach (var waveDir in waveDirs)
             {
-                Vector2 spawnPos = (Vector2)firePoint.position + waveDir.normalized * distance;
-
+                Vector2 spawnPos = (Vector2)firePoint.position + waveDir * dist;
                 GameObject pillar = SpawnWithStats(icePillarPrefab);
                 pillar.transform.position = spawnPos;
-
                 pillar.transform.localScale = Vector3.one * scale;
             }
 
-            yield return new WaitForSeconds(0.1f);
+            yield return shortWait;
         }
     }
+
 }

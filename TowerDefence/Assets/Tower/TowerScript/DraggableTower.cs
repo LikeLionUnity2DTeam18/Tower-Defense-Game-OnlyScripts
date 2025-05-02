@@ -5,6 +5,7 @@ public class DraggableTower : MonoBehaviour
 {
     public GameObject swapPrefab;
     private GameObject newObj;  //스왑할 오브젝트
+    private bool isActive = true; //스왑 가능 여부
     [HideInInspector]
     private Tower tower;
     private void Awake()
@@ -17,8 +18,14 @@ public class DraggableTower : MonoBehaviour
         SwapObject();
     }
 
+    public void ActiveSwitch()
+    {
+        isActive = !isActive;
+    }
+
     public void SwapObject()   //아이콘으로 변경
     {
+        if (!isActive) return;
         ToIcon();
 
         // 드래그 상태를 넘겨주기 위해 강제로 드래그 시작

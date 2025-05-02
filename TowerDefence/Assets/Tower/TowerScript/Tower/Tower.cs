@@ -276,6 +276,14 @@ public class Tower : MonoBehaviour
         }
         return obj;
     }
+    public GameObject GiveStats(GameObject obj)
+    {
+        if (obj.TryGetComponent<IStatReceiver>(out var receiver))
+        {
+            receiver.SetStats(this, this.stats);
+        }
+        return obj;
+    }
 
 
     public void AnimationTrigger1()

@@ -1,4 +1,6 @@
 using DG.Tweening;
+using System.Collections;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class Guardian : Tower
@@ -62,10 +64,27 @@ public class Guardian : Tower
             );
 
             // DOTween으로 이동
-            ring.transform
-                .DOMove(targetPos, moveTime)
-                .SetEase(Ease.OutBack);
+            StartCoroutine(MoveSplash(ring, centerPos, targetPos, moveTime));
         }
+    }
+
+    private IEnumerator MoveSplash(GameObject obj, Vector3 start, Vector3 end, float duration)
+    {
+        float elapsed = 0f;
+        while (elapsed < duration)
+        {
+            elapsed += Time.deltaTime;
+            float t = Mathf.Clamp01(elapsed / duration);
+            obj.transform.position = Vector3.Lerp(start, end, EaseOutBack(t));
+            yield return null;
+        }
+    }
+
+    private float EaseOutBack(float t)
+    {
+        float c1 = 1.70158f;
+        float c3 = c1 + 1f;
+        return 1f + c3 * Mathf.Pow(t - 1f, 3f) + c1 * Mathf.Pow(t - 1f, 2f);
     }
 
 }
