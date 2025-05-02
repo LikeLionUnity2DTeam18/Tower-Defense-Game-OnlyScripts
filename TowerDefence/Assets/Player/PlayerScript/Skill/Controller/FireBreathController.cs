@@ -120,10 +120,10 @@ public class FireBreathController : PlayerSkillEntity, ISkillAnimationEvents
         Direction4Custom playerDir = PlayerManager.Instance.Player.lastDir;
         Vector2 fireOffset = playerDir switch
         {
-            Direction4Custom.NE => new Vector2(0.8f, 0.1f),
-            Direction4Custom.NW => new Vector2(0.1f, 0.1f),
-            Direction4Custom.SE => new Vector2(0.8f, -0.5f),
-            Direction4Custom.SW => new Vector2(0.1f, -0.5f),
+            Direction4Custom.NE => new Vector2(0.4f, 0.1f),
+            Direction4Custom.NW => new Vector2(-0.3f, 0.1f),
+            Direction4Custom.SE => new Vector2(0.4f, -0.5f),
+            Direction4Custom.SW => new Vector2(-0.3f, -0.5f),
             _ => Vector2.zero
         };
         //플레이어 크기를 스캐일로 조절할 것 같아서 보정

@@ -2,8 +2,9 @@ using UnityEngine;
 
 /// <summary>
 /// 플레이어 스킬로 생성될 객체들이 공유할 속성
+/// 각 스킬별 Set함수에서 SetEntity(bool isHaveDuration) 호출 필요
 /// </summary>
-public class PlayerSkillEntity : MonoBehaviour
+public abstract class PlayerSkillEntity : MonoBehaviour
 {
     protected bool isReleased = false;
     protected bool isActive = false; // Set 함수를 통해 활성화 됐는지
@@ -86,4 +87,5 @@ public class PlayerSkillEntity : MonoBehaviour
     {
 
     }
+
 }

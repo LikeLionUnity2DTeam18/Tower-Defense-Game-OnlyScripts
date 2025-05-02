@@ -105,7 +105,7 @@ public class Skill : MonoBehaviour
     public void EndPreview()
     {
         isPreviewState = false;
-        previewScript.Release();
+        previewScript?.Release();
         rangeScript.Release();
         if (canBeFlipX) input.GPressed -= FlipPreviewX;
     }
