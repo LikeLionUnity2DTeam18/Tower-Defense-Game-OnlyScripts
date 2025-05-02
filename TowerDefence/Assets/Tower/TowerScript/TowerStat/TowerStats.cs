@@ -49,7 +49,7 @@ public class TowerStats : MonoBehaviour
     public virtual void TakeDamage(float _damage)
     {
         currentHealth -= _damage;
-
+        Debug.Log("데미지"+_damage);
         if (currentHealth < 0)
             Die();
     }
