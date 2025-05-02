@@ -26,8 +26,8 @@ public class GoldPopUp : MonoBehaviour
         RectTransform rect = popup.GetComponent<RectTransform>();
 
         Sequence seq = DOTween.Sequence();
-        seq.Append(rect.DOMoveY(rect.position.y + 100f, 1f))  // 1초 동안 위로 100 이동
-           .Join(text.DOFade(0f, 1f))                         // 동시에 1초 동안 페이드아웃
+        seq.Append(rect.DOMoveY(rect.position.y + 50f, 0.5f))  // 1초 동안 위로 100 이동
+           .Join(text.DOFade(0f, 0.5f))                         // 동시에 1초 동안 페이드아웃
            .OnComplete(() => Destroy(popup));                // 끝나면 삭제
     }
 
