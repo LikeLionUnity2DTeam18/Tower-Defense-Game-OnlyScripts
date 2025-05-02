@@ -9,6 +9,7 @@ public class BaseTowerFX : MonoBehaviour
     {
         shakeTarget = GetComponent<Tilemap>().transform;
     }
+    
     public void Shake()
     {
         shakeTarget.DOShakePosition(
@@ -19,5 +20,4 @@ public class BaseTowerFX : MonoBehaviour
             fadeOut: true
         );
     }
-
 }
