@@ -5,7 +5,7 @@ public class TowerGuidance : TowerEntity
     private GameObject target;
     private float speed = 3f;
     private float distance = 5f;
-    protected override void Update()
+    public override void Update()
     {
         base.Update();
         target = FindNearestEnemyByOverlap(transform.position, distance, LayerMask.GetMask("Enemy"));
