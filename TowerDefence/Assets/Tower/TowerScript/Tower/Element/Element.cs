@@ -7,6 +7,7 @@ public class Element : Tower
     [SerializeField] public Element element;
     [SerializeField] public ElementFire fire;
     [SerializeField] public ElementWater water;
+    [SerializeField] public GameObject bomb;
     public override void Awake()
     {
         base.Awake();
@@ -22,6 +23,10 @@ public class Element : Tower
     {
         base.Start();
 
+        if (bomb.TryGetComponent<IStatReceiver>(out var receiver))
+        {
+            receiver.SetStats(this, this.stats);
+        }
         // 콜백 연결
         if (water != null)
             water.OnElementFused = HandleFusion;
@@ -30,6 +35,7 @@ public class Element : Tower
     {
         transform.position = collisionPoint;
         towerFSM.ChangeState(specialState);
+        bomb.SetActive(true);
     }
 
     public override void Update()

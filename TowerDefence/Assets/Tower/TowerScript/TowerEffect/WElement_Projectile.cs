@@ -39,6 +39,6 @@ public class WElement_Projectile : TowerProjectile
     {
         if (collision.gameObject.layer != LayerMask.NameToLayer("Enemy")) return;
         collision.TryGetComponent<TowerStats>(out TowerStats targetStats);
-        stats?.DoSpecialDamage(targetStats);
+        stats?.DoRangeDamage(targetStats);
     }
 }

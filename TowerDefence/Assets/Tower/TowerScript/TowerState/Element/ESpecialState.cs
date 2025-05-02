@@ -3,7 +3,9 @@ using UnityEngine;
 
 public class ESpecialState : TSpecialState
 {
+    private int count = 0;
     protected Element element => tower as Element;
+    private Element_Splash splash => element.bomb.GetComponent<Element_Splash>();
     public ESpecialState(Tower tower, TowerFSM towerFSM, string stateName) : base(tower, towerFSM, stateName)
     {
     }
@@ -35,6 +37,8 @@ public class ESpecialState : TSpecialState
 
             element.fire.gameObject.SetActive(true);
             element.water.gameObject.SetActive(true);
+            element.bomb.SetActive(false);
+            element.bomb.GetComponent<Element_Splash>().ClearHitEnemy();  //초기화
 
             // Optional: 튕겨 나가는 모션을 DOTween으로 추가
             float bounceDistance = 1f;
@@ -47,6 +51,19 @@ public class ESpecialState : TSpecialState
             element.water.transform
                 .DOMove(center - (Vector3)(dir * bounceDistance), bounceTime)
                 .SetEase(Ease.OutBack);
+        }
+
+        if (triggerCalled2 && count == 0)
+        {
+            triggerCalled2 = false;
+            count = 1;
+            splash.StartCharge();
+        }
+        else if (triggerCalled2 && count == 1)
+        {
+            triggerCalled2 = false;
+            count = 0;
+            splash.StartDischarge();
         }
     }
     public override void Exit()
