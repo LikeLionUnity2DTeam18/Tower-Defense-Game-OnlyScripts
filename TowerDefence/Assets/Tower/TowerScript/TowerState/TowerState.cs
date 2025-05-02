@@ -7,9 +7,11 @@ public class TowerState
     protected TowerFSM towerFSM;
 
 
-    protected bool triggerCalledEnd;
-    protected bool triggerCalledStart;
-    protected bool triggerCalled;
+    protected bool triggerCalled1; //end
+    protected bool triggerCalled2; //start
+    protected bool triggerCalled3; //called
+    protected bool triggerCalled4; //special
+    protected bool triggerCalled5;
     public TowerState(Tower tower,TowerFSM towerFSM, string stateName)
     {
         this.tower = tower;
@@ -26,15 +28,15 @@ public class TowerState
 
     public virtual void Enter()
     {
+        tower.UpDown();
         if(stateName != null) tower.anim.SetBool(stateName, true);
         else return;
-        //Debug.Log("현재상태" + towerFSM.currentState);
         TriggerSet();
+        //Debug.Log("State : " + stateName);
     }
     public virtual void Update()
     {
-        tower.rb.linearVelocity = Vector2.zero;
-        //Debug.Log(triggerCalledEnd);
+        tower.TowerStop();
     }
     public virtual void Exit()
     {
@@ -43,23 +45,33 @@ public class TowerState
         TriggerSet();
     }
 
-    public virtual void AnimationEndTrigger()
+    public virtual void AnimationTrigger1()
     {
-        triggerCalledEnd = true;
+        triggerCalled1 = true;
     }
-    public virtual void AnimationStartTrigger()
+    public virtual void AnimationTrigger2()
     {
-        triggerCalledStart = true;
+        triggerCalled2 = true;
     }
-    public virtual void AnimationTrigger()
+    public virtual void AnimationTrigger3()
     {
-        triggerCalled = true;
+        triggerCalled3 = true;
     }
+    public virtual void AnimationTrigger4()
+    {
+        triggerCalled4 = true;
+    }
+    public virtual void AnimationTrigger5()
+    {
+        triggerCalled5 = true;
+    }   
 
     private void TriggerSet()
     {
-        triggerCalled = false;
-        triggerCalledStart = false;
-        triggerCalledEnd = false;
+        triggerCalled1 = false;
+        triggerCalled2 = false;
+        triggerCalled3 = false;
+        triggerCalled4 = false;
+        triggerCalled5 = false;
     }
 }

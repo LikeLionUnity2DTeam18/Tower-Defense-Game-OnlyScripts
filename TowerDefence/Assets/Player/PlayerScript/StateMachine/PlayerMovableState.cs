@@ -1,20 +1,20 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-
-/// <summary>
-/// 플레이어의 모든 조작이 가능한 상태
-/// AttackReady(Idle, Move의 부모), Attack에서 상속
-/// </summary>
-public class PlayerControllableState : PlayerState
+public class PlayerMovableState : PlayerState
 {
-    public PlayerControllableState(PlayerController _player, int animBoolParam) : base(_player, animBoolParam)
+
+    Vector2 direction;
+
+    public PlayerMovableState(PlayerController _player, int animBoolParam) : base(_player, animBoolParam)
     {
     }
 
     public override void Enter()
     {
         base.Enter();
+
+
         input.OnLeftClick += SetDestination;
     }
 
@@ -27,6 +27,25 @@ public class PlayerControllableState : PlayerState
     public override void Update()
     {
         base.Update();
+
+        HandleMove();
+
+    }
+
+    private void HandleMove()
+    {
+        if (player.hasDestination)
+        {
+            direction = (player.destination - (Vector2)player.transform.position).normalized;
+            rb.linearVelocity = direction * player.MoveSpeed;
+
+
+            if (IsSamePosition(player.destination, player.transform.position))
+            {
+                rb.linearVelocity = Vector2.zero;
+                player.ResetDestination();
+            }
+        }
     }
 
     /// <summary>

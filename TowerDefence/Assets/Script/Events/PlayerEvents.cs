@@ -1,4 +1,4 @@
-﻿/* 구조체 이름을 이벤트 이름으로 사용합니다
+/* 구조체 이름을 이벤트 이름으로 사용합니다
  * 해당 이벤트에서 전달할 값들을 선언해주시면 됩니다. 여러개도 가능
  * 생성자를 정의해주시면 트리거 하기 편해집니다
  * Trigger(new PlayerHealthChanged { PrevHealth = 20, ChangedHealth = 10 });
@@ -19,5 +19,22 @@ public struct PlayerHealthChanged
     {
         PrevHealth = prev;
         ChangedHealth = changed;
+    }
+}
+
+public struct PlayerFireBreathEnded
+{
+
+}
+
+public struct PlayerStatChanged
+{
+    public PlayerStatTypes type { get; private set; }
+    public float value { get; private set; }
+
+    public PlayerStatChanged(PlayerStatTypes type, float value)
+    {
+        this.type = type;
+        this.value = value;
     }
 }

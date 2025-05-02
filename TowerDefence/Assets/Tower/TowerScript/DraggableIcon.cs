@@ -1,3 +1,4 @@
+using DG.Tweening;
 using UnityEngine;
 
 [RequireComponent(typeof(Collider2D))]
@@ -8,6 +9,7 @@ public class DraggableIcon : MonoBehaviour
     [SerializeField] private float Radius;
     [SerializeField] private LayerMask whatIsBeacon;
     public GameObject DetectedBeacon { get; private set; }
+    private Beacon beacon;
     private TowerIcon icon;
 
     private void Awake()
@@ -17,7 +19,7 @@ public class DraggableIcon : MonoBehaviour
 
 
 
-    //¾ÆÀÌÄÜ »óÅÂ¿¡¼­ µå·¡±×
+    //ì•„ì´ì½˜ ìƒíƒœì—ì„œ ë“œë˜ê·¸
     void OnMouseDown()
     {
         var mp = Camera.main.ScreenToWorldPoint(Input.mousePosition);
@@ -35,8 +37,12 @@ public class DraggableIcon : MonoBehaviour
         dragging = false;
         if (IsBeaconDetected())
         {
-            DetectedBeacon.GetComponent<Beacon>().WhichTower(icon.type);
-            PoolManager.Instance.Return(gameObject);
+            if(beacon.isActive == false)
+            {
+                beacon.WhichTower(icon.type);
+                PoolManager.Instance.Return(gameObject);
+                transform.DOKill();
+            }
         }
     }
 
@@ -46,6 +52,7 @@ public class DraggableIcon : MonoBehaviour
         if (hit != null)
         {
             DetectedBeacon = hit.gameObject;
+            beacon = hit.GetComponent<Beacon>();
             return true;
         }
         DetectedBeacon = null;
@@ -60,14 +67,14 @@ public class DraggableIcon : MonoBehaviour
 
 
 
-    //Å¸¿ö¿¡¼­ ¾ÆÀÌÄÜÀ¸·Î º¯°æ½Ã µå·¡±×
+    //íƒ€ì›Œì—ì„œ ì•„ì´ì½˜ìœ¼ë¡œ ë³€ê²½ì‹œ ë“œë˜ê·¸
     void Update()
     {
         if (dragging)
         {
             DragMove();
 
-            // ¸¶¿ì½º ¹öÆ° ¶¼¸é µå·¡±× Á¾·á
+            // ë§ˆìš°ìŠ¤ ë²„íŠ¼ ë–¼ë©´ ë“œë˜ê·¸ ì¢…ë£Œ
             if (Input.GetMouseButtonUp(0))
             {
                 dragging = false;
@@ -84,8 +91,11 @@ public class DraggableIcon : MonoBehaviour
     {
         if (IsBeaconDetected())
         {
-            DetectedBeacon.GetComponent<Beacon>().WhichTower(icon.type);
-            PoolManager.Instance.Return(gameObject);
+            if(beacon.isActive==false)
+            {
+                beacon.WhichTower(icon.type);
+                PoolManager.Instance.Return(gameObject);
+            }
         }
     }
     public void StartDrag(Vector3 mousePos)

@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class HSpecialState : TowerState
+public class HSpecialState : TSpecialState
 {
     protected Hyem hyem => tower as Hyem;
     public HSpecialState(Tower tower, TowerFSM towerFSM, string stateName) : base(tower, towerFSM, stateName)
@@ -14,15 +14,10 @@ public class HSpecialState : TowerState
     public override void Update()
     {
         base.Update();
-        if (triggerCalledStart)
+        if (triggerCalled2)
         {
             hyem.CastIceCone();
-            triggerCalledStart = false;
-        }
-        if (triggerCalled)
-        {
-            towerFSM.ChangeState(tower.fsmLibrary.hIdleState);
-            triggerCalled = false;
+            triggerCalled2 = false;
         }
     }
     public override void Exit()

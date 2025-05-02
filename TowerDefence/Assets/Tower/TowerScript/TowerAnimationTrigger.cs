@@ -7,22 +7,32 @@ public class TowerAnimationTrigger : MonoBehaviour
     private TowerSplash towerSplash => GetComponent<TowerSplash>();
 
 
-    public void AnimationTriggerEndwt()
+    public void AnimationTrigger1wt()   //end
     {
         if (tower != null)
-            tower.AnimationTriggerEnd();
+            tower.AnimationTrigger1();
     }
 
-    public void AnimationTriggerStartwt()
+    public void AnimationTrigger2wt()   //start
     {
         if (tower != null)
-            tower.AnimationTriggerStart();
+            tower.AnimationTrigger2();
     }
 
-    public void AnimationTriggerSpawnwt()
+    public void AnimationTrigger3wt()   //called
     {
         if (tower != null)
-            tower.AnimationTrigger();
+            tower.AnimationTrigger3();
+    }
+    public void AnimationTrigger4wt()   //special
+    {
+        if (tower != null)
+            tower.AnimationTrigger4();
+    }
+    public void AnimationTrigger5wt()
+    {
+        if (tower != null)
+            tower.AnimationTrigger5();
     }
 
     public void AnimationTriggerEnd()

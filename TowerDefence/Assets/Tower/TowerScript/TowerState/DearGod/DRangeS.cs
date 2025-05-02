@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class DRangeS : TowerState
+public class DRangeS : TRangeState
 {
     protected DeerGod deerGod => tower as DeerGod;
     public DRangeS(Tower tower, TowerFSM towerFSM, string stateName) : base(tower, towerFSM, stateName)
@@ -21,18 +21,11 @@ public class DRangeS : TowerState
     public override void Update()
     {
         base.Update();
-        if (triggerCalledEnd)
-        {
-            if (tower.nearestMEnemy != null) towerFSM.ChangeState(tower.fsmLibrary.dIdleS);
-            else if (tower.nearestEnemy != null) towerFSM.ChangeState(tower.fsmLibrary.dMoveS);
-            else if (tower.nearestREnemy == null) towerFSM.ChangeState(tower.fsmLibrary.dIdleS);
-            triggerCalledEnd = false;
-        }
 
-        if (triggerCalled && tower.nearestREnemy != null)
+        if (triggerCalled3 && tower.nearestREnemy != null)
         {
+            triggerCalled3 = false;
             deerGod.StartProjectile(deerGod.transform.position, tower.nearestREnemy.transform.position);
-            triggerCalled = false;
         }
     }
 }

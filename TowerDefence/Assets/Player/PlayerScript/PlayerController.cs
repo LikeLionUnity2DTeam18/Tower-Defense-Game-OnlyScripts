@@ -1,5 +1,3 @@
-using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -9,7 +7,8 @@ public class PlayerController : MonoBehaviour
     public PlayerInputHandler input { get; private set; }
     public Rigidbody2D rb { get; private set; }
     public Animator anim { get; private set; }
-    
+    public PlayerSkillManager skill { get; private set; }
+
     #endregion
 
     #region 스태이트 머신 선언
@@ -17,36 +16,35 @@ public class PlayerController : MonoBehaviour
     public PlayerIdleState idleState { get; private set; }
     public PlayerMoveState moveState { get; private set; }
     public PlayerAttackState attackState { get; private set; }
+    public PlayerBindShotState bindShotState { get; private set; }
+    public PlayerFireBreathState breathState { get; private set; }
     #endregion
 
     public Direction4Custom lastDir { get; private set; } = Direction4Custom.SE; // 마지막으로 바라보고 있던 방향
     public Vector2 destination { get; private set; } // 이동 목적지
     public bool hasDestination { get; private set; } // 목적지 있는지 확인
+    public bool canUseSkill { get; private set; }  // 스킬 사용 가능한 상태 체크
+    public bool SetCanUseSkill(bool _canUseSkill) => canUseSkill = _canUseSkill;
 
     [SerializeField] private GameObject baseAttack;
     public GameObject BaseAttack => baseAttack;
+    public float baseAttackTimer { get; private set; } = 0f;
+    public void ResetBaseAttackTimer() => baseAttackTimer = 1 / BaseAttackSpeed;
 
 
     #region 플레이어 스탯
-    [SerializeField] private PlayerStatsSO baseStats;
-    private PlayerStatManager stats;
-
-    //public float MoveSpeed => Mathf.Clamp(stats.GetValue(PlayerStatModifierType.moveSpeed), PlayerSettings.MinMoveSpeed, PlayerSettings.MaxMoveSpeed);
-    //public float BaseAttackDamage => stats.GetValue(PlayerStatModifierType.baseAttackDamage);
-    //public float AttackSpeed => stats.GetValue(PlayerStatModifierType.attackSpeed);
-    //public float AttackRange => stats.GetValue(PlayerStatModifierType.attackRange);
-
+    [SerializeField] private PlayerLevelTable levelTable;
+    public PlayerStatManager stats { get; private set; }
     public float MoveSpeed => stats.moveSpeed.GetValue();
-    public float BaseAttackDamage => stats.baseAttack.GetValue();
-    public float AttackSpeed => stats.attackSpeed.GetValue();
-    public float AttackRange => stats.attackRange.GetValue();
+    public float BaseAttackDamage => stats.baseAttackDamage.GetValue();
+    public float BaseAttackSpeed => stats.baseattackSpeed.GetValue();
+    public float BaseAttackRange => stats.baseattackRange.GetValue();
+    public float SkillPower => stats.skillPower.GetValue();
+    public int Level => stats.level;
     #endregion
 
 
-
-    //각종 쿨다운 관리
-    private Dictionary<PlayerCooldownType, float> cooldownTimers = new();
-    public float baseAttackCooldown => Mathf.Clamp(1 / AttackSpeed, PlayerSettings.MinCooldown, PlayerSettings.MaxCooldown);
+    public Vector2 mousePos { get; private set; }
 
     private void Awake()
     {
@@ -54,7 +52,8 @@ public class PlayerController : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         anim = GetComponentInChildren<Animator>();
         stateMachine = new PlayerStateMachine();
-        stats = new PlayerStatManager(Instantiate(baseStats));
+        stats = new PlayerStatManager(Instantiate(levelTable));
+        skill = GetComponentInChildren<PlayerSkillManager>();
 
     }
     void Start()
@@ -62,8 +61,11 @@ public class PlayerController : MonoBehaviour
         idleState = new PlayerIdleState(this, PlayerAnimationParams.Idle);
         moveState = new PlayerMoveState(this, PlayerAnimationParams.Move);
         attackState = new PlayerAttackState(this, PlayerAnimationParams.Attack);
+        bindShotState = new PlayerBindShotState(this, PlayerAnimationParams.Attack);
+        breathState = new PlayerFireBreathState(this, 0);
 
         stateMachine.Initialize(idleState);
+        canUseSkill = true;
 
     }
 
@@ -71,7 +73,14 @@ public class PlayerController : MonoBehaviour
     void Update()
     {
         stateMachine.Update();
-        UpdateCooldownTimers();
+        if (baseAttackTimer > 0) baseAttackTimer -= Time.deltaTime;
+        UpdateMousePos();
+
+        // 레벨업 테스트
+        if(Input.GetKeyDown(KeyCode.U))
+        {
+            stats.LevelUp();
+        }
     }
 
 
@@ -92,58 +101,53 @@ public class PlayerController : MonoBehaviour
 
     #endregion
 
-    #region 쿨다운 관리
-
-    /// <summary>
-    /// 해당 스킬 사용 후 쿨타임 설정
-    /// </summary>
-    /// <param name="type"></param>
-    public void SetCooldown(PlayerCooldownType type, float cooldown)
-    {
-            cooldownTimers[type] = cooldown;
-    }
-
-    /// <summary>
-    /// 해당 스킬 쿨타임인지 체크
-    /// 사용한적 없거나, 타이머 돌았으면 true
-    /// </summary>
-    /// <param name="type"></param>
-    /// <returns></returns>
-    public bool IsCooldownReady(PlayerCooldownType type)
-    {
-        return !cooldownTimers.ContainsKey(type) || cooldownTimers[type] <= 0;
-    }
-
-    /// <summary>
-    /// Update 안에서 쿨다운 감소시키는 함수
-    /// </summary>
-    private void UpdateCooldownTimers()
-    {
-        var keys = cooldownTimers.Keys.ToList();
-        foreach (var key in keys)
-        {
-            if (cooldownTimers[key] > 0)
-                cooldownTimers[key] -= Time.deltaTime;
-        }
-    }
-
-    #endregion
-
 
     // 애니매이션 이벤트 래핑
     public void AnimationTriggerEvent() => stateMachine.currentState.AnimationEndTrigger();
     public void ShootArrowAnimationEvent() => attackState.ShootArrowAnimationEvent();
 
-    
 
 
-    // 임시 테스트용
-    public void Shoot()
+
+
+    private System.Action CancelPreviewLamda;
+
+    public void UseSkill(Skill _skill)
     {
-        var obj = Instantiate(baseAttack, transform.position,Quaternion.identity);
-        Vector2 mousePos = Mouse.current.position.ReadValue();
-        Vector2 destination = Camera.main.ScreenToWorldPoint(mousePos);
-        Vector2 dir = destination - (Vector2) transform.position;
-        obj.GetComponent<PlayerProjectile>().Initialize(dir, 3);
+        // 미리보기 상태가 없는 스킬인 경우 바로 사용 
+        if(canUseSkill && !_skill.hasPreviewState)
+        {
+            _skill.TryUseSkillWithoutPreview();
+        }
+        // 스킬 위치 미리보기 상태중에는 다른 스킬 사용 불가
+        if (canUseSkill)
+        {
+            canUseSkill = !_skill.TryPreviewSkill();
+            if (!canUseSkill) // 스킬 미리보기 상태로 성공적으로 진입 했다면, 우클릭으로 미리보기 취소할 수 있게 이벤트 등록
+            {
+                CancelPreviewLamda = () => CancelPreview(_skill);
+                input.OnRightClick += CancelPreviewLamda;
+            }
+        }
+        // 스킬 사용하고 나면 다시 다른스킬 사용 가능
+        else if (_skill.TryUseSkill())
+        {
+            canUseSkill = true;
+            input.OnRightClick -= CancelPreviewLamda;
+        }
     }
+
+    private void CancelPreview(Skill _skill)
+    {
+        input.OnRightClick -= CancelPreviewLamda;
+        _skill.EndPreview();
+        canUseSkill = true;
+    }
+
+    protected virtual void UpdateMousePos()
+    {
+        Vector2 screenMouse = Mouse.current.position.ReadValue();
+        mousePos = Camera.main.ScreenToWorldPoint(screenMouse);
+    }
+
 }

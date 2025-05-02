@@ -1,3 +1,5 @@
+using System;
+using System.Collections.Generic;
 using UnityEngine;
 //애니메이션에서 사용할 레이어
 enum layer
@@ -5,16 +7,22 @@ enum layer
     Front,
     Back,
 }
+public interface IStatReceiver  
+{
+    void SetStats(Tower tower,TowerStats stats);
+}
 public class Tower : MonoBehaviour
 {
-    //비콘 관련 설정
-    public GameObject Beacon { get; set; }
-
     //타워 스텟
-    [SerializeField] public float moveSpeed;
-    [SerializeField] public float skillCoolDown;
+    public TowerStats stats {get; protected set; }
+
+    //타이머
     [SerializeField] public float timer;
 
+
+    //비콘 관련 설정
+    public GameObject Beacon { get; set; }
+    public Beacon beacon { get; set; }
 
     //타워 방향
     public bool towerFront { get; private set; } = true;//앞인지 뒤인지
@@ -22,19 +30,21 @@ public class Tower : MonoBehaviour
     public Vector2 dir;
 
 
-    //타워 공격 범위
-    [SerializeField] private float meleeAttack = 1f;
-    [SerializeField] private float rangedAttack = 5f;
-    [SerializeField] private float detectRange = 2f; //탐지 범위
-    public TowerEnemyTest nearestMEnemy { get; private set; } //근접 적
-    public TowerEnemyTest nearestREnemy { get; private set; } //원거리 적
-    public TowerEnemyTest nearestEnemy { get; private set; } //가장 가까운 적
+    public GameObject nearestMEnemy { get; private set; } //근접 적
+    public GameObject nearestREnemy { get; private set; } //원거리 적
+    public GameObject nearestEnemy { get; private set; } //가장 가까운 적
 
-    protected TowerState specialState;
+    //스테이트
+    public TowerState idleState { get; set; }
+    public TowerState moveState { get; set; }
+    public TowerState meleeState { get; set; }
+    public TowerState rangeState { get; set; }
+    public TowerState specialState { get; set; }
+
     //컴포넌트
     protected SpriteRenderer towerSprite;     //플립용
-    public Animator anim {get; private set; }
-    public Rigidbody2D rb { get; private set; }
+    public Animator anim {get; protected set; }
+    public Rigidbody2D rb { get; protected set; }
 
 
     //인스턴스 생성해야 할 것들
@@ -46,116 +56,145 @@ public class Tower : MonoBehaviour
         towerSprite = GetComponent<SpriteRenderer>();
         anim = GetComponent<Animator>();
         rb = GetComponent<Rigidbody2D>();
+        stats = ResolveStats();
         towerFSM = new TowerFSM();
     }
+
+    //Hook 메서드 (필요 시 자식에서 override)
+    protected virtual TowerStats ResolveStats()
+    {
+        return GetComponent<TowerStats>();
+    }
+
     public virtual void Start()
     {
-
+        towerFSM.Init(idleState);
     }
 
     public virtual void Update()
     {
         towerFSM.currentState.Update();
 
-        timer -= Time.deltaTime;
-        //특수능력 사용
-        if (timer <= 0f && nearestREnemy != null)
+        //n초마다 특수스킬 발동
+        if(timer > 0)timer -= Time.deltaTime;
+        if (timer <= 0f && (nearestREnemy != null || nearestMEnemy != null || nearestEnemy != null))
         {
+            timer = stats.cooldown.GetValue();
             towerFSM.ChangeState(specialState);
-            timer = skillCoolDown;
         }
 
         ChangeDir();
-        if(GetoutArea()) transform.position = Beacon.transform.position;
+        if(GetoutArea() && nearestREnemy == null) transform.position = Beacon.transform.position;
     }
 
     void OnDrawGizmosSelected()
     {
-        Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(transform.position, meleeAttack);
-        Gizmos.color = Color.blue;
-        Gizmos.DrawWireSphere(transform.position, rangedAttack);
-        Gizmos.color = Color.yellow;
-        Gizmos.DrawWireSphere(transform.position, detectRange);
+        if (stats != null)
+        {
+            Gizmos.color = Color.red;
+            Gizmos.DrawWireSphere(transform.position, stats.meleeDistance.GetValue());
+            Gizmos.color = Color.blue;
+            Gizmos.DrawWireSphere(transform.position, stats.rangeDistance.GetValue());
+            Gizmos.color = Color.yellow;
+            Gizmos.DrawWireSphere(transform.position, stats.moveDistance.GetValue());
+        }
     }
 
-    private void ChangeDir()
+    //거리에 따른 탐지 
+    protected void ChangeDir()
     {
-        if (GetoutArea())
+        nearestMEnemy = FindNearestEnemyByOverlap(transform.position, stats.meleeDistance.GetValue(), LayerMask.GetMask("Enemy"));
+        if (nearestMEnemy != null)
         {
-            UpdateDirection(Beacon.transform.position);
+            UpdateDirection(nearestMEnemy.transform.position);
+            dir = (nearestMEnemy.transform.position - transform.position).normalized;
         }
-        else
+        else if (nearestMEnemy == null)
         {
-            nearestMEnemy = FindNearestEnemyByOverlap(transform.position, meleeAttack, LayerMask.GetMask("Enemy"));
-            if (nearestMEnemy != null)
+            nearestEnemy = FindNearestEnemyByOverlap(transform.position, stats.moveDistance.GetValue(), LayerMask.GetMask("Enemy"));
+            if (nearestEnemy != null) 
             {
-                UpdateDirection(nearestMEnemy.transform.position);
+                UpdateDirection(nearestEnemy.transform.position);
                 dir = (nearestEnemy.transform.position - transform.position).normalized;
             }
-            else if (nearestMEnemy == null)
+            else if(nearestEnemy == null)
             {
-                nearestEnemy = FindNearestEnemyByOverlap(transform.position, detectRange, LayerMask.GetMask("Enemy"));
-                if (nearestEnemy != null) 
+                nearestREnemy = FindNearestEnemyByOverlap(transform.position, stats.rangeDistance.GetValue(), LayerMask.GetMask("Enemy"));
+                if (nearestREnemy != null)
                 {
-                    UpdateDirection(nearestEnemy.transform.position);
-                    dir = (nearestEnemy.transform.position - transform.position).normalized;
+                    UpdateDirection(nearestREnemy.transform.position);
+                    dir = (nearestREnemy.transform.position - transform.position).normalized;
                 }
-                else if(nearestEnemy == null)
-                {
-                    nearestREnemy = FindNearestEnemyByOverlap(transform.position, rangedAttack, LayerMask.GetMask("Enemy"));
-                    if (nearestREnemy != null)
-                    {
-                        UpdateDirection(nearestREnemy.transform.position);
-                        dir = (nearestREnemy.transform.position - transform.position).normalized;
-                    }
-                }  
-            }
+            }  
         }
 
-        //앞, 뒤 애니메이션 변경
-        if (towerFront == true)
-        {
-            anim.SetLayerWeight(1, 1);
-            anim.SetLayerWeight(2, 0);
-        }
-        else if (towerFront == false)
-        {
-            anim.SetLayerWeight(1, 0);
-            anim.SetLayerWeight(2, 1);
-        }
         //좌, 우 변경
         Flip();
     }
 
-
-    //가까운 적 탐지
-    public TowerEnemyTest FindNearestEnemyByOverlap(Vector3 origin, float radius, LayerMask enemyLayer)
+    public void UpDown()
     {
-        Collider2D[] hits = Physics2D.OverlapCircleAll(origin, radius, enemyLayer);
-        if(hits.Length == 0) return null;
-        else
+        //앞 레이어만 있을 경우 레이어 변경 안함
+        if (anim.layerCount <= 1) return;
+
+        //앞 뒤 변경
+        if (!anim.IsInTransition(1) && !anim.IsInTransition(2))
         {
-            TowerEnemyTest nearest = null;
-            float minDist = float.MaxValue;
-
-            foreach (var hit in hits)
+            if (towerFront)
             {
-                TowerEnemyTest enemy = hit.GetComponent<TowerEnemyTest>();
-                if (enemy == null) continue;
-
-                float dist = (enemy.transform.position - origin).sqrMagnitude;
-
-                if (dist < minDist)
-                {
-                    minDist = dist;
-                    nearest = enemy;
-                }
+                anim.SetLayerWeight(1, 1f);
+                anim.SetLayerWeight(2, 0f);
             }
-            return nearest;
+            else
+            {
+                anim.SetLayerWeight(1, 0f);
+                anim.SetLayerWeight(2, 1f);
+            }
         }
     }
 
+    //가까운 적 탐지
+    public GameObject FindNearestEnemyByOverlap(Vector3 origin, float radius, LayerMask enemyLayer)
+    {
+        Collider2D[] hits = Physics2D.OverlapCircleAll(origin, radius, enemyLayer);
+        if (hits.Length == 0) return null;
+
+        GameObject nearest = null;
+        float minDist = float.MaxValue;
+
+        foreach (var hit in hits)
+        {
+            float dist = (hit.transform.position - origin).sqrMagnitude;
+
+            if (dist < minDist)
+            {
+                minDist = dist;
+                nearest = hit.gameObject;
+            }
+        }
+        return nearest;
+    }
+    //범위 내 모든 적 데미지
+    private void DamageAllEnemiesInRange(Vector3 origin, float radius, LayerMask enemyLayer, Action<TowerStats> damageFunc)
+    {
+        Collider2D[] hits = Physics2D.OverlapCircleAll(origin, radius, enemyLayer);
+
+        foreach (var hit in hits)
+        {
+            if (hit.TryGetComponent<TestEnemyStats>(out var target))
+            {
+                damageFunc(target);
+            }
+        }
+    }
+    public void DoMeleeDamage()
+    {
+        DamageAllEnemiesInRange(transform.position, stats.meleeDistance.GetValue(), LayerMask.GetMask("Enemy"), stats.DoMeleeDamage);
+    }
+    public void DoRangeDamage()
+    {
+        DamageAllEnemiesInRange(transform.position, stats.meleeDistance.GetValue(), LayerMask.GetMask("Enemy"), stats.DoRangeDamage);
+    }
 
     //방향 설정
     void UpdateDirection(Vector2 enemyPos)
@@ -202,7 +241,7 @@ public class Tower : MonoBehaviour
     }
 
 
-
+    //비콘 범위 밖으로 나갈시 비콘 위치로 이동
     public bool GetoutArea()
     {   if(Beacon == null) return false;
         if (Vector2.Distance(transform.position, Beacon.transform.position) > Beacon.GetComponent<Beacon>().radius)
@@ -212,24 +251,51 @@ public class Tower : MonoBehaviour
         }
         else
         {
-
             return false;
         }
     }
+
+    //타워 움직임 관련
+    public void TowerMovement()
+    {
+        rb.linearVelocity = dir * stats.speed.GetValue();
+    }
+    public void TowerStop()
+    {
+        rb.linearVelocity = Vector2.zero;
+    }
     
-
-
-    public void AnimationTriggerEnd()
+    //스탯 전달
+    public GameObject SpawnWithStats(GameObject prefab)
     {
-        towerFSM.currentState.AnimationEndTrigger();
+        GameObject obj = PoolManager.Instance.Get(prefab);
+
+        if (obj.TryGetComponent<IStatReceiver>(out var receiver))
+        {
+            receiver.SetStats(this,this.stats);
+        }
+        return obj;
     }
-    public void AnimationTriggerStart()
-    {
-        towerFSM.currentState.AnimationStartTrigger();
-    }
 
-    public void AnimationTrigger()
+
+    public void AnimationTrigger1()
     {
-        towerFSM.currentState.AnimationTrigger();
+        towerFSM.currentState.AnimationTrigger1();
+    }
+    public void AnimationTrigger2()
+    {
+        towerFSM.currentState.AnimationTrigger2();
+    }
+    public void AnimationTrigger3()
+    {
+        towerFSM.currentState.AnimationTrigger3();
+    }
+    public void AnimationTrigger4()
+    {
+        towerFSM.currentState.AnimationTrigger4();
+    }
+    public void AnimationTrigger5()
+    {
+        towerFSM.currentState.AnimationTrigger5();
     }
 }

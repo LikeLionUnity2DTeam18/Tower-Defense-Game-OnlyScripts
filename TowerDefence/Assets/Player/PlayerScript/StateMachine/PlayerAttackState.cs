@@ -1,8 +1,9 @@
 using UnityEngine;
 
-public class PlayerAttackState : PlayerControllableState
+public class PlayerAttackState : PlayerCanUseSkillState
 {
     Vector2 direction;
+    EnemyController target;
 
     public PlayerAttackState(PlayerController _player, int animBoolParam) : base(_player, animBoolParam)
     {
@@ -12,7 +13,7 @@ public class PlayerAttackState : PlayerControllableState
     {
         base.Enter();
 
-        //타겟 탐색
+        target = FindTargetInRange(player.BaseAttackRange);
     }
 
     public override void Exit()
@@ -24,6 +25,15 @@ public class PlayerAttackState : PlayerControllableState
     {
         base.Update();
 
+        MoveToDestination();
+
+        // 공격모션 마지막이 되면 
+        if (triggerCalled || target == null)
+            stateMachine.ChangeState(player.idleState);
+    }
+
+    private void MoveToDestination()
+    {
         // 목적지가 있는 경우 이동하면서 공격 
         if (player.hasDestination)
         {
@@ -41,16 +51,20 @@ public class PlayerAttackState : PlayerControllableState
         {
             rb.linearVelocity = Vector2.zero;
         }
-
-        // 공격모션 마지막이 되면 
-        if (triggerCalled)
-            stateMachine.ChangeState(player.idleState);
     }
 
     public void ShootArrowAnimationEvent()
     {
-        // 화살 생성
-        Debug.Log("슛~");
-        player.Shoot();
+        ShootArrowToTarget();
+    }
+
+    private void ShootArrowToTarget()
+    {
+        if (target == null)
+            return;
+        var baseAttackArrow = PoolManager.Instance.Get(player.BaseAttack).GetComponent<PlayerArrow>();
+        baseAttackArrow.Initialize(player.transform.position, target, player.BaseAttackDamage);
+
+
     }
 }
