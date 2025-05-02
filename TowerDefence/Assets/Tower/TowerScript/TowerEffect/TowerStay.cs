@@ -6,7 +6,7 @@ public class TowerStay : TowerEntity
     [SerializeField] protected float duration = 10f;
     [SerializeField] protected float timer = 10f;
 
-    protected override void Update()
+    public override void Update()
     {
         base.Update();
         Timer();

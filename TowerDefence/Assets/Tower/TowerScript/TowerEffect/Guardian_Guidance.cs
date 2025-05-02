@@ -13,7 +13,7 @@ public class Guardian_Guidance : TowerGuidance
 
     private HashSet<TowerStats> enemiesInRange = new HashSet<TowerStats>();
 
-    protected override void Update()
+    public override void Update()
     {
         base.Update();
         Timer();
