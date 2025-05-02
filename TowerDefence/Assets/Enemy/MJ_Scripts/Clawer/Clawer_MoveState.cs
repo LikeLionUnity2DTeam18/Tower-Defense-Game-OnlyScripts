@@ -1,9 +1,10 @@
 using UnityEngine;
 
-public class Blocker_MoveState : EnemyState
+public class Clawer_MoveState : EnemyState
 {
-    public Blocker_MoveState(EnemyController enemy, EnemyStateMachine stateMachine)
-        : base(enemy, stateMachine) { }
+    public Clawer_MoveState(EnemyController enemy, EnemyStateMachine stateMachine) : base(enemy, stateMachine)
+    {
+    }
 
     public override void Enter()
     {
@@ -27,10 +28,12 @@ public class Blocker_MoveState : EnemyState
 
         if (distance <= enemy.TargetRange)
         {
-            stateMachine.ChangeState(new Blocker_AttackState(enemy, stateMachine));
+            // 공격 거리 안에 들어오면 공격 상태로 전환
+            stateMachine.ChangeState(new Clawer_AttackState(enemy, stateMachine));
         }
         else
         {
+            // 타겟 방향으로 이동
             enemy.transform.Translate(enemy.MoveDir * enemy.Data.moveSpeed * Time.deltaTime);
         }
     }

@@ -39,10 +39,7 @@ public class EnemySpawnManager : MonoBehaviour
                     // 적 생성
                     factory.CreateEnemy(selectedEnemy, spawnPos + offset);
                 }
-                else
-                {
-                    Debug.LogWarning("enemyTypes 리스트가 비어있어! 적 데이터 넣어줘.");
-                }
+                
             }
             yield return new WaitForSeconds(spawnTime);
         }

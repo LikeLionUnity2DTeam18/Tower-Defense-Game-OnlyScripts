@@ -1,8 +1,8 @@
 using UnityEngine;
 
-public class Bloody_IdleState : EnemyState
+public class Clawer_IdleState : EnemyState
 {
-    public Bloody_IdleState(EnemyController enemy, EnemyStateMachine stateMachine) : base(enemy, stateMachine)
+    public Clawer_IdleState(EnemyController enemy, EnemyStateMachine stateMachine) : base(enemy, stateMachine)
     {
     }
 
@@ -27,12 +27,13 @@ public class Bloody_IdleState : EnemyState
 
         if (stateTimer <= 0f)
         {
-            stateMachine.ChangeState(new Bloody_MoveState(enemy, stateMachine));
+            stateMachine.ChangeState(new Clawer_MoveState(enemy, stateMachine));
         }
     }
 
     public override void Exit()
     {
-       
+
     }
+
 }
