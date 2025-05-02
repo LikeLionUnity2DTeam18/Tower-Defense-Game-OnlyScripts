@@ -66,6 +66,9 @@ public class Beacon : MonoBehaviour
                 case TowerType.Darkmur:
                     SpawnTower(TowerType.Darkmur);
                     break;
+                case TowerType.Element:
+                    SpawnTower(TowerType.Element);
+                    break;
             }
         }
     }

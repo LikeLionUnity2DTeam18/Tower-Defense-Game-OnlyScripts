@@ -19,7 +19,7 @@ public class DeerGod_flower : TowerStay
         StartCoroutine(RepeatProjectile());
     }
 
-    protected override void Update()
+    public override void Update()
     {
         base.Update();
         targetEnemy = FindNearestEnemyByOverlap(transform.position, distance, LayerMask.GetMask("Enemy"));

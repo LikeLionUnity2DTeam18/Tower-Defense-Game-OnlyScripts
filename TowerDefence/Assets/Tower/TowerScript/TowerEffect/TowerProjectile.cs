@@ -25,7 +25,7 @@ public class TowerProjectile : TowerEntity
         anim = GetComponent<Animator>();
     }
 
-    protected override void Update()
+    public override void Update()
     {
         base.Update();
         //애니메이션 실행 후 발사

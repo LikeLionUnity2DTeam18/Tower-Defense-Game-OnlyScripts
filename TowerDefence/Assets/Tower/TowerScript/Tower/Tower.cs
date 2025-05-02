@@ -14,7 +14,7 @@ public interface IStatReceiver
 public class Tower : MonoBehaviour
 {
     //타워 스텟
-    public TowerStats stats {get; private set; }
+    public TowerStats stats {get; protected set; }
 
     //타이머
     [SerializeField] public float timer;
@@ -43,8 +43,8 @@ public class Tower : MonoBehaviour
 
     //컴포넌트
     protected SpriteRenderer towerSprite;     //플립용
-    public Animator anim {get; private set; }
-    public Rigidbody2D rb { get; private set; }
+    public Animator anim {get; protected set; }
+    public Rigidbody2D rb { get; protected set; }
 
 
     //인스턴스 생성해야 할 것들
@@ -56,9 +56,16 @@ public class Tower : MonoBehaviour
         towerSprite = GetComponent<SpriteRenderer>();
         anim = GetComponent<Animator>();
         rb = GetComponent<Rigidbody2D>();
-        stats = GetComponent<TowerStats>();
+        stats = ResolveStats();
         towerFSM = new TowerFSM();
     }
+
+    //Hook 메서드 (필요 시 자식에서 override)
+    protected virtual TowerStats ResolveStats()
+    {
+        return GetComponent<TowerStats>();
+    }
+
     public virtual void Start()
     {
         towerFSM.Init(idleState);
@@ -68,6 +75,7 @@ public class Tower : MonoBehaviour
     {
         towerFSM.currentState.Update();
 
+        //n초마다 특수스킬 발동
         if(timer > 0)timer -= Time.deltaTime;
         if (timer <= 0f && (nearestREnemy != null || nearestMEnemy != null || nearestEnemy != null))
         {
@@ -126,6 +134,9 @@ public class Tower : MonoBehaviour
 
     public void UpDown()
     {
+        //앞 레이어만 있을 경우 레이어 변경 안함
+        if (anim.layerCount <= 1) return;
+
         //앞 뒤 변경
         if (!anim.IsInTransition(1) && !anim.IsInTransition(2))
         {

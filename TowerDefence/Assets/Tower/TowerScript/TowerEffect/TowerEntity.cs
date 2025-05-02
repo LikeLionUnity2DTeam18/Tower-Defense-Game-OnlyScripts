@@ -10,9 +10,9 @@ public class TowerEntity : MonoBehaviour,IStatReceiver
         this.tower = tower;
         this.stats = stats;
     }
-    protected virtual void Update()
+    public virtual void Update()
     {
-        /*if(stats != null)
+        /*if (stats != null)
         {
             Debug.Log("Attack: " + stats.melee.GetValue());
         }
