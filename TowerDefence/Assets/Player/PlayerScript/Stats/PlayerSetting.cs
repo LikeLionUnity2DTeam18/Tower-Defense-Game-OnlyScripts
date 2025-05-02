@@ -4,4 +4,5 @@ public static class PlayerSettings
     public const float MaxCooldown = 999f;
     public const float MinMoveSpeed = 1f;
     public const float MaxMoveSpeed = 100f;
+    public const int MAXLEVEL = 10;
 }

@@ -26,3 +26,15 @@ public struct PlayerFireBreathEnded
 {
 
 }
+
+public struct PlayerStatChanged
+{
+    public PlayerStatTypes type { get; private set; }
+    public float value { get; private set; }
+
+    public PlayerStatChanged(PlayerStatTypes type, float value)
+    {
+        this.type = type;
+        this.value = value;
+    }
+}

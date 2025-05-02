@@ -1,12 +1,17 @@
+using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 
 public class PlayerStat
 {
+
     private float baseValue;
     private List<PlayerStatModifier> modifiers = new();
 
     private bool isChanged;
     private float lastValue;
+
+    public Action OnValueChanged;
 
     public PlayerStat(float _baseValue)
     {
@@ -18,18 +23,21 @@ public class PlayerStat
     {
         this.baseValue = _baseValue;
         isChanged = true;
+        OnValueChanged?.Invoke();
     }
 
     public void AddModifier(PlayerStatModifier modifier)
     {
         modifiers.Add(modifier);
         isChanged = true;
+        OnValueChanged?.Invoke();
     }
 
     public void RemoveModifier(PlayerStatModifier modifier)
     {
         modifiers.Remove(modifier);
         isChanged = true;
+        OnValueChanged?.Invoke();
     }
 
     public float GetValue()
