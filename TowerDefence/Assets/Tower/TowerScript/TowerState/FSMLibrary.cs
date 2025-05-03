@@ -73,6 +73,13 @@ public class FSMLibrary
     public EWSpecialState ewSpecialState { get; private set; }
     #endregion
 
+    #region Otto State
+    public OIdleState oIdleState { get; private set; }
+    public OMoveState oMoveState { get; private set; }
+    public OMeleeState oMeleeState { get; private set; }
+    public ORangeState oRangeState { get; private set; }
+    public OSpecialState oSpecialState { get; private set; }
+    #endregion
 
     public FSMLibrary(Tower tower,TowerFSM towerFSM)
     {
@@ -131,5 +138,11 @@ public class FSMLibrary
         eSpecialState = new ESpecialState(tower, towerFSM, "Special");
         efSpecialState = new EFSpecialState(tower, towerFSM, "Special");
         ewSpecialState = new EWSpecialState(tower, towerFSM, "Special");
+
+        oIdleState = new OIdleState(tower, towerFSM, "Idle");
+        oMoveState = new OMoveState(tower, towerFSM, "Move");
+        oMeleeState = new OMeleeState(tower, towerFSM, "Melee");
+        oRangeState = new ORangeState(tower, towerFSM, "Range");
+        oSpecialState = new OSpecialState(tower, towerFSM, "Special");
     }
 }
