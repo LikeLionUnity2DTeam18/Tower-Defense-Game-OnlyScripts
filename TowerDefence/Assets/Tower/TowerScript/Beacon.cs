@@ -9,7 +9,6 @@ public enum TowerType
     Spider,
     Darkmur,
     Element,
-    Orbs,
     Otto,
     Azikel,
     Eksyll,
@@ -69,6 +68,9 @@ public class Beacon : MonoBehaviour
                 case TowerType.Element:
                     SpawnTower(TowerType.Element);
                     break;
+                case TowerType.Otto:
+                    SpawnTower(TowerType.Otto);
+                    break;
             }
         }
     }
@@ -84,7 +86,7 @@ public class Beacon : MonoBehaviour
 
     private void OnDrawGizmos()
     {
-        Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(transform.position, radius);
+        /*Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(transform.position, radius);*/
     }
 }
