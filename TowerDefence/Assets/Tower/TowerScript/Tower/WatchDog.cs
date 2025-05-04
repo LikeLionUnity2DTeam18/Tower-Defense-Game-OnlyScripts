@@ -42,6 +42,7 @@ public class WatchDog : Tower
 
     public void CreateWave(Vector2 startPos, Vector2 targetPos)
     {
+        if(targetPos == null) return;
         Vector2 dir = (targetPos - startPos).normalized;
         float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
         GameObject test = SpawnWithStats(wave);

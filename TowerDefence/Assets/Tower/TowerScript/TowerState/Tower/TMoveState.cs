@@ -14,6 +14,7 @@ public class TMoveState : TowerState
     public override void Update()
     {
         base.Update();
+        tower.UpDown();
         if (tower.nearestMEnemy != null) towerFSM.ChangeState(tower.meleeState);
         else if (tower.nearestEnemy == null) towerFSM.ChangeState(tower.rangeState);
         tower.TowerMovement();

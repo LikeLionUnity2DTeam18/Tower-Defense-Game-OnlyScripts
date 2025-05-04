@@ -64,7 +64,7 @@ public class EyeDraw : MonoBehaviour
         }
         else
         {
-            index= Random.Range(9, 13);
+            index= Random.Range(9, 12);
         }
         return index;
     }
