@@ -1,9 +1,11 @@
 using UnityEngine;
+using static UnityEngine.Rendering.ProbeAdjustmentVolume;
 
 public class FElement_OnOff : TowerOnOff
 {
     ElementFire element;
-
+    [SerializeField] private ParticleSystem ps; // 파티클 시스템 연결
+    private ParticleSystem.ShapeModule shape;
     //크기조절
     private Vector3 initialScale;
     [SerializeField] private float scaleFactor = 1f;
@@ -17,12 +19,26 @@ public class FElement_OnOff : TowerOnOff
         base.Awake();
         element = GetComponentInParent<ElementFire>();
         initialScale = transform.localScale;
+
+        if (ps != null)
+            shape = ps.shape;
     }
 
     public override void Update()
     {
         var target = element?.nearestREnemy;
-        if (target == null) return;
+        if (target == null)
+        {
+            if (ps != null && ps.isPlaying)
+                ps.Stop();
+                ps.Clear();
+
+            return;
+        }
+
+        // 타겟 있으면 재생
+        if (ps != null && !ps.isPlaying)
+            ps.Play();
 
         //회전
         Vector2 dir = (target.transform.position - transform.position).normalized;
@@ -36,6 +52,14 @@ public class FElement_OnOff : TowerOnOff
         transform.localScale = s;
 
         damageTimer += Time.deltaTime;
+
+        if (ps != null)
+        {
+            ps.transform.position = transform.position;
+            ps.transform.rotation = transform.rotation;
+            shape.scale = new Vector3(s.x*2.5f, shape.scale.y, shape.scale.z);
+            shape.position = new Vector3(s.x * 1.5f, 0f, 0f);
+        }
     }
 
     protected void OnTriggerStay2D(Collider2D collision)

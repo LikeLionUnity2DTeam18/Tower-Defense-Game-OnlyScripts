@@ -33,7 +33,7 @@ public class Element_Splash : TowerSplash
 
     private IEnumerator Charge()
     {
-        yield return StartCoroutine(ChangeInner(0.5f, 0f));
+        StartCoroutine(ChangeInner(0.5f, 0f));
         yield return new WaitForSeconds(delayA);
         yield return StartCoroutine(ChangeOuter(0.5f, 0f));
     }
