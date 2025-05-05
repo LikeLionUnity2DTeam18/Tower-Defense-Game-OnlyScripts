@@ -81,6 +81,14 @@ public class FSMLibrary
     public OSpecialState oSpecialState { get; private set; }
     #endregion
 
+    #region Azikel State
+    public AIdleState aIdleState { get; private set; }
+    public AMoveState aMoveState { get; private set; }
+    public AMeleeState aMeleeState { get; private set; }
+    public ARangeState aRangeState { get; private set; }
+    public ASpecialState aSpecialState { get; private set; }
+    #endregion
+
     public FSMLibrary(Tower tower,TowerFSM towerFSM)
     {
         towerState = new TowerState(tower, towerFSM);
@@ -91,42 +99,55 @@ public class FSMLibrary
         rangeState = new TRangeState(tower, towerFSM, "Range");
         specialState = new TSpecialState(tower, towerFSM, "Special");*/
 
+        #region Deergod
         dIdleS = new DIdleS(tower, towerFSM, "Idle");
         dMoveS = new DMoveS(tower, towerFSM, "Move");
         dMeleeS = new DMeleeS(tower, towerFSM, "Melee");
         dRangeS = new DRangeS(tower, towerFSM, "Range");
         dSpecialS = new DSpecialS(tower, towerFSM, "Special");
+        #endregion
 
+        #region Guardian
         gIdleState = new GIdleState(tower, towerFSM, "Idle");
         gMoveState = new GMoveState(tower, towerFSM, "Move");
         gMeleeState = new GMeleeState(tower, towerFSM, "Melee");
         gRangeState = new GRangeState(tower, towerFSM, "Range");
         gSpecialState = new GSpecialState(tower, towerFSM, "Special");
+        #endregion
 
+        #region Hyem
         hIdleState = new HIdleState(tower, towerFSM, "Idle");
         hMoveState = new HMoveState(tower, towerFSM, "Move");
         hMeleeState = new HMeleeState(tower, towerFSM, "Melee");
         hRangeState = new HRangeState(tower, towerFSM, "Range");
         hSpecialState = new HSpecialState(tower, towerFSM, "Special");
+        #endregion
 
+        #region WatchDog
         wIdleState = new WIdleState(tower, towerFSM, "Idle");
         wMoveState = new WMoveState(tower, towerFSM, "Move");
         wMeleeState = new WMeleeState(tower, towerFSM, "Melee");
         wRangeState = new WRangeState(tower, towerFSM, "Range");
         wSpecialState = new WSpecialState(tower, towerFSM, "Special");
+        #endregion
 
+        #region Spider
         sIdleState = new SIdleState(tower, towerFSM, "Idle");
         sMoveState = new SMoveState(tower, towerFSM, "Move");
         sMeleeState = new SMeleeState(tower, towerFSM, "Melee");
         sRangeState = new SRangeState(tower, towerFSM, "Range");
         sSpecialState = new SSpecialState(tower, towerFSM, "Special");
+        #endregion
 
+        #region Darkmur
         dmIdleState = new DMIdleState(tower, towerFSM, "Idle");
         dmMoveState = new DMMoveState(tower, towerFSM, "Move");
         dmMeleeState = new DMMeleeState(tower, towerFSM, "Melee");
         dmRangeState = new DMRangeState(tower, towerFSM, "Range");
         dmSpecialState = new DMSpecialState(tower, towerFSM, "Special");
+        #endregion
 
+        #region Element
         eIdleState = new EIdleState(tower, towerFSM, "Idle");
         efIdleState = new EFIdleState(tower, towerFSM, "Idle");
         ewIdleState = new EWIdleState(tower, towerFSM, "Idle");
@@ -138,11 +159,22 @@ public class FSMLibrary
         eSpecialState = new ESpecialState(tower, towerFSM, "Special");
         efSpecialState = new EFSpecialState(tower, towerFSM, "Special");
         ewSpecialState = new EWSpecialState(tower, towerFSM, "Special");
+        #endregion
 
+        #region Otto
         oIdleState = new OIdleState(tower, towerFSM, "Idle");
         oMoveState = new OMoveState(tower, towerFSM, "Move");
         oMeleeState = new OMeleeState(tower, towerFSM, "Melee");
         oRangeState = new ORangeState(tower, towerFSM, "Range");
         oSpecialState = new OSpecialState(tower, towerFSM, "Special");
+        #endregion
+
+        #region Azikel
+        aIdleState = new AIdleState(tower, towerFSM, "Idle");
+        aMoveState = new AMoveState(tower, towerFSM, "Move");
+        aMeleeState = new AMeleeState(tower, towerFSM, "Melee");
+        aRangeState = new ARangeState(tower, towerFSM, "Range");
+        aSpecialState = new ASpecialState(tower, towerFSM, "Special");
+        #endregion
     }
 }
