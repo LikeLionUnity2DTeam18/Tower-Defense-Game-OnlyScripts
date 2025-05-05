@@ -8,6 +8,7 @@ public class Element : Tower
     [SerializeField] public ElementFire fire;
     [SerializeField] public ElementWater water;
     [SerializeField] public GameObject bomb;
+    [SerializeField] public GameObject vfx;
     public override void Awake()
     {
         base.Awake();
@@ -36,6 +37,8 @@ public class Element : Tower
         transform.position = collisionPoint;
         towerFSM.ChangeState(specialState);
         bomb.SetActive(true);
+        GameObject t= PoolManager.Instance.Get(vfx);
+        t.transform.position = collisionPoint;
     }
 
     public override void Update()
