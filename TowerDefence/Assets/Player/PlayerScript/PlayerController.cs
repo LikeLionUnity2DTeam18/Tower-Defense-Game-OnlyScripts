@@ -114,8 +114,8 @@ public class PlayerController : MonoBehaviour
 
     public void UseSkill(Skill _skill)
     {
-        // 미리보기 상태가 없는 스킬인 경우 바로 사용 
-        if(CanUseSkill && !_skill.hasPreviewState)
+        // 미리보기 상태가 없는 스킬이거나 스마트캐스팅 상태 경우 바로 사용 
+        if(CanUseSkill && (!_skill.hasPreviewState || _skill.SmartCasting))
         {
             _skill.TryUseSkillWithoutPreview();
         }

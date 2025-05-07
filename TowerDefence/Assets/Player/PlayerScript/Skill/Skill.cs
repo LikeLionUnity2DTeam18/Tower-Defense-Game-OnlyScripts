@@ -22,6 +22,8 @@ public abstract class Skill : MonoBehaviour
     [Header("스킬 공통 정보")]
     [SerializeField] protected float cooldown;
     [SerializeField] protected float skillRange;
+    [SerializeField] protected bool smartCasting = false;
+    public bool SmartCasting => smartCasting;
     public float cooldownTimer { get; protected set; } = 0;
     public bool hasPreviewState { get; protected set; } = true;
     protected bool isPreviewState = false;
@@ -160,7 +162,7 @@ public abstract class Skill : MonoBehaviour
 
     public virtual bool TryUseSkillWithoutPreview()
     {
-        if (hasPreviewState) return false;
+        //if (hasPreviewState) return false;
 
         skillCenterPosition = previewPos;
         UseSkill();
