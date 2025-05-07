@@ -11,9 +11,9 @@ public enum TowerType
     Element,
     Otto,
     Azikel,
+    Zylad,
     Eksyll,
     Golem,
-    Zylad,
 }
 
 public class Beacon : MonoBehaviour
@@ -73,6 +73,9 @@ public class Beacon : MonoBehaviour
                     break;
                 case TowerType.Azikel:
                     SpawnTower(TowerType.Azikel);
+                    break;
+                case TowerType.Zylad:
+                    SpawnTower(TowerType.Zylad);
                     break;
             }
         }
