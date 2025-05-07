@@ -1,3 +1,4 @@
+using System.Text;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -41,7 +42,7 @@ public class PlayerBindShotSkill : Skill
         base.UseSkill();
 
         CreateCasterSkillEffect();
-        player.stateMachine.ChangeState(player.bindShotState);
+        player.StateMachine.ChangeState(player.BindShotState);
     }
 
     /// <summary>
@@ -70,28 +71,38 @@ public class PlayerBindShotSkill : Skill
         go.GetComponent<BindShotController>().SetBindShot(skillCenterPosition, Damage, BindTime, previewDirection);
     }
 
-    public void AddModifier(BindShotStatTypes type, PlayerStatModifier modifier)
-    {
-        PlayerStat targetStat = GetStatType(type);
-
-        targetStat?.AddModifier(modifier);
-    }
-
-
-    public void RemoveModifier(BindShotStatTypes type, PlayerStatModifier modifier)
-    {
-        PlayerStat targetStat = GetStatType(type);
-
-        targetStat?.RemoveModifier(modifier);
-    }
-    private PlayerStat GetStatType(BindShotStatTypes type)
+    public override PlayerStat GetStatByType(PlayerStatTypes type)
     {
         return type switch
         {
-            BindShotStatTypes.Damage => damage,
-            BindShotStatTypes.BindTime => bindTime,
-            BindShotStatTypes.CastingTime => castingTime,
+            PlayerStatTypes.BindShotDamage => damage,
+            PlayerStatTypes.BindShotBindTime => bindTime,
+            PlayerStatTypes.BindShotCastingTime => castingTime,
             _ => null
         };
+    }
+
+    public override string GetTooltipText()
+    {
+        if (tooltipText == null)
+            SetTooltipText();
+        return tooltipText;
+    }
+
+    public override void SetTooltipText()
+    {
+
+        var sb = new StringBuilder();
+
+        // 스킬 이름
+        sb.AppendLine($"<b>구속의 사격</b>");
+        sb.AppendLine($"쿨타임: {cooldown}초");
+        sb.AppendLine(); // 빈 줄
+        // 스킬 스탯
+        sb.AppendLine($"데미지: {Damage}");
+        sb.AppendLine($"속박 시간: {BindTime}초");
+        sb.AppendLine($"시전 시간: {CastingTime}초");
+
+        tooltipText = sb.ToString();
     }
 }

@@ -27,7 +27,7 @@ public class PlayerAttackReadyState : PlayerCanUseSkillState
             var nearestTarget = FindTargetInRange(player.BaseAttackRange); // 기본공격 사정거리 안의 대상 확인
             if (nearestTarget != null) // 적이 있다면
             {
-                stateMachine.ChangeState(player.attackState);
+                stateMachine.ChangeState(player.AttackState);
             }
 
             //if (Input.GetKeyDown(KeyCode.F))
@@ -41,6 +41,6 @@ public class PlayerAttackReadyState : PlayerCanUseSkillState
 
     protected virtual bool IsBaseAttackReady()
     {
-        return player.baseAttackTimer <= 0f;
+        return player.BaseAttackTimer <= 0f;
     }
 }

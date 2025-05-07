@@ -25,10 +25,10 @@ public class PlayerMoveState : PlayerAttackReadyState
     public override void Update()
     {
         base.Update();
-        if (!player.hasDestination)
+        if (!player.HasDestination)
         {
             rb.linearVelocity = Vector2.zero;
-            stateMachine.ChangeState(player.idleState);
+            stateMachine.ChangeState(player.IdleState);
         }
 
 

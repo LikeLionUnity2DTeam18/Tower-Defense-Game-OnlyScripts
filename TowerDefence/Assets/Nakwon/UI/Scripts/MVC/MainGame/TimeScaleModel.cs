@@ -32,6 +32,7 @@ public class TimeScaleModel
                 Debug.Log("배속 고장났다!!!");
                 break;
         }
+        
         // Unity의 시간 배속을 반영
         Time.timeScale = (int)speedType;
         Debug.Log($"Trigger 배속: {(int)speedType} ({speedType})");

@@ -1,3 +1,4 @@
+using System.Text;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -43,26 +44,36 @@ public class PlayerWallSkill : Skill
         wallScript.SetWall(skillCenterPosition, MaxHP, Duration, isDirectionSE);
     }
 
-    public void AddModifier(WallSkillStatTypes type, PlayerStatModifier modifier)
-    {
-        PlayerStat targetStat = GetTargetStat(type);
 
-        targetStat?.AddModifier(modifier);
-    }
-
-    public void RemoveModifier(WallSkillStatTypes type, PlayerStatModifier modifier)
-    {
-        PlayerStat targetStat = GetTargetStat(type);
-
-        targetStat?.RemoveModifier(modifier);
-    }
-    private PlayerStat GetTargetStat(WallSkillStatTypes type)
+    public override PlayerStat GetStatByType(PlayerStatTypes type)
     {
         return type switch
         {
-            WallSkillStatTypes.MaxHP => maxHP,
-            WallSkillStatTypes.Duration => duration,
+            PlayerStatTypes.WallMaxHP => maxHP,
+            PlayerStatTypes.WallDuration => duration,
             _ => null
         };
+    }
+    public override string GetTooltipText()
+    {
+        if (tooltipText == null)
+            SetTooltipText();
+        return tooltipText;
+    }
+
+    public override void SetTooltipText()
+    {
+
+        var sb = new StringBuilder();
+
+        // 스킬 이름
+        sb.AppendLine($"<b>벽 생성</b>");
+        sb.AppendLine($"쿨타임: {cooldown}초");
+        sb.AppendLine(); // 빈 줄
+        // 스킬 스탯
+        sb.AppendLine($"벽 체력: {MaxHP}");
+        sb.AppendLine($"지속시간: {Duration}초");
+
+        tooltipText = sb.ToString();
     }
 }

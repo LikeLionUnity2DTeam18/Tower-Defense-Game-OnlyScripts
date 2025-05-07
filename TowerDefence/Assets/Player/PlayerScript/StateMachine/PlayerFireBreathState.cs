@@ -33,13 +33,13 @@ public class PlayerFireBreathState : PlayerMovableState
     /// </summary>
     private void SwitchAnimation()
     {
-        if (player.hasDestination && !isMoving)
+        if (player.HasDestination && !isMoving)
         {
             anim.SetBool(PlayerAnimationParams.Idle, false);
             anim.SetBool(PlayerAnimationParams.Move,true);
             isMoving = true;
         }
-        if(!player.hasDestination && isMoving)
+        if(!player.HasDestination && isMoving)
         {
             anim.SetBool(PlayerAnimationParams.Idle, true);
             anim.SetBool(PlayerAnimationParams.Move, false);
@@ -52,7 +52,7 @@ public class PlayerFireBreathState : PlayerMovableState
     /// </summary>
     private void InitializeAnimation()
     {
-        isMoving = player.hasDestination;
+        isMoving = player.HasDestination;
         if(isMoving)
             anim.SetBool(PlayerAnimationParams.Move, true);
         else
@@ -62,6 +62,6 @@ public class PlayerFireBreathState : PlayerMovableState
 
     private void OnFireBreathEnd(PlayerFireBreathEnded _)
     {
-        stateMachine.ChangeState(player.idleState);
+        stateMachine.ChangeState(player.IdleState);
     }
 }

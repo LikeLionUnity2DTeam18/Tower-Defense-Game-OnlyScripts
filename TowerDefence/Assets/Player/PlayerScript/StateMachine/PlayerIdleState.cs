@@ -30,7 +30,7 @@ public class PlayerIdleState : PlayerAttackReadyState
             return;
 
         // 이동중일땐 move로
-        if(player.hasDestination)
-            stateMachine.ChangeState(player.moveState);
+        if(player.HasDestination)
+            stateMachine.ChangeState(player.MoveState);
     }
 }
