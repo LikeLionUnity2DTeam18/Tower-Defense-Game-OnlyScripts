@@ -31,6 +31,8 @@ public class Element : Tower
         // 콜백 연결
         if (water != null)
             water.OnElementFused = HandleFusion;
+        if (fire != null)
+            fire.OnElementFused = HandleFusion;
     }
     public void HandleFusion(Vector3 collisionPoint)
     {

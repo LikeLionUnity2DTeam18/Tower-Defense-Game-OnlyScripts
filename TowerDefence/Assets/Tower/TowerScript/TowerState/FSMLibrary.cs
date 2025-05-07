@@ -89,6 +89,14 @@ public class FSMLibrary
     public ASpecialState aSpecialState { get; private set; }
     #endregion
 
+    #region Zyald State
+    public ZIdleState zIdleState { get; private set; }
+    public ZMoveState zMoveState { get; private set; }
+    public ZMeleeState zMeleeState { get; private set; }
+    public ZRangeState zRangeState { get; private set; }
+    public ZSpecialState zSpecialState { get; private set; }
+    #endregion
+
     public FSMLibrary(Tower tower,TowerFSM towerFSM)
     {
         towerState = new TowerState(tower, towerFSM);
@@ -175,6 +183,14 @@ public class FSMLibrary
         aMeleeState = new AMeleeState(tower, towerFSM, "Melee");
         aRangeState = new ARangeState(tower, towerFSM, "Range");
         aSpecialState = new ASpecialState(tower, towerFSM, "Special");
+        #endregion
+
+        #region Zylad
+        zIdleState = new ZIdleState(tower, towerFSM, "Idle");
+        zMoveState = new ZMoveState(tower, towerFSM, "Move");
+        zMeleeState = new ZMeleeState(tower, towerFSM, "Melee");
+        zRangeState = new ZRangeState(tower, towerFSM, "Range");
+        zSpecialState = new ZSpecialState(tower, towerFSM, "Special");
         #endregion
     }
 }
