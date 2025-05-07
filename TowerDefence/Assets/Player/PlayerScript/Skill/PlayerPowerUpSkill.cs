@@ -1,10 +1,12 @@
 using System.Text;
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.UIElements;
 
-public enum PowerUpSkillStatTypes { damageUpAmount, duration, aoe}
 
+
+
+/// <summary>
+/// 타워 강화 스킬
+/// </summary>
 public class PlayerPowerUpSkill : Skill
 {
 
@@ -45,6 +47,11 @@ public class PlayerPowerUpSkill : Skill
         aoe = new PlayerStat(initial_Aoe);
     }
 
+    /// <summary>
+    /// 미리보기 상태는 있는데 미리보기 프리펩은 없는 특이한 스킬이라 메서드 재정의
+    /// 지금 생각해보면 부모 메서드에서 preview 널체크로 어떻게 하면 됐을것같음..
+    /// </summary>
+    /// <returns></returns>
     public override bool TryPreviewSkill()
     {
         if (CanUseSkill() && !isPreviewState)
@@ -59,6 +66,9 @@ public class PlayerPowerUpSkill : Skill
         return false;
     }
 
+    /// <summary>
+    /// /// 미리보기 상태는 있는데 미리보기 프리펩은 없는 특이한 스킬이라 메서드 재정의
+    /// </summary>
     protected override void UseSkill()
     {
         base.UseSkill();
@@ -67,7 +77,12 @@ public class PlayerPowerUpSkill : Skill
         obj.SetPowerUp(player.transform.position, DamageUpAmount, Duration, Aoe);
     }
 
-
+    /// <summary>
+    /// 플레이어 스탯 타입으로 스탯 return
+    /// 다음에는 skillmanager에서 관리할수있게 해야겠음..
+    /// </summary>
+    /// <param name="type"></param>
+    /// <returns></returns>
     public override PlayerStat GetStatByType(PlayerStatTypes type)
     {
         return type switch
@@ -79,6 +94,10 @@ public class PlayerPowerUpSkill : Skill
         };
     }
 
+    /// <summary>
+    /// 툴팁 텍스트 get
+    /// </summary>
+    /// <returns></returns
     public override string GetTooltipText()
     {
         if (tooltipText == null)
@@ -86,6 +105,9 @@ public class PlayerPowerUpSkill : Skill
         return tooltipText;
     }
 
+    /// <summary>
+    ///  StringBuilder를 이용해 툴팁 문자열 생성
+    /// </summary>
     public override void SetTooltipText()
     {
 

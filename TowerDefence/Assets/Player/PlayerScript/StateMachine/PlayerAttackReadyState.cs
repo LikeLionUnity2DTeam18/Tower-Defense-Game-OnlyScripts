@@ -30,10 +30,6 @@ public class PlayerAttackReadyState : PlayerCanUseSkillState
                 stateMachine.ChangeState(player.AttackState);
             }
 
-            //if (Input.GetKeyDown(KeyCode.F))
-            //{
-            //    stateMachine.ChangeState(player.attackState);
-            //}
         }
     }
 

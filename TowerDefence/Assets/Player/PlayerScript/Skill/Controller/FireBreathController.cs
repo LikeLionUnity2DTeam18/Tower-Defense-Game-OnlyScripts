@@ -1,7 +1,8 @@
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.UIElements;
 
+/// <summary>
+/// 화염 숨결 이펙트
+/// </summary>
 public class FireBreathController : PlayerSkillEntity, ISkillAnimationEvents
 {
 
