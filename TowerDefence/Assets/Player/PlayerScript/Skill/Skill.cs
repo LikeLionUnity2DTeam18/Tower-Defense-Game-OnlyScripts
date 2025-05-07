@@ -1,5 +1,8 @@
 using UnityEngine;
 
+/// <summary>
+/// 스킬 공통으로 상속할 베이스
+/// </summary>
 public abstract class Skill : MonoBehaviour
 {
     protected PlayerController player;
@@ -22,6 +25,8 @@ public abstract class Skill : MonoBehaviour
     [Header("스킬 공통 정보")]
     [SerializeField] protected float cooldown;
     [SerializeField] protected float skillRange;
+    [SerializeField] protected bool smartCasting = false;
+    public bool SmartCasting => smartCasting;
     public float cooldownTimer { get; protected set; } = 0;
     public bool hasPreviewState { get; protected set; } = true;
     protected bool isPreviewState = false;
@@ -158,9 +163,14 @@ public abstract class Skill : MonoBehaviour
         return false;
     }
 
+    /// <summary>
+    /// 미리보기 없이 바로 스킬 사용
+    /// FirebReath 또는 스마트캐스팅 설정시 사용 
+    /// </summary>
+    /// <returns></returns>
     public virtual bool TryUseSkillWithoutPreview()
     {
-        if (hasPreviewState) return false;
+        //if (hasPreviewState) return false;
 
         skillCenterPosition = previewPos;
         UseSkill();
@@ -188,7 +198,11 @@ public abstract class Skill : MonoBehaviour
         return Vector2.Distance(mousePos, player.transform.position) <= skillRange;
     }
 
-
+    /// <summary>
+    /// 플레이어 스탯 타입에 해당하는 스탯에 모디파이어 추가
+    /// </summary>
+    /// <param name="type"></param>
+    /// <param name="modifier"></param>
     public void AddModifier(PlayerStatTypes type, PlayerStatModifier modifier)
     {
         PlayerStat targetStat = GetStatByType(type);
@@ -198,7 +212,11 @@ public abstract class Skill : MonoBehaviour
         SetTooltipText();
     }
 
-
+    /// <summary>
+    /// 플레이어 스탯 타입에 해당하는 스탯에서 모디파이어 제거
+    /// </summary>
+    /// <param name="type"></param>
+    /// <param name="modifier"></param>
     public void RemoveModifier(PlayerStatTypes type, PlayerStatModifier modifier)
     {
         PlayerStat targetStat = GetStatByType(type);
@@ -207,9 +225,14 @@ public abstract class Skill : MonoBehaviour
 
         SetTooltipText();
     }
-    public abstract PlayerStat GetStatByType(PlayerStatTypes type);
 
+    // 추상함수 선언
+
+    //타입에 맞는 스탯 반환
+    public abstract PlayerStat GetStatByType(PlayerStatTypes type);
+    // 툴팁 텍스트 get
     public abstract string GetTooltipText();
+    // StringBuilder를 이용해 툴팁 문자열 생성
     public abstract void SetTooltipText();
 
 

@@ -1,9 +1,10 @@
 using System.Text;
 using UnityEngine;
-using UnityEngine.UIElements;
 
-public enum BindShotStatTypes { Damage, BindTime, CastingTime}
 
+/// <summary>
+/// 구속의 사격 스킬
+/// </summary>
 public class PlayerBindShotSkill : Skill
 {
     [Header("프리펩")]
@@ -42,7 +43,7 @@ public class PlayerBindShotSkill : Skill
         base.UseSkill();
 
         CreateCasterSkillEffect();
-        player.StateMachine.ChangeState(player.BindShotState);
+        player.StateMachine.ChangeState(player.BindShotState); // 시전시간동안 멈추고 조작x
     }
 
     /// <summary>
@@ -71,6 +72,12 @@ public class PlayerBindShotSkill : Skill
         go.GetComponent<BindShotController>().SetBindShot(skillCenterPosition, Damage, BindTime, previewDirection);
     }
 
+    /// <summary>
+    /// 플레이어 스탯 타입으로 스탯 return
+    /// 다음에는 skillmanager에서 관리할수있게 해야겠음..
+    /// </summary>
+    /// <param name="type"></param>
+    /// <returns></returns>
     public override PlayerStat GetStatByType(PlayerStatTypes type)
     {
         return type switch
@@ -82,6 +89,10 @@ public class PlayerBindShotSkill : Skill
         };
     }
 
+    /// <summary>
+    /// 툴팁 텍스트 get
+    /// </summary>
+    /// <returns></returns>
     public override string GetTooltipText()
     {
         if (tooltipText == null)
@@ -89,6 +100,9 @@ public class PlayerBindShotSkill : Skill
         return tooltipText;
     }
 
+    /// <summary>
+    /// StringBuilder를 이용해 툴팁 문자열 생성
+    /// </summary>
     public override void SetTooltipText()
     {
 

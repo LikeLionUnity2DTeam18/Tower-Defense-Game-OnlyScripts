@@ -1,9 +1,12 @@
 using UnityEngine;
 
+/// <summary>
+/// 구속의 사격 시 플레이어 머리 위에 생성될 시전효과
+/// </summary>
 public class BindShotCasterEffectController : MonoBehaviour, ISkillAnimationEvents
 {
     private bool isReleased = false;
-    PlayerBindShotSkill skill;
+    PlayerBindShotSkill bindShotSkill;
 
     private void OnEnable()
     {
@@ -12,18 +15,21 @@ public class BindShotCasterEffectController : MonoBehaviour, ISkillAnimationEven
         transform.rotation = Quaternion.identity;
     }
 
+    /// <summary>
+    /// 효과 생성 시 필요한 정보 초기화
+    /// </summary>
+    /// <param name="position"></param>
+    /// <param name="isEast"></param>
+    /// <param name="skill"></param>
     public void SetEffect(Vector2 position, bool isEast, PlayerBindShotSkill skill)
     {
         transform.position = position;
         if(!isEast)
         {
-            //Vector3 tmpScale = transform.localScale;
-            //tmpScale.x *= -1;
-            //transform.localScale = tmpScale;
             transform.Rotate(0, 180, 0);
         }
 
-        this.skill = skill;
+        this.bindShotSkill = skill;
     }
 
     private void Release()
@@ -36,9 +42,10 @@ public class BindShotCasterEffectController : MonoBehaviour, ISkillAnimationEven
 
     }
 
+    // 자식 애니메이터에서 애니메이션 이벤트로 사용할 메서드
     public void OnCasterEffectTrigger()
     {
-        skill.CreateSkillObject();
+        bindShotSkill.CreateSkillObject();
     }
 
     public void OnAnimationEnd()

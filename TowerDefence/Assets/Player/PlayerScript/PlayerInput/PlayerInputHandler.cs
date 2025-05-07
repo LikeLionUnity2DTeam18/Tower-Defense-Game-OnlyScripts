@@ -1,6 +1,10 @@
 using System;
 using UnityEngine;
 
+/// <summary>
+/// 유니티의 신규 인풋시스템을 사용하기 위한 클래스
+/// 사용 할 입력 키 등록
+/// </summary>
 public class PlayerInputHandler : MonoBehaviour
 {
     private PlayerControls inputActions;

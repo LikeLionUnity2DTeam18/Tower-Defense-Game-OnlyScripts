@@ -1,5 +1,8 @@
 using UnityEngine;
 
+/// <summary>
+/// 구속의 사격 이펙트 및 데미지 판정을 위한 오브젝트
+/// </summary>
 public class BindShotController : PlayerSkillEntity
 {
     private float damage;
@@ -15,6 +18,13 @@ public class BindShotController : PlayerSkillEntity
         anim = GetComponentInChildren<Animator>();
     }
 
+    /// <summary>
+    /// 초기화
+    /// </summary>
+    /// <param name="position"></param>
+    /// <param name="damage"></param>
+    /// <param name="bindTime"></param>
+    /// <param name="dir"></param>
     public void SetBindShot(Vector2 position, float damage, float bindTime, Direction4Custom dir)
     {
         transform.position = position;

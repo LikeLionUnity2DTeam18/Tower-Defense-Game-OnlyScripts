@@ -1,3 +1,6 @@
+/// <summary>
+/// 쿨타임 상하한 등 수치를 상수로 정리
+/// </summary>
 public static class PlayerSettings
 {
     public const float MinCooldown = 0.05f;

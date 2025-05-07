@@ -1,5 +1,8 @@
 using UnityEngine;
 
+/// <summary>
+/// 스킬 미리보기에 붙일 스크립트
+/// </summary>
 public class PlayerSkillPreview : MonoBehaviour
 {
     private void OnEnable()

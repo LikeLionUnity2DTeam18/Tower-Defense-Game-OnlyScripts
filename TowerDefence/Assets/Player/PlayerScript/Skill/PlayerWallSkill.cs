@@ -2,7 +2,9 @@ using System.Text;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-public enum WallSkillStatTypes { MaxHP, Duration}
+/// <summary>
+/// 벽 생성 스킬
+/// </summary>
 public class PlayerWallSkill : Skill
 {
     [Header("벽 정보")]
@@ -16,10 +18,6 @@ public class PlayerWallSkill : Skill
     public float Duration => duration.GetValue();
 
 
-    public override bool TryPreviewSkill()
-    {
-        return base.TryPreviewSkill();
-    }
 
     protected override void Start()
     {
@@ -44,7 +42,12 @@ public class PlayerWallSkill : Skill
         wallScript.SetWall(skillCenterPosition, MaxHP, Duration, isDirectionSE);
     }
 
-
+    /// <summary>
+    /// 플레이어 스탯 타입으로 스탯 return
+    /// 다음에는 skillmanager에서 관리할수있게 해야겠음..
+    /// </summary>
+    /// <param name="type"></param>
+    /// <returns></returns>
     public override PlayerStat GetStatByType(PlayerStatTypes type)
     {
         return type switch
@@ -54,6 +57,10 @@ public class PlayerWallSkill : Skill
             _ => null
         };
     }
+    /// <summary>
+    /// 툴팁 텍스트 get
+    /// </summary>
+    /// <returns></returns>
     public override string GetTooltipText()
     {
         if (tooltipText == null)
@@ -61,6 +68,9 @@ public class PlayerWallSkill : Skill
         return tooltipText;
     }
 
+    /// <summary>
+    /// StringBuilder를 이용해 툴팁 문자열 생성
+    /// </summary>
     public override void SetTooltipText()
     {
 

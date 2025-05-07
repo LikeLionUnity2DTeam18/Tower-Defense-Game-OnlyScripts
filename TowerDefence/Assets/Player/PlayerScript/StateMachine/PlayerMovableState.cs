@@ -1,6 +1,9 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 
+/// <summary>
+/// 좌클릭으로 이동이 가능한 상태 
+/// </summary>
 public class PlayerMovableState : PlayerState
 {
 

@@ -1,6 +1,9 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 
+/// <summary>
+/// 플레이어
+/// </summary>
 public class PlayerController : MonoBehaviour
 {
     #region 컴포넌트 선언
@@ -30,6 +33,9 @@ public class PlayerController : MonoBehaviour
     public GameObject BaseAttack => baseAttack;
     public float BaseAttackTimer { get; private set; } = 0f;
     public void ResetBaseAttackTimer() => BaseAttackTimer = 1 / BaseAttackSpeed;
+
+
+    private System.Action CancelPreviewLamda; //우클릭에 CancelPreview()를 등록/해제 하기 위한 델리게이트
 
 
     #region 플레이어 스탯
@@ -86,13 +92,25 @@ public class PlayerController : MonoBehaviour
 
     #region 이동 목표 지점 관리
 
+    /// <summary>
+    /// 플레이어가 바라보는 방향을 설정하는 메서드
+    /// </summary>
+    /// <param name="dir"></param>
     public void SetLastDirection(Direction4Custom dir) => LastDir = dir;
+
+    /// <summary>
+    /// 이동 입력 시 이동할 목적지 설정
+    /// </summary>
+    /// <param name="_destination"></param>
     public void SetDestination(Vector2 _destination)
     {
         HasDestination = true;
         Destination = _destination;
     }
 
+    /// <summary>
+    /// 목적지 제거 주로 목적지에 도착한 경우
+    /// </summary>
     public void ResetDestination()
     {
         HasDestination = false;
@@ -110,12 +128,15 @@ public class PlayerController : MonoBehaviour
 
 
 
-    private System.Action CancelPreviewLamda;
-
+    /// <summary>
+    /// 해당 스킬 사용
+    /// 호출은 스킬매니저에 있는 q,w,e,rSkill 을 파라미터로 사용
+    /// </summary>
+    /// <param name="_skill"></param>
     public void UseSkill(Skill _skill)
     {
-        // 미리보기 상태가 없는 스킬인 경우 바로 사용 
-        if(CanUseSkill && !_skill.hasPreviewState)
+        // 미리보기 상태가 없는 스킬이거나 스마트캐스팅 상태 경우 바로 사용 
+        if(CanUseSkill && (!_skill.hasPreviewState || _skill.SmartCasting))
         {
             _skill.TryUseSkillWithoutPreview();
         }
@@ -137,6 +158,10 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// 미리보기 상태에서 벗어나기
+    /// </summary>
+    /// <param name="_skill"></param>
     private void CancelPreview(Skill _skill)
     {
         Input.OnRightClick -= CancelPreviewLamda;
@@ -144,6 +169,9 @@ public class PlayerController : MonoBehaviour
         CanUseSkill = true;
     }
 
+    /// <summary>
+    /// 매 프레임 마우스 위치 갱신
+    /// </summary>
     protected virtual void UpdateMousePos()
     {
         Vector2 screenMouse = Mouse.current.position.ReadValue();
