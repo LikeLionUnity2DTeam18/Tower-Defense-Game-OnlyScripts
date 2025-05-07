@@ -30,7 +30,7 @@ public class GoldPopUp : MonoBehaviour
            .Join(text.DOFade(0f, 0.5f))                         // 동시에 1초 동안 페이드아웃
            .OnComplete(() => Destroy(popup));                // 끝나면 삭제
     }
-
+    
     private void OnMonsterDied(MonsterDied evt)
     {
         CreateMoneyPopup(evt.Position, evt.RewardGold);
