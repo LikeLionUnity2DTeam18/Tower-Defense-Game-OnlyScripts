@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class Skill : MonoBehaviour
+public abstract class Skill : MonoBehaviour
 {
     protected PlayerController player;
     protected PlayerInputHandler input;
@@ -8,6 +8,9 @@ public class Skill : MonoBehaviour
     protected Vector2 mousePos;
     protected Vector2 previewPos;
     protected Vector2 skillCenterPosition;
+
+    protected string tooltipText;
+    protected PlayerStatDisplayNamesSO def;
 
     [Header("프리펩")]
     [SerializeField] protected GameObject previewPrefab;
@@ -30,7 +33,7 @@ public class Skill : MonoBehaviour
     protected virtual void Start()
     {
         player = PlayerManager.Instance.Player;
-        input = player.input;
+        input = player.Input;
     }
 
 
@@ -41,7 +44,7 @@ public class Skill : MonoBehaviour
 
         UpdateDisplayPreview();
         UpdateSkillRangeDisplay();
-        mousePos = player.mousePos;
+        mousePos = player.MousePos;
     }
 
     public virtual bool CanUseSkill()
@@ -170,6 +173,7 @@ public class Skill : MonoBehaviour
     protected virtual void UseSkill()
     {
         Debug.Log("스킬 사용 완료");
+        Debug.Log(GetTooltipText());
         cooldownTimer = cooldown;
     }
 
@@ -183,5 +187,30 @@ public class Skill : MonoBehaviour
     {
         return Vector2.Distance(mousePos, player.transform.position) <= skillRange;
     }
+
+
+    public void AddModifier(PlayerStatTypes type, PlayerStatModifier modifier)
+    {
+        PlayerStat targetStat = GetStatByType(type);
+
+        targetStat?.AddModifier(modifier);
+
+        SetTooltipText();
+    }
+
+
+    public void RemoveModifier(PlayerStatTypes type, PlayerStatModifier modifier)
+    {
+        PlayerStat targetStat = GetStatByType(type);
+
+        targetStat?.RemoveModifier(modifier);
+
+        SetTooltipText();
+    }
+    public abstract PlayerStat GetStatByType(PlayerStatTypes type);
+
+    public abstract string GetTooltipText();
+    public abstract void SetTooltipText();
+
 
 }

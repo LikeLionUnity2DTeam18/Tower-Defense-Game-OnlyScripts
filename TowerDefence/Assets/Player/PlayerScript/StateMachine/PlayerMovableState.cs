@@ -34,13 +34,13 @@ public class PlayerMovableState : PlayerState
 
     private void HandleMove()
     {
-        if (player.hasDestination)
+        if (player.HasDestination)
         {
-            direction = (player.destination - (Vector2)player.transform.position).normalized;
+            direction = (player.Destination - (Vector2)player.transform.position).normalized;
             rb.linearVelocity = direction * player.MoveSpeed;
 
 
-            if (IsSamePosition(player.destination, player.transform.position))
+            if (IsSamePosition(player.Destination, player.transform.position))
             {
                 rb.linearVelocity = Vector2.zero;
                 player.ResetDestination();

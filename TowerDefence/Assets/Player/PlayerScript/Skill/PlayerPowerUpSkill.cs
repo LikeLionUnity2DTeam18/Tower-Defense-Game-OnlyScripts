@@ -1,5 +1,7 @@
+using System.Text;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public enum PowerUpSkillStatTypes { damageUpAmount, duration, aoe}
 
@@ -66,27 +68,37 @@ public class PlayerPowerUpSkill : Skill
     }
 
 
-    public void AddModifier(PowerUpSkillStatTypes type, PlayerStatModifier modifier)
-    {
-        PlayerStat targetStat = GetTargetStat(type);
-
-        targetStat?.AddModifier(modifier);
-    }
-
-    public void RemoveModifier(PowerUpSkillStatTypes type, PlayerStatModifier modifier)
-    {
-        PlayerStat targetStat = GetTargetStat(type);
-
-        targetStat?.RemoveModifier(modifier);
-    }
-    private PlayerStat GetTargetStat(PowerUpSkillStatTypes type)
+    public override PlayerStat GetStatByType(PlayerStatTypes type)
     {
         return type switch
         {
-            PowerUpSkillStatTypes.damageUpAmount => damageUpAmount,
-            PowerUpSkillStatTypes.duration => duration,
-            PowerUpSkillStatTypes.aoe => aoe,
+            PlayerStatTypes.PowerupDamageUpAmount => damageUpAmount,
+            PlayerStatTypes.PowerupDuration => duration,
+            PlayerStatTypes.PowerupAoe => aoe,
             _ => null
         };
+    }
+
+    public override string GetTooltipText()
+    {
+        if (tooltipText == null)
+            SetTooltipText();
+        return tooltipText;
+    }
+
+    public override void SetTooltipText()
+    {
+
+        var sb = new StringBuilder();
+
+        // 스킬 이름
+        sb.AppendLine($"<b>타워 강화</b>");
+        sb.AppendLine($"쿨타임: {cooldown}초");
+        sb.AppendLine(); // 빈 줄
+        // 스킬 스탯
+        sb.AppendLine($"타워 공격력 상승: {DamageUpAmount}");
+        sb.AppendLine($"지속시간: {Duration}초");
+
+        tooltipText = sb.ToString();
     }
 }

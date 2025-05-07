@@ -21,10 +21,10 @@ public class PlayerCanUseSkillState : PlayerMovableState
     {
         base.Enter();
 
-        qSkillLamda = () => player.UseSkill(player.skill.qskill);
-        wSkillLamda = () => player.UseSkill(player.skill.wskill);
-        eSkillLamda = () => player.UseSkill(player.skill.eskill);
-        rSkillLamda = () => player.UseSkill(player.skill.rskill);
+        qSkillLamda = () => player.UseSkill(player.Skill.qskill);
+        wSkillLamda = () => player.UseSkill(player.Skill.wskill);
+        eSkillLamda = () => player.UseSkill(player.Skill.eskill);
+        rSkillLamda = () => player.UseSkill(player.Skill.rskill);
 
         input.OnSkillQPressed += qSkillLamda;
         input.OnSkillWPressed += wSkillLamda;

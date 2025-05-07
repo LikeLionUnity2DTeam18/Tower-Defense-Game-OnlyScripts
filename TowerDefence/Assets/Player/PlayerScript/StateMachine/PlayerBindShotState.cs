@@ -9,10 +9,10 @@ public class PlayerBindShotState : PlayerState
     {
         base.Enter();
         rb.linearVelocity = Vector2.zero;
-        stateTimer = player.skill.qskill.CastingTime;
+        stateTimer = player.Skill.qskill.CastingTime;
         //SetAnimationDirection(player.skill.qskill.previewDirection);
-        Debug.Log(player.skill.qskill.previewDirection);
-        player.SetLastDirection(player.skill.qskill.previewDirection);
+        Debug.Log(player.Skill.qskill.previewDirection);
+        player.SetLastDirection(player.Skill.qskill.previewDirection);
     }
 
     public override void Exit()
@@ -26,7 +26,7 @@ public class PlayerBindShotState : PlayerState
 
         if(stateTimer <= 0)
         {
-            stateMachine.ChangeState(player.idleState);
+            stateMachine.ChangeState(player.IdleState);
         }
     }
 }

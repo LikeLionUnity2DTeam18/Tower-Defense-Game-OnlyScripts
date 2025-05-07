@@ -117,7 +117,7 @@ public class FireBreathController : PlayerSkillEntity, ISkillAnimationEvents
     /// </summary>
     private void UpdatePosotion()
     {
-        Direction4Custom playerDir = PlayerManager.Instance.Player.lastDir;
+        Direction4Custom playerDir = PlayerManager.Instance.Player.LastDir;
         Vector2 fireOffset = playerDir switch
         {
             Direction4Custom.NE => new Vector2(0.4f, 0.1f),
@@ -181,7 +181,7 @@ public class FireBreathController : PlayerSkillEntity, ISkillAnimationEvents
     /// </summary>
     private void RotateToPlayerDirection()
     {
-        Vector2 directionVector = DirectionHelper.ToDirectionVector(PlayerManager.Instance.Player.lastDir);
+        Vector2 directionVector = DirectionHelper.ToDirectionVector(PlayerManager.Instance.Player.LastDir);
         rotateAngle = Mathf.Atan2(directionVector.y, directionVector.x) * Mathf.Rad2Deg;
         transform.rotation = Quaternion.Euler(0, 0, rotateAngle);
     }
