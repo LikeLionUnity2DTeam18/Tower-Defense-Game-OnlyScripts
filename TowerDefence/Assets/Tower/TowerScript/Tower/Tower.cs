@@ -246,7 +246,6 @@ public class Tower : MonoBehaviour
     {   if(Beacon == null) return false;
         if (Vector2.Distance(transform.position, Beacon.transform.position) > Beacon.GetComponent<Beacon>().radius)
         {
-            dir = (transform.position - Beacon.transform.position).normalized;
             return true;
         }
         else

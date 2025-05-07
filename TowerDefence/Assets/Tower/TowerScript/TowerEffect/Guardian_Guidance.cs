@@ -9,7 +9,7 @@ public class Guardian_Guidance : TowerGuidance
     [SerializeField] private float timer = 10f;
     private bool isShrinking;
 
-    private float tickRate = 0.5f; // 데미지 주기 간격 (초)
+    private float tickRate = 1f; // 데미지 주기 간격 (초)
     private float tickTimer = 0f;
 
     public override void Update()

@@ -71,6 +71,9 @@ public class Beacon : MonoBehaviour
                 case TowerType.Otto:
                     SpawnTower(TowerType.Otto);
                     break;
+                case TowerType.Azikel:
+                    SpawnTower(TowerType.Azikel);
+                    break;
             }
         }
     }
