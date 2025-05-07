@@ -1,3 +1,4 @@
+using System.Text;
 using UnityEngine;
 
 public enum FireBreathStatTypes { Duration, Damage, DamageInterval, Length}
@@ -39,7 +40,7 @@ public class PlayerFireBreathSkill : Skill
     {
         base.UseSkill();
         CreateSkillObject();
-        player.stateMachine.ChangeState(player.breathState);
+        player.StateMachine.ChangeState(player.BreathState);
     }
 
     private void CreateSkillObject()
@@ -49,30 +50,40 @@ public class PlayerFireBreathSkill : Skill
         obj.SetFireBreath(skillCenterPosition, duration.GetValue(), damage.GetValue(), damageInterval.GetValue(), length.GetValue());
     }
 
-    public void AddModifier(FireBreathStatTypes type, PlayerStatModifier modifier)
-    {
-        PlayerStat targetStat = GetTargetStat(type);
 
-        targetStat?.AddModifier(modifier);
-    }
-
-
-
-    public void RemoveModifier(FireBreathStatTypes type, PlayerStatModifier modifier)
-    {
-        PlayerStat targetStat = GetTargetStat(type);
-
-        targetStat?.RemoveModifier(modifier);
-    }
-    private PlayerStat GetTargetStat(FireBreathStatTypes type)
+    public override PlayerStat GetStatByType(PlayerStatTypes type)
     {
         return type switch
         {
-            FireBreathStatTypes.Damage => damage,
-            FireBreathStatTypes.DamageInterval => damageInterval,
-            FireBreathStatTypes.Duration => duration,
-            FireBreathStatTypes.Length => length,
+            PlayerStatTypes.FireBreathDamage => damage,
+            PlayerStatTypes.FireBreathDamageInterval => damageInterval,
+            PlayerStatTypes.FireBreathDuration => duration,
+            PlayerStatTypes.FireBreathLength => length,
             _ => null
         };
+    }
+
+    public override string GetTooltipText()
+    {
+        if (tooltipText == null)
+            SetTooltipText();
+        return tooltipText;
+    }
+
+    public override void SetTooltipText()
+    {
+
+        var sb = new StringBuilder();
+
+        // 스킬 이름
+        sb.AppendLine($"<b>화염 숨결</b>");
+        sb.AppendLine($"쿨타임: {cooldown}초");
+        sb.AppendLine(); // 빈 줄
+        // 스킬 스탯
+        sb.AppendLine($"틱당 데미지: {Damage}");
+        sb.AppendLine($"데미지 간격: {DamageInterval}초");
+        sb.AppendLine($"지속 시간: {Duration}초");
+
+        tooltipText = sb.ToString();
     }
 }

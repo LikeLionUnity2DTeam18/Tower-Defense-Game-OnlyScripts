@@ -56,7 +56,7 @@ public class PlayerStat
             }
             else if (mod.mode == PlayerStatModifierMode.multiplicate)
             {
-                multiplicate *= mod.value;
+                multiplicate *= (100 + mod.value) / 100; // 곱연산 value는 % 단위니까
             }
         }
 
@@ -66,7 +66,6 @@ public class PlayerStat
         return lastValue;
 
     }
-
 
 
 
