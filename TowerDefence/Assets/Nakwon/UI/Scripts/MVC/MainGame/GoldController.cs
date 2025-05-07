@@ -38,5 +38,4 @@ public class GoldController : MonoBehaviour
     {
         EventManager.RemoveListener<MonsterDied>(OnMonsterDied);
     }
-
 }
