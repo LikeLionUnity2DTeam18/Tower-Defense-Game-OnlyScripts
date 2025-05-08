@@ -1,8 +1,10 @@
+using System.Text;
 using UnityEngine;
-using UnityEngine.UIElements;
 
-public enum BindShotStatTypes { Damage, BindTime, CastingTime}
 
+/// <summary>
+/// 구속의 사격 스킬
+/// </summary>
 public class PlayerBindShotSkill : Skill
 {
     [Header("프리펩")]
@@ -41,7 +43,7 @@ public class PlayerBindShotSkill : Skill
         base.UseSkill();
 
         CreateCasterSkillEffect();
-        player.stateMachine.ChangeState(player.bindShotState);
+        player.StateMachine.ChangeState(player.BindShotState); // 시전시간동안 멈추고 조작x
     }
 
     /// <summary>
@@ -70,28 +72,51 @@ public class PlayerBindShotSkill : Skill
         go.GetComponent<BindShotController>().SetBindShot(skillCenterPosition, Damage, BindTime, previewDirection);
     }
 
-    public void AddModifier(BindShotStatTypes type, PlayerStatModifier modifier)
-    {
-        PlayerStat targetStat = GetStatType(type);
-
-        targetStat?.AddModifier(modifier);
-    }
-
-
-    public void RemoveModifier(BindShotStatTypes type, PlayerStatModifier modifier)
-    {
-        PlayerStat targetStat = GetStatType(type);
-
-        targetStat?.RemoveModifier(modifier);
-    }
-    private PlayerStat GetStatType(BindShotStatTypes type)
+    /// <summary>
+    /// 플레이어 스탯 타입으로 스탯 return
+    /// 다음에는 skillmanager에서 관리할수있게 해야겠음..
+    /// </summary>
+    /// <param name="type"></param>
+    /// <returns></returns>
+    public override PlayerStat GetStatByType(PlayerStatTypes type)
     {
         return type switch
         {
-            BindShotStatTypes.Damage => damage,
-            BindShotStatTypes.BindTime => bindTime,
-            BindShotStatTypes.CastingTime => castingTime,
+            PlayerStatTypes.BindShotDamage => damage,
+            PlayerStatTypes.BindShotBindTime => bindTime,
+            PlayerStatTypes.BindShotCastingTime => castingTime,
             _ => null
         };
+    }
+
+    /// <summary>
+    /// 툴팁 텍스트 get
+    /// </summary>
+    /// <returns></returns>
+    public override string GetTooltipText()
+    {
+        if (tooltipText == null)
+            SetTooltipText();
+        return tooltipText;
+    }
+
+    /// <summary>
+    /// StringBuilder를 이용해 툴팁 문자열 생성
+    /// </summary>
+    public override void SetTooltipText()
+    {
+
+        var sb = new StringBuilder();
+
+        // 스킬 이름
+        sb.AppendLine($"<b>구속의 사격</b>");
+        sb.AppendLine($"쿨타임: {cooldown}초");
+        sb.AppendLine(); // 빈 줄
+        // 스킬 스탯
+        sb.AppendLine($"데미지: {Damage}");
+        sb.AppendLine($"속박 시간: {BindTime}초");
+        sb.AppendLine($"시전 시간: {CastingTime}초");
+
+        tooltipText = sb.ToString();
     }
 }

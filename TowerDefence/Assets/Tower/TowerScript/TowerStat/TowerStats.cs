@@ -30,7 +30,7 @@ public class TowerStats : MonoBehaviour
         currentHealth = hp.GetValue();
     }
 
-    public virtual void DoMeleeDamage(TowerStats _targetStats)
+    public virtual void DoMeleeDamage(EnemyController _targetStats)
     {
         if (_targetStats == null)
         {
@@ -41,12 +41,12 @@ public class TowerStats : MonoBehaviour
         float totalDamage = melee.GetValue();
         _targetStats.TakeDamage(totalDamage);
     }
-    public virtual void DoRangeDamage(TowerStats _targetStats)
+    public virtual void DoRangeDamage(EnemyController _targetStats)
     {
         float totalDamage = range.GetValue();
         _targetStats.TakeDamage(totalDamage);
     }
-    public virtual void DoSpecialDamage(TowerStats _targetStats)
+    public virtual void DoSpecialDamage(EnemyController _targetStats)
     {
         float totalDamage = special.GetValue();
         _targetStats.TakeDamage(totalDamage);

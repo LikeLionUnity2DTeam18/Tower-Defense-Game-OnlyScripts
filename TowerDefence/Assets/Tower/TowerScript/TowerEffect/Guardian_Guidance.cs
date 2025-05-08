@@ -62,7 +62,7 @@ public class Guardian_Guidance : TowerGuidance
         tickTimer += Time.deltaTime;
         if (tickTimer < tickRate) return;
 
-        if (target != null && target.TryGetComponent<TowerStats>(out var statsTarget))
+        if (target != null && target.TryGetComponent<EnemyController>(out var statsTarget))
         {
             stats?.DoSpecialDamage(statsTarget);
         }

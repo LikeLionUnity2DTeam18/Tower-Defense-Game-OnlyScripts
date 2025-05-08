@@ -89,13 +89,13 @@ public class Otto_skeleton : MonoBehaviour
     {
         DamageAllEnemiesInRange(transform.position, stats.meleeDistance.GetValue(), LayerMask.GetMask("Enemy"), stats.DoSpecialDamage);
     }
-    private void DamageAllEnemiesInRange(Vector3 origin, float radius, LayerMask enemyLayer, Action<TowerStats> damageFunc)
+    private void DamageAllEnemiesInRange(Vector3 origin, float radius, LayerMask enemyLayer, Action<EnemyController> damageFunc)
     {
         Collider2D[] hits = Physics2D.OverlapCircleAll(origin, radius, enemyLayer);
 
         foreach (var hit in hits)
         {
-            if (hit.TryGetComponent<TowerStats>(out var target))
+            if (hit.TryGetComponent<EnemyController>(out var target))
             {
                 damageFunc(target);
             }

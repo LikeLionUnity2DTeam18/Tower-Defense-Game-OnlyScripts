@@ -89,6 +89,21 @@ public class FSMLibrary
     public ASpecialState aSpecialState { get; private set; }
     #endregion
 
+    #region Zyald State
+    public ZIdleState zIdleState { get; private set; }
+    public ZMoveState zMoveState { get; private set; }
+    public ZMeleeState zMeleeState { get; private set; }
+    public ZRangeState zRangeState { get; private set; }
+    public ZSpecialState zSpecialState { get; private set; }
+    #endregion
+
+    #region Golem State
+    public GOIdleState goIdleState { get; private set; }
+    public GOMoveState goMoveState { get; private set; }
+    public GOMeleeState goMeleeState { get; private set; }
+    public GORangeState goRangeState { get; private set; }
+    public GOSpecialState goSpecialState { get; private set; }
+    #endregion
     public FSMLibrary(Tower tower,TowerFSM towerFSM)
     {
         towerState = new TowerState(tower, towerFSM);
@@ -175,6 +190,14 @@ public class FSMLibrary
         aMeleeState = new AMeleeState(tower, towerFSM, "Melee");
         aRangeState = new ARangeState(tower, towerFSM, "Range");
         aSpecialState = new ASpecialState(tower, towerFSM, "Special");
+        #endregion
+
+        #region Golem
+        goIdleState = new GOIdleState(tower, towerFSM, "Idle");
+        goMoveState = new GOMoveState(tower, towerFSM, "Move");
+        goMeleeState = new GOMeleeState(tower, towerFSM, "Melee");
+        goRangeState = new GORangeState(tower, towerFSM, "Range");
+        goSpecialState = new GOSpecialState(tower, towerFSM, "Special");
         #endregion
     }
 }

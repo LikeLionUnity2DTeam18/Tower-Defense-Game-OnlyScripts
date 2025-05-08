@@ -57,6 +57,8 @@ public class Clawer_AttackState : EnemyState
     {
         base.LogicUpdate();
 
+        CheckDeath(new Common_DeathState(enemy, stateMachine));
+
         if (stateTimer <= 0f)
         {
             stateMachine.ChangeState(new Clawer_IdleState(enemy, stateMachine));

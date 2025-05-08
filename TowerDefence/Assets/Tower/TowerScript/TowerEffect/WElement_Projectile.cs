@@ -52,7 +52,7 @@ public class WElement_Projectile : TowerProjectile
     protected override void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.gameObject.layer != LayerMask.NameToLayer("Enemy")) return;
-        collision.TryGetComponent<TowerStats>(out TowerStats targetStats);
+        collision.TryGetComponent<EnemyController>(out EnemyController targetStats);
         stats?.DoRangeDamage(targetStats);
     }
 }

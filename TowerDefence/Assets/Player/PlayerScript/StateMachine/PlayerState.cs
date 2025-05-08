@@ -17,11 +17,11 @@ public class PlayerState
     public PlayerState(PlayerController _player, int animBoolParam)
     {
         this.player = _player;
-        stateMachine = player.stateMachine;
-        rb = player.rb;
+        stateMachine = player.StateMachine;
+        rb = player.Rb;
         this.animBoolParam = animBoolParam;
-        anim = player.anim;
-        input = player.input;
+        anim = player.Anim;
+        input = player.Input;
     }
 
     public virtual void Enter()
@@ -45,12 +45,12 @@ public class PlayerState
         if (rb.linearVelocity.sqrMagnitude > 0.01f)
         {
             Direction4Custom dir = DirectionHelper.ToDirection4Custom(rb.linearVelocity);
-            if (dir == player.lastDir)
+            if (dir == player.LastDir)
                 return;
             player.SetLastDirection(dir);
         }
 
-        Vector2 animDirection = DirectionHelper.ToAnimParamVector(player.lastDir);
+        Vector2 animDirection = DirectionHelper.ToAnimParamVector(player.LastDir);
         anim.SetFloat(PlayerAnimationParams.MoveX, animDirection.x);
         anim.SetFloat(PlayerAnimationParams.MoveY, animDirection.y);
     }

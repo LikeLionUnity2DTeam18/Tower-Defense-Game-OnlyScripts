@@ -13,7 +13,7 @@ public class darkmur_Projectile : TowerProjectile
     {
         base.OnTriggerEnter2D(collision);
         if (collision.gameObject.layer != LayerMask.NameToLayer("Enemy")) return;
-        collision.TryGetComponent<TowerStats>(out TowerStats targetStats);
+        collision.TryGetComponent<EnemyController>(out EnemyController targetStats);
         stats?.DoRangeDamage(targetStats);
     }
 }

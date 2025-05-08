@@ -1,6 +1,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// 타워 강화
+/// </summary>
 public class PowerUpController : PlayerSkillEntity
 {
     private CapsuleCollider2D cd;

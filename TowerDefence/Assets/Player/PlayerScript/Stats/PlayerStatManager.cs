@@ -1,20 +1,20 @@
 using UnityEngine;
 public class PlayerStatManager
 {
-    public int level = 1;
-    public PlayerStat baseAttackDamage;
-    public PlayerStat moveSpeed;
-    public PlayerStat baseattackSpeed;
-    public PlayerStat baseattackRange;
-    public PlayerStat skillPower;
-    private PlayerLevelTable levelTable;
+    public int Level = 1;
+    public PlayerStat BaseAttackDamage;
+    public PlayerStat MoveSpeed;
+    public PlayerStat BaseattackSpeed;
+    public PlayerStat BaseattackRange;
+    public PlayerStat SkillPower;
+    private PlayerLevelTable LevelTable;
 
     public PlayerStatManager(PlayerLevelTable _levenTable)
     {
-        levelTable = _levenTable;
+        LevelTable = _levenTable;
 
-        CreatePlayerStatData(levelTable.table[1]); // 1레벨 스탯 테이블로 초기화 
-        if (levelTable.table.Count < PlayerSettings.MAXLEVEL + 1) // 직관성을 위해 index 0은 비울거니까 +1로 체크 
+        CreatePlayerStatData(LevelTable.table[1]); // 1레벨 스탯 테이블로 초기화 
+        if (LevelTable.table.Count < PlayerSettings.MAXLEVEL + 1) // 직관성을 위해 index 0은 비울거니까 +1로 체크 
             Debug.LogWarning("플레이어 레벨 테이블 확인 필요");
 
     }
@@ -25,11 +25,11 @@ public class PlayerStatManager
     /// <param name="baseStat"></param>
     private void CreatePlayerStatData(PlayerStatData baseStat)
     {
-        baseAttackDamage = CreateStat(PlayerStatTypes.baseAttackDamage, baseStat.baseAttackDamage);
-        moveSpeed = CreateStat(PlayerStatTypes.moveSpeed, baseStat.moveSpeed);
-        baseattackSpeed = CreateStat(PlayerStatTypes.baseattackSpeed, baseStat.baseattackSpeed);
-        baseattackRange = CreateStat(PlayerStatTypes.baseattackRange, baseStat.baseattackRange);
-        skillPower = CreateStat(PlayerStatTypes.skillPower, baseStat.skillPower);
+        BaseAttackDamage = CreateStat(PlayerStatTypes.BaseAttackDamage, baseStat.baseAttackDamage);
+        MoveSpeed = CreateStat(PlayerStatTypes.MoveSpeed, baseStat.moveSpeed);
+        BaseattackSpeed = CreateStat(PlayerStatTypes.BaseattackSpeed, baseStat.baseattackSpeed);
+        BaseattackRange = CreateStat(PlayerStatTypes.BaseattackRange, baseStat.baseattackRange);
+        SkillPower = CreateStat(PlayerStatTypes.SkillPower, baseStat.skillPower);
     }
 
     /// <summary>
@@ -50,19 +50,19 @@ public class PlayerStatManager
     /// </summary>
     public void LevelUp()
     {
-        Debug.Log("이전 레벨 " + level);
-        if (level < PlayerSettings.MAXLEVEL)
+        Debug.Log("이전 레벨 " + Level);
+        if (Level < PlayerSettings.MAXLEVEL)
         {
-            level++;
+            Level++;
         }
-        Debug.Log("레벨업 성공! 현재 레벨 " + level);
+        Debug.Log("레벨업 성공! 현재 레벨 " + Level);
         // 레벨업에 따른 스탯 상승
-        var levelStats = levelTable.table[level];
-        baseAttackDamage.SetBaseValue(levelStats.baseAttackDamage);
-        baseattackSpeed.SetBaseValue(levelStats.baseattackSpeed);
-        baseattackRange.SetBaseValue(levelStats.baseattackRange);
-        skillPower.SetBaseValue(levelStats.skillPower);
-        moveSpeed.SetBaseValue(levelStats.moveSpeed);
+        var levelStats = LevelTable.table[Level];
+        BaseAttackDamage.SetBaseValue(levelStats.baseAttackDamage);
+        BaseattackSpeed.SetBaseValue(levelStats.baseattackSpeed);
+        BaseattackRange.SetBaseValue(levelStats.baseattackRange);
+        SkillPower.SetBaseValue(levelStats.skillPower);
+        MoveSpeed.SetBaseValue(levelStats.moveSpeed);
     }
 
     /// <summary>
@@ -74,11 +74,11 @@ public class PlayerStatManager
     {
         return type switch
         {
-            PlayerStatTypes.baseAttackDamage => baseAttackDamage,
-            PlayerStatTypes.baseattackSpeed => baseattackSpeed,
-            PlayerStatTypes.baseattackRange => baseattackRange,
-            PlayerStatTypes.skillPower => skillPower,
-            PlayerStatTypes.moveSpeed => moveSpeed,
+            PlayerStatTypes.BaseAttackDamage => BaseAttackDamage,
+            PlayerStatTypes.BaseattackSpeed => BaseattackSpeed,
+            PlayerStatTypes.BaseattackRange => BaseattackRange,
+            PlayerStatTypes.SkillPower => SkillPower,
+            PlayerStatTypes.MoveSpeed => MoveSpeed,
             _ => null
         };
     }

@@ -40,6 +40,20 @@ public class EnemyController : MonoBehaviour
         }
     }
 
+    void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.K))
+        {
+            Debug.Log($"[테스트] {Data.enemyName} 체력 999 데미지로 즉사 테스트");
+            TakeDamage(999);
+        }
+    }
+
+    public void DestroySelf()
+    {
+        Destroy(gameObject);
+    }
+
     public void TakeDamage(float dmg)
     {
         currentHP -= dmg;
@@ -47,7 +61,17 @@ public class EnemyController : MonoBehaviour
         if (currentHP <= 0f)
         {
             currentHP = 0f; // 혹시 모를 음수 방지
-            //stateMachine.ChangeState(new DeadState(this, stateMachine)); // 나중에 DeadState 연결
+            if (Data.enemyType == EnemyType.Boomer)
+            {
+                if (!(stateMachine.CurrentState is Boomer_AttackState))
+                {
+                    stateMachine.ChangeState(new Boomer_DeathState(this, stateMachine));
+                }
+            }
+            else
+            {
+                stateMachine.ChangeState(new Common_DeathState(this, stateMachine));
+            }
         }
     }
 }

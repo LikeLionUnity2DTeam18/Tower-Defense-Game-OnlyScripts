@@ -58,6 +58,8 @@ public class Tanky_AttackState : EnemyState
     {
         base.LogicUpdate();
 
+        CheckDeath(new Common_DeathState(enemy, stateMachine));
+
         if (stateTimer <= 0f)
         {
             stateMachine.ChangeState(new Tanky_IdleState(enemy, stateMachine));

@@ -1,5 +1,8 @@
 using UnityEngine;
 
+/// <summary>
+/// 사정거리 표시할 오브젝트
+/// </summary>
 public class PlayerSkillRangeController : MonoBehaviour
 {
     private void OnEnable()

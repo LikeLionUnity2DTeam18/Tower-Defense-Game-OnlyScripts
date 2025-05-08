@@ -66,7 +66,7 @@ public class FElement_OnOff : TowerOnOff
     {
         if (collision.gameObject.layer != LayerMask.NameToLayer("Enemy")) return;
 
-        if (damageTimer >= damageInterval && collision.TryGetComponent<TowerStats>(out TowerStats targetStats))
+        if (damageTimer >= damageInterval && collision.TryGetComponent<EnemyController>(out EnemyController targetStats))
         {
             stats?.DoRangeDamage(targetStats);
             damageTimer = 0f;

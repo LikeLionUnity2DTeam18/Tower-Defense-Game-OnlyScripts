@@ -1,153 +1,181 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 
+/// <summary>
+/// 플레이어
+/// </summary>
 public class PlayerController : MonoBehaviour
 {
     #region 컴포넌트 선언
-    public PlayerInputHandler input { get; private set; }
-    public Rigidbody2D rb { get; private set; }
-    public Animator anim { get; private set; }
-    public PlayerSkillManager skill { get; private set; }
+    public PlayerInputHandler Input { get; private set; }
+    public Rigidbody2D Rb { get; private set; }
+    public Animator Anim { get; private set; }
+    public PlayerSkillManager Skill { get; private set; }
 
     #endregion
 
     #region 스태이트 머신 선언
-    public PlayerStateMachine stateMachine { get; private set; }
-    public PlayerIdleState idleState { get; private set; }
-    public PlayerMoveState moveState { get; private set; }
-    public PlayerAttackState attackState { get; private set; }
-    public PlayerBindShotState bindShotState { get; private set; }
-    public PlayerFireBreathState breathState { get; private set; }
+    public PlayerStateMachine StateMachine { get; private set; }
+    public PlayerIdleState IdleState { get; private set; }
+    public PlayerMoveState MoveState { get; private set; }
+    public PlayerAttackState AttackState { get; private set; }
+    public PlayerBindShotState BindShotState { get; private set; }
+    public PlayerFireBreathState BreathState { get; private set; }
     #endregion
 
-    public Direction4Custom lastDir { get; private set; } = Direction4Custom.SE; // 마지막으로 바라보고 있던 방향
-    public Vector2 destination { get; private set; } // 이동 목적지
-    public bool hasDestination { get; private set; } // 목적지 있는지 확인
-    public bool canUseSkill { get; private set; }  // 스킬 사용 가능한 상태 체크
-    public bool SetCanUseSkill(bool _canUseSkill) => canUseSkill = _canUseSkill;
+    public Direction4Custom LastDir { get; private set; } = Direction4Custom.SE; // 마지막으로 바라보고 있던 방향
+    public Vector2 Destination { get; private set; } // 이동 목적지
+    public bool HasDestination { get; private set; } // 목적지 있는지 확인
+    public bool CanUseSkill { get; private set; }  // 스킬 사용 가능한 상태 체크
+    public bool SetCanUseSkill(bool _canUseSkill) => CanUseSkill = _canUseSkill;
 
     [SerializeField] private GameObject baseAttack;
     public GameObject BaseAttack => baseAttack;
-    public float baseAttackTimer { get; private set; } = 0f;
-    public void ResetBaseAttackTimer() => baseAttackTimer = 1 / BaseAttackSpeed;
+    public float BaseAttackTimer { get; private set; } = 0f;
+    public void ResetBaseAttackTimer() => BaseAttackTimer = 1 / BaseAttackSpeed;
+
+
+    private System.Action CancelPreviewLamda; //우클릭에 CancelPreview()를 등록/해제 하기 위한 델리게이트
 
 
     #region 플레이어 스탯
     [SerializeField] private PlayerLevelTable levelTable;
-    public PlayerStatManager stats { get; private set; }
-    public float MoveSpeed => stats.moveSpeed.GetValue();
-    public float BaseAttackDamage => stats.baseAttackDamage.GetValue();
-    public float BaseAttackSpeed => stats.baseattackSpeed.GetValue();
-    public float BaseAttackRange => stats.baseattackRange.GetValue();
-    public float SkillPower => stats.skillPower.GetValue();
-    public int Level => stats.level;
+    public PlayerStatManager Stats { get; private set; }
+    public float MoveSpeed => Stats.MoveSpeed.GetValue();
+    public float BaseAttackDamage => Stats.BaseAttackDamage.GetValue();
+    public float BaseAttackSpeed => Stats.BaseattackSpeed.GetValue();
+    public float BaseAttackRange => Stats.BaseattackRange.GetValue();
+    public float SkillPower => Stats.SkillPower.GetValue();
+    public int Level => Stats.Level;
     #endregion
 
 
-    public Vector2 mousePos { get; private set; }
+    public Vector2 MousePos { get; private set; }
 
     private void Awake()
     {
-        input = GetComponent<PlayerInputHandler>();
-        rb = GetComponent<Rigidbody2D>();
-        anim = GetComponentInChildren<Animator>();
-        stateMachine = new PlayerStateMachine();
-        stats = new PlayerStatManager(Instantiate(levelTable));
-        skill = GetComponentInChildren<PlayerSkillManager>();
+        Input = GetComponent<PlayerInputHandler>();
+        Rb = GetComponent<Rigidbody2D>();
+        Anim = GetComponentInChildren<Animator>();
+        StateMachine = new PlayerStateMachine();
+        Stats = new PlayerStatManager(Instantiate(levelTable));
+        Skill = GetComponentInChildren<PlayerSkillManager>();
 
     }
     void Start()
     {
-        idleState = new PlayerIdleState(this, PlayerAnimationParams.Idle);
-        moveState = new PlayerMoveState(this, PlayerAnimationParams.Move);
-        attackState = new PlayerAttackState(this, PlayerAnimationParams.Attack);
-        bindShotState = new PlayerBindShotState(this, PlayerAnimationParams.Attack);
-        breathState = new PlayerFireBreathState(this, 0);
+        IdleState = new PlayerIdleState(this, PlayerAnimationParams.Idle);
+        MoveState = new PlayerMoveState(this, PlayerAnimationParams.Move);
+        AttackState = new PlayerAttackState(this, PlayerAnimationParams.Attack);
+        BindShotState = new PlayerBindShotState(this, PlayerAnimationParams.Attack);
+        BreathState = new PlayerFireBreathState(this, 0);
 
-        stateMachine.Initialize(idleState);
-        canUseSkill = true;
+        StateMachine.Initialize(IdleState);
+        CanUseSkill = true;
 
     }
 
     // Update is called once per frame
     void Update()
     {
-        stateMachine.Update();
-        if (baseAttackTimer > 0) baseAttackTimer -= Time.deltaTime;
+        StateMachine.Update();
+        if (BaseAttackTimer > 0) BaseAttackTimer -= Time.deltaTime;
         UpdateMousePos();
 
         // 레벨업 테스트
-        if(Input.GetKeyDown(KeyCode.U))
+        if(UnityEngine.Input.GetKeyDown(KeyCode.U))
         {
-            stats.LevelUp();
+            Stats.LevelUp();
         }
     }
 
 
     #region 이동 목표 지점 관리
 
-    public void SetLastDirection(Direction4Custom dir) => lastDir = dir;
+    /// <summary>
+    /// 플레이어가 바라보는 방향을 설정하는 메서드
+    /// </summary>
+    /// <param name="dir"></param>
+    public void SetLastDirection(Direction4Custom dir) => LastDir = dir;
+
+    /// <summary>
+    /// 이동 입력 시 이동할 목적지 설정
+    /// </summary>
+    /// <param name="_destination"></param>
     public void SetDestination(Vector2 _destination)
     {
-        hasDestination = true;
-        destination = _destination;
+        HasDestination = true;
+        Destination = _destination;
     }
 
+    /// <summary>
+    /// 목적지 제거 주로 목적지에 도착한 경우
+    /// </summary>
     public void ResetDestination()
     {
-        hasDestination = false;
-        destination = Vector2.zero;
+        HasDestination = false;
+        Destination = Vector2.zero;
     }
 
     #endregion
 
 
     // 애니매이션 이벤트 래핑
-    public void AnimationTriggerEvent() => stateMachine.currentState.AnimationEndTrigger();
-    public void ShootArrowAnimationEvent() => attackState.ShootArrowAnimationEvent();
+    public void AnimationTriggerEvent() => StateMachine.currentState.AnimationEndTrigger();
+    public void ShootArrowAnimationEvent() => AttackState.ShootArrowAnimationEvent();
 
 
 
 
 
-    private System.Action CancelPreviewLamda;
-
+    /// <summary>
+    /// 해당 스킬 사용
+    /// 호출은 스킬매니저에 있는 q,w,e,rSkill 을 파라미터로 사용
+    /// </summary>
+    /// <param name="_skill"></param>
     public void UseSkill(Skill _skill)
     {
-        // 미리보기 상태가 없는 스킬인 경우 바로 사용 
-        if(canUseSkill && !_skill.hasPreviewState)
+        // 미리보기 상태가 없는 스킬이거나 스마트캐스팅 상태 경우 바로 사용 
+        if(CanUseSkill && (!_skill.hasPreviewState || _skill.SmartCasting))
         {
             _skill.TryUseSkillWithoutPreview();
         }
         // 스킬 위치 미리보기 상태중에는 다른 스킬 사용 불가
-        if (canUseSkill)
+        if (CanUseSkill)
         {
-            canUseSkill = !_skill.TryPreviewSkill();
-            if (!canUseSkill) // 스킬 미리보기 상태로 성공적으로 진입 했다면, 우클릭으로 미리보기 취소할 수 있게 이벤트 등록
+            CanUseSkill = !_skill.TryPreviewSkill();
+            if (!CanUseSkill) // 스킬 미리보기 상태로 성공적으로 진입 했다면, 우클릭으로 미리보기 취소할 수 있게 이벤트 등록
             {
                 CancelPreviewLamda = () => CancelPreview(_skill);
-                input.OnRightClick += CancelPreviewLamda;
+                Input.OnRightClick += CancelPreviewLamda;
             }
         }
         // 스킬 사용하고 나면 다시 다른스킬 사용 가능
         else if (_skill.TryUseSkill())
         {
-            canUseSkill = true;
-            input.OnRightClick -= CancelPreviewLamda;
+            CanUseSkill = true;
+            Input.OnRightClick -= CancelPreviewLamda;
         }
     }
 
+    /// <summary>
+    /// 미리보기 상태에서 벗어나기
+    /// </summary>
+    /// <param name="_skill"></param>
     private void CancelPreview(Skill _skill)
     {
-        input.OnRightClick -= CancelPreviewLamda;
+        Input.OnRightClick -= CancelPreviewLamda;
         _skill.EndPreview();
-        canUseSkill = true;
+        CanUseSkill = true;
     }
 
+    /// <summary>
+    /// 매 프레임 마우스 위치 갱신
+    /// </summary>
     protected virtual void UpdateMousePos()
     {
         Vector2 screenMouse = Mouse.current.position.ReadValue();
-        mousePos = Camera.main.ScreenToWorldPoint(screenMouse);
+        MousePos = Camera.main.ScreenToWorldPoint(screenMouse);
     }
 
 }

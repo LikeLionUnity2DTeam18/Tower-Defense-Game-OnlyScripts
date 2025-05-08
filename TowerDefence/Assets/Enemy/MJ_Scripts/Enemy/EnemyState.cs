@@ -19,4 +19,13 @@ public abstract class EnemyState
         stateTimer -= Time.deltaTime;
     }
     public abstract void Exit();
+
+    protected void CheckDeath(EnemyState deathState)
+    {
+        if (enemy.currentHP <= 0f)
+        {
+            stateMachine.ChangeState(deathState);
+        }
+    }
+
 }

@@ -1,7 +1,10 @@
+using System.Text;
 using UnityEngine;
 
-public enum FireBreathStatTypes { Duration, Damage, DamageInterval, Length}
 
+/// <summary>
+/// 화염 숨결
+/// </summary>
 public class PlayerFireBreathSkill : Skill
 {
     [SerializeField] float initial_duration;
@@ -39,8 +42,9 @@ public class PlayerFireBreathSkill : Skill
     {
         base.UseSkill();
         CreateSkillObject();
-        player.stateMachine.ChangeState(player.breathState);
+        player.StateMachine.ChangeState(player.BreathState);
     }
+
 
     private void CreateSkillObject()
     {
@@ -49,30 +53,52 @@ public class PlayerFireBreathSkill : Skill
         obj.SetFireBreath(skillCenterPosition, duration.GetValue(), damage.GetValue(), damageInterval.GetValue(), length.GetValue());
     }
 
-    public void AddModifier(FireBreathStatTypes type, PlayerStatModifier modifier)
-    {
-        PlayerStat targetStat = GetTargetStat(type);
-
-        targetStat?.AddModifier(modifier);
-    }
-
-
-
-    public void RemoveModifier(FireBreathStatTypes type, PlayerStatModifier modifier)
-    {
-        PlayerStat targetStat = GetTargetStat(type);
-
-        targetStat?.RemoveModifier(modifier);
-    }
-    private PlayerStat GetTargetStat(FireBreathStatTypes type)
+    /// <summary>
+    /// 플레이어 스탯 타입으로 스탯 return
+    /// 다음에는 skillmanager에서 관리할수있게 해야겠음..
+    /// </summary>
+    /// <param name="type"></param>
+    /// <returns></returns>
+    public override PlayerStat GetStatByType(PlayerStatTypes type)
     {
         return type switch
         {
-            FireBreathStatTypes.Damage => damage,
-            FireBreathStatTypes.DamageInterval => damageInterval,
-            FireBreathStatTypes.Duration => duration,
-            FireBreathStatTypes.Length => length,
+            PlayerStatTypes.FireBreathDamage => damage,
+            PlayerStatTypes.FireBreathDamageInterval => damageInterval,
+            PlayerStatTypes.FireBreathDuration => duration,
+            PlayerStatTypes.FireBreathLength => length,
             _ => null
         };
+    }
+
+    /// <summary>
+    /// 툴팁 텍스트 get
+    /// </summary>
+    /// <returns></returns>
+    public override string GetTooltipText()
+    {
+        if (tooltipText == null)
+            SetTooltipText();
+        return tooltipText;
+    }
+
+    /// <summary>
+    /// StringBuilder를 이용해 툴팁 문자열 생성
+    /// </summary>
+    public override void SetTooltipText()
+    {
+
+        var sb = new StringBuilder();
+
+        // 스킬 이름
+        sb.AppendLine($"<b>화염 숨결</b>");
+        sb.AppendLine($"쿨타임: {cooldown}초");
+        sb.AppendLine(); // 빈 줄
+        // 스킬 스탯
+        sb.AppendLine($"틱당 데미지: {Damage}");
+        sb.AppendLine($"데미지 간격: {DamageInterval}초");
+        sb.AppendLine($"지속 시간: {Duration}초");
+
+        tooltipText = sb.ToString();
     }
 }
