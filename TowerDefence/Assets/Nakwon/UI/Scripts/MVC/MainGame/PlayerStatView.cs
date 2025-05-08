@@ -17,10 +17,12 @@ public class PlayerStatView : MonoBehaviour
     private void OnEnable()
     {
         EventManager.AddListener<PlayerStatChanged>(OnStatsChanged);
+        EventManager.AddListener<PlayerLevelChanged>(OnLevelChanged);
     }
     private void OnDisable()
     {
         EventManager.RemoveListener<PlayerStatChanged>(OnStatsChanged);
+        EventManager.RemoveListener<PlayerLevelChanged>(OnLevelChanged);
     }
 
     private void OnStatsChanged(PlayerStatChanged evt)
@@ -62,10 +64,12 @@ public class PlayerStatView : MonoBehaviour
             float value = stats.GetStatValue(type);
             OnStatsChanged(new PlayerStatChanged(type, value));
         }
+
+        Level.text = $"레벨 : {PlayerManager.Instance.Player.Stats.Level}";
     }
 
-    private void OnPlayerLevelChanged(PlayerLevelChanged evt)
+    private void OnLevelChanged(PlayerLevelChanged evt)
     {
-
+        Level.text = $"레벨 : {evt.newLevel}";
     }
 }
