@@ -29,6 +29,12 @@ public class PlayerSkillManager : MonoBehaviour
         rskill = GetComponent<PlayerFireBreathSkill>();
     }
 
-
+    public void SetSmartCastingAll(bool smartCasting)
+    {
+        qskill.SetSmartCasting(smartCasting);
+        wskill.SetSmartCasting(smartCasting);
+        eskill.SetSmartCasting(smartCasting);
+        rskill.SetSmartCasting(smartCasting);
+    }
 
 }

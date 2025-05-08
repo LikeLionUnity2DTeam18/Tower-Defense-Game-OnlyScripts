@@ -41,20 +41,22 @@ public class PlayerStatManager
     private PlayerStat CreateStat(PlayerStatTypes _type, float value)
     {
         PlayerStat newStat = new PlayerStat(value);
-        newStat.OnValueChanged = () => EventManager.Trigger(new PlayerStatChanged(_type, newStat.GetValue()));
+        newStat.OnValueChanged += () => EventManager.Trigger(new PlayerStatChanged(_type, newStat.GetValue()));
         return newStat;
     }
 
     /// <summary>
     /// 레벨업시 테이블에 맞춰서 모든 스탯 베이스값 수정
     /// </summary>
-    public void LevelUp()
+    public bool TryLevelUp()
     {
         Debug.Log("이전 레벨 " + Level);
-        if (Level < PlayerSettings.MAXLEVEL)
-        {
-            Level++;
-        }
+        if (Level >= PlayerSettings.MAXLEVEL)
+            return false; ;
+
+        Level++;
+        EventManager.Trigger<PlayerLevelChanged>(new PlayerLevelChanged(Level));
+
         Debug.Log("레벨업 성공! 현재 레벨 " + Level);
         // 레벨업에 따른 스탯 상승
         var levelStats = LevelTable.table[Level];
@@ -63,6 +65,7 @@ public class PlayerStatManager
         BaseattackRange.SetBaseValue(levelStats.baseattackRange);
         SkillPower.SetBaseValue(levelStats.skillPower);
         MoveSpeed.SetBaseValue(levelStats.moveSpeed);
+        return true;
     }
 
     /// <summary>

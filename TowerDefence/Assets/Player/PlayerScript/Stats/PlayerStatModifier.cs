@@ -27,4 +27,7 @@ public class PlayerStatModifier
     {
         value += _value;
     }
+
+    public void SetValue(float _value)
+        { value = _value; }
 }
