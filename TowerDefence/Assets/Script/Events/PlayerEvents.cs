@@ -38,3 +38,21 @@ public struct PlayerStatChanged
         this.value = value;
     }
 }
+
+public struct PlayerFireBreathStarted
+{
+    public FireBreathController fireskill;
+    public PlayerFireBreathStarted(FireBreathController fireskill)
+    {
+        this.fireskill = fireskill;
+    }
+}
+
+public struct PlayerLevelChanged
+{
+    public int newLevel;
+    public PlayerLevelChanged(int newLevel)
+    {
+        this.newLevel = newLevel;
+    }
+}

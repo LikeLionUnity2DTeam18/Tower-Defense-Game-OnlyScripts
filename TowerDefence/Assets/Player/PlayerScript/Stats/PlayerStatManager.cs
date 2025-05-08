@@ -55,7 +55,8 @@ public class PlayerStatManager
             return false; ;
 
         Level++;
-        
+        EventManager.Trigger<PlayerLevelChanged>(new PlayerLevelChanged(Level));
+
         Debug.Log("레벨업 성공! 현재 레벨 " + Level);
         // 레벨업에 따른 스탯 상승
         var levelStats = LevelTable.table[Level];
