@@ -27,23 +27,23 @@ public class PlayerStatView : MonoBehaviour
         string label = "";
         switch (evt.type)
         {
-            case PlayerStatTypes.baseAttackDamage:
+            case PlayerStatTypes.BaseAttackDamage:
                 label = "공격력".PadRight(6);
                 attackDamageText.text = $"{label} : {evt.value}";
                 break;
-            case PlayerStatTypes.baseattackSpeed:
+            case PlayerStatTypes.BaseattackSpeed:
                 label = "공격 속도".PadRight(6);
                 attackSpeedText.text = $"{label} : {evt.value}";
                 break;
-            case PlayerStatTypes.baseattackRange:
+            case PlayerStatTypes.BaseattackRange:
                 label = "사거리".PadRight(6);
                 attackRangeText.text = $"{label} : {evt.value}";
                 break;
-            case PlayerStatTypes.skillPower:
+            case PlayerStatTypes.SkillPower:
                 label = "스킬 공격력".PadRight(6);
                 skillPowerText.text = $"{label} : {evt.value}";
                 break;
-            case PlayerStatTypes.moveSpeed:
+            case PlayerStatTypes.MoveSpeed:
                 label = "이동속도".PadRight(6);
                 moveSpeedText.text = $"{label} : {evt.value}";
                 break;
@@ -54,7 +54,7 @@ public class PlayerStatView : MonoBehaviour
 
     private void UpdateAllStats()
     {
-        var stats = PlayerManager.Instance.Player.stats;
+        var stats = PlayerManager.Instance.Player.Stats;
 
         foreach (PlayerStatTypes type in System.Enum.GetValues(typeof(PlayerStatTypes)))
         {
