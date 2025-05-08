@@ -11,9 +11,11 @@ public class PlayerFireBreathSkill : Skill
     [SerializeField] float initial_damage;
     [SerializeField] float initial_damageInterval;
     [SerializeField] float initial_length;
+    [SerializeField] private float skillPowerFactor; // 스킬파워 계수
 
     private PlayerStat duration;
     private PlayerStat damage;
+    private PlayerStatModifier skillPowerMod;
     private PlayerStat damageInterval;
     private PlayerStat length;
 
@@ -36,21 +38,37 @@ public class PlayerFireBreathSkill : Skill
         damage = new PlayerStat(initial_damage);
         damageInterval = new PlayerStat(initial_damageInterval);
         length = new PlayerStat(initial_length);
+
+
+        skillPowerMod = new PlayerStatModifier(player.SkillPower * skillPowerFactor, PlayerStatModifierMode.additive);
+        damage.AddModifier(skillPowerMod);
+
+        player.Stats.SkillPower.OnValueChanged += OnSkillPowerChanged;
+    }
+    private void OnSkillPowerChanged()
+    {
+        skillPowerMod.SetValue(player.SkillPower * skillPowerFactor);
     }
 
+    private void OnDestroy()
+    {
+        player.Stats.SkillPower.OnValueChanged -= OnSkillPowerChanged;
+    }
     protected override void UseSkill()
     {
         base.UseSkill();
-        CreateSkillObject();
+        var obj = CreateSkillObject();
         player.StateMachine.ChangeState(player.BreathState);
+        EventManager.Trigger<PlayerFireBreathStarted>(new PlayerFireBreathStarted(obj));
     }
 
 
-    private void CreateSkillObject()
+    private FireBreathController CreateSkillObject()
     {
         var go = PoolManager.Instance.Get(skillPrefab);
         var obj = go.GetComponent<FireBreathController>();
         obj.SetFireBreath(skillCenterPosition, duration.GetValue(), damage.GetValue(), damageInterval.GetValue(), length.GetValue());
+        return obj;
     }
 
     /// <summary>
