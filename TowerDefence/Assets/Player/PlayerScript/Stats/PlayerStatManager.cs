@@ -51,10 +51,11 @@ public class PlayerStatManager
     public void LevelUp()
     {
         Debug.Log("이전 레벨 " + Level);
-        if (Level < PlayerSettings.MAXLEVEL)
-        {
-            Level++;
-        }
+        if (Level >= PlayerSettings.MAXLEVEL)
+            return;
+
+        Level++;
+        
         Debug.Log("레벨업 성공! 현재 레벨 " + Level);
         // 레벨업에 따른 스탯 상승
         var levelStats = LevelTable.table[Level];

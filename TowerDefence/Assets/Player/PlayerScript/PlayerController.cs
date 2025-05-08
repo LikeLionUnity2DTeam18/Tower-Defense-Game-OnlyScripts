@@ -31,6 +31,9 @@ public class PlayerController : MonoBehaviour
 
     [SerializeField] private GameObject baseAttack;
     public GameObject BaseAttack => baseAttack;
+    [SerializeField] private GameObject levelUpEfect;
+    [SerializeField] private Transform levelUpEffectPosition;
+    public Transform LevelUpEffectPosition => levelUpEffectPosition;
     public float BaseAttackTimer { get; private set; } = 0f;
     public void ResetBaseAttackTimer() => BaseAttackTimer = 1 / BaseAttackSpeed;
 
@@ -85,8 +88,17 @@ public class PlayerController : MonoBehaviour
         // 레벨업 테스트
         if(UnityEngine.Input.GetKeyDown(KeyCode.U))
         {
-            Stats.LevelUp();
+            LevelUp();
         }
+    }
+
+    /// <summary>
+    /// 레벨업 스탯 상승 및 이펙트 생성
+    /// </summary>
+    private void LevelUp()
+    {
+        Stats.LevelUp();
+        Instantiate(levelUpEfect, levelUpEffectPosition.position, Quaternion.identity);
     }
 
 
