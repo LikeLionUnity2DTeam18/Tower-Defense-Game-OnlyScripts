@@ -32,22 +32,19 @@ public class TowerStats : MonoBehaviour
 
     public virtual void DoMeleeDamage(EnemyController _targetStats)
     {
-        if (_targetStats == null)
-        {
-            Debug.LogError("타겟 스탯 null");
-            return;
-        }
-
+        Debug.Log("DoMeleeDamage");
         float totalDamage = melee.GetValue();
         _targetStats.TakeDamage(totalDamage);
     }
     public virtual void DoRangeDamage(EnemyController _targetStats)
     {
+        Debug.Log("DoRangeDamage");
         float totalDamage = range.GetValue();
         _targetStats.TakeDamage(totalDamage);
     }
     public virtual void DoSpecialDamage(EnemyController _targetStats)
     {
+        Debug.Log("DoSpeicalDamage");
         float totalDamage = special.GetValue();
         _targetStats.TakeDamage(totalDamage);
     }

@@ -9,8 +9,9 @@ public class Golem_RightHand : MonoBehaviour, IStatReceiver, IGolemPart
     TowerStats stats;
     public void EndTrigger()
     {
-        GameObject t = SpawnWithStats(DamageArea);
+        GameObject t = PoolManager.Instance.Get(DamageArea);
         t.transform.position = transform.position;
+        t.GetComponent<Golem_Splash>().SetStats(stats);
         GameObject splashEffect = PoolManager.Instance.Get(splashEffectPrefab);
         splashEffect.transform.position = transform.position;
         IsDone = true;
@@ -21,18 +22,8 @@ public class Golem_RightHand : MonoBehaviour, IStatReceiver, IGolemPart
         stats = _stats;
     }
 
-    public void SetStats(TowerStats stats)
+    public void SetStats(TowerStats _stats)
     {
-    }
-
-    public GameObject SpawnWithStats(GameObject prefab)
-    {
-        GameObject obj = PoolManager.Instance.Get(prefab);
-
-        if (obj.TryGetComponent<IStatReceiver>(out var receiver))
-        {
-            receiver.SetStats(this.stats);
-        }
-        return obj;
+        stats = _stats;
     }
 }

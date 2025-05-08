@@ -80,6 +80,9 @@ public class Beacon : MonoBehaviour
                 case TowerType.Golem:
                     SpawnTower(TowerType.Golem);
                     break;
+                case TowerType.Eksyll:
+                    SpawnTower(TowerType.Eksyll);
+                    break;
             }
         }
     }

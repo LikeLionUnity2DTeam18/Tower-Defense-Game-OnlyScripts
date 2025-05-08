@@ -61,6 +61,23 @@ public class Azikel_Special : TowerProjectile
             currentTarget = collision.gameObject;
     }
 
+    [SerializeField] private float tickInterval = 1f;
+    private float tickTimer = 0f;
+
+    protected void OnTriggerStay2D(Collider2D collision)
+    {
+        tickTimer -= Time.deltaTime;
+        if (tickTimer > 0f) return;
+
+        if (collision.gameObject.layer != LayerMask.NameToLayer("Enemy")) return;
+
+        if (collision.TryGetComponent(out EnemyController targetStats))
+        {
+            stats?.DoSpecialDamage(targetStats);
+            tickTimer = tickInterval; //대기
+        }
+    }
+
     GameObject FindClosestEnemyExcluding(GameObject excludedEnemy)
     {
         Collider2D[] hits = Physics2D.OverlapCircleAll(transform.position, rangeRadius, enemyLayerMask);
