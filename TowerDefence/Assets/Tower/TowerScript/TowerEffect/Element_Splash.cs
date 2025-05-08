@@ -50,7 +50,7 @@ public class Element_Splash : TowerSplash
             Collider2D enemy = col;
             if (enemy != null)
             {
-                enemy.TryGetComponent<TowerStats>(out TowerStats targetStats);
+                enemy.TryGetComponent<EnemyController>(out EnemyController targetStats);
                 stats?.DoSpecialDamage(targetStats);
             }
         }

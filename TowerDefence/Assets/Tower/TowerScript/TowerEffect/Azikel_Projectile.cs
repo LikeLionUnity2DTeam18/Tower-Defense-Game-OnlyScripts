@@ -20,7 +20,7 @@ public class Azikel_Projectile : TowerProjectile
     {
         if (collision.gameObject.layer == LayerMask.NameToLayer("Enemy"))
         {
-            collision.TryGetComponent<TowerStats>(out TowerStats targetStats);
+            collision.TryGetComponent<EnemyController>(out EnemyController targetStats);
             stats?.DoRangeDamage(targetStats);
 
             GameObject newTarget = FindClosestEnemyExcluding(collision.gameObject);
