@@ -86,7 +86,7 @@ public class PlayerController : MonoBehaviour
         UpdateMousePos();
 
         // 레벨업 테스트
-        if(UnityEngine.Input.GetKeyDown(KeyCode.U))
+        if (UnityEngine.Input.GetKeyDown(KeyCode.U))
         {
             LevelUp();
         }
@@ -97,8 +97,8 @@ public class PlayerController : MonoBehaviour
     /// </summary>
     private void LevelUp()
     {
-        Stats.LevelUp();
-        Instantiate(levelUpEfect, levelUpEffectPosition.position, Quaternion.identity);
+        if (Stats.TryLevelUp())
+            Instantiate(levelUpEfect, levelUpEffectPosition.position, Quaternion.identity);
     }
 
 
@@ -148,7 +148,7 @@ public class PlayerController : MonoBehaviour
     public void UseSkill(Skill _skill)
     {
         // 미리보기 상태가 없는 스킬이거나 스마트캐스팅 상태 경우 바로 사용 
-        if(CanUseSkill && (!_skill.hasPreviewState || _skill.SmartCasting))
+        if (CanUseSkill && (!_skill.hasPreviewState || _skill.SmartCasting))
         {
             _skill.TryUseSkillWithoutPreview();
         }

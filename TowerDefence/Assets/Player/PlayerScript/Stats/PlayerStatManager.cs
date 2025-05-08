@@ -48,11 +48,11 @@ public class PlayerStatManager
     /// <summary>
     /// 레벨업시 테이블에 맞춰서 모든 스탯 베이스값 수정
     /// </summary>
-    public void LevelUp()
+    public bool TryLevelUp()
     {
         Debug.Log("이전 레벨 " + Level);
         if (Level >= PlayerSettings.MAXLEVEL)
-            return;
+            return false; ;
 
         Level++;
         
@@ -64,6 +64,7 @@ public class PlayerStatManager
         BaseattackRange.SetBaseValue(levelStats.baseattackRange);
         SkillPower.SetBaseValue(levelStats.skillPower);
         MoveSpeed.SetBaseValue(levelStats.moveSpeed);
+        return true;
     }
 
     /// <summary>
