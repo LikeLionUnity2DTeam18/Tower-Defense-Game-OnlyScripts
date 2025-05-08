@@ -39,7 +39,7 @@ public class Zylad_Projectile : TowerEntity
     {
         if (collision.gameObject.layer == LayerMask.NameToLayer("Enemy"))
         {
-            collision.TryGetComponent<TowerStats>(out TowerStats targetStats);
+            collision.TryGetComponent<EnemyController>(out EnemyController targetStats);
             stats?.DoMeleeDamage(targetStats);
             transform.position = startPos;
             PoolManager.Instance.Return(gameObject);

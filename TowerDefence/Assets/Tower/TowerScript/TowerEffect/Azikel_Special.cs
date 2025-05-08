@@ -51,7 +51,7 @@ public class Azikel_Special : TowerProjectile
     {
         if (collision.gameObject.layer != LayerMask.NameToLayer("Enemy")) return;
 
-        if (collision.TryGetComponent<TowerStats>(out TowerStats targetStats))
+        if (collision.TryGetComponent<EnemyController>(out EnemyController targetStats))
         {
             stats?.DoSpecialDamage(targetStats);
         }

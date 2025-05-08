@@ -10,6 +10,11 @@ public class TowerEntity : MonoBehaviour,IStatReceiver
         this.tower = tower;
         this.stats = stats;
     }
+
+    public void SetStats(TowerStats stats)
+    {
+    }
+
     public virtual void Update()
     {
         /*if (stats != null)
