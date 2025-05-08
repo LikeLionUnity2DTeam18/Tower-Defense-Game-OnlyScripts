@@ -57,16 +57,18 @@ public class PlayerFireBreathSkill : Skill
     protected override void UseSkill()
     {
         base.UseSkill();
-        CreateSkillObject();
+        var obj = CreateSkillObject();
         player.StateMachine.ChangeState(player.BreathState);
+        EventManager.Trigger<PlayerFireBreathStarted>(new PlayerFireBreathStarted(obj));
     }
 
 
-    private void CreateSkillObject()
+    private FireBreathController CreateSkillObject()
     {
         var go = PoolManager.Instance.Get(skillPrefab);
         var obj = go.GetComponent<FireBreathController>();
         obj.SetFireBreath(skillCenterPosition, duration.GetValue(), damage.GetValue(), damageInterval.GetValue(), length.GetValue());
+        return obj;
     }
 
     /// <summary>
