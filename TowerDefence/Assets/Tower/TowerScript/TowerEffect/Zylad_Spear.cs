@@ -4,6 +4,7 @@ using UnityEngine;
 public class Zylad_Spear : TowerEntity
 {
     [SerializeField] private GameObject spear;
+    [SerializeField] private GameObject splashEffectPrefab;
 
     private void OnEnable()
     {
@@ -19,6 +20,10 @@ public class Zylad_Spear : TowerEntity
         {
             GameObject t = SpawnWithStats(spear);
             t.transform.position = nearest.position;
+
+            GameObject splashEffect = PoolManager.Instance.Get(splashEffectPrefab);
+            splashEffect.transform.position = nearest.position;
+            splashEffect.transform.localScale = splashEffect.transform.localScale / 4f;
         }
 
         PoolManager.Instance.Return(gameObject); // 본인 반환

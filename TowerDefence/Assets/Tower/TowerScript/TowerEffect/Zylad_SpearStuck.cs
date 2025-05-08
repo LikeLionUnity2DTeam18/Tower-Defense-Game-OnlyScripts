@@ -5,7 +5,6 @@ public class Zylad_SpearStuck : MonoBehaviour
 {
     [HideInInspector] public TowerStats stats;
 
-
     private void OnEnable()
     {
         StartCoroutine(Delay());

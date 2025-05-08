@@ -19,6 +19,7 @@ public class Eksyll_Splash : TowerSplash
         {
             Transform child = transform.GetChild(i);
             child.gameObject.SetActive(true);
+            child.GetComponent<Eksyll_Sp>().stats = stats;
 
             yield return new WaitForSeconds(activeDuration);
 

@@ -19,10 +19,17 @@ public class Eksyll : Tower
     [SerializeField] private Transform spawnPos;
     [SerializeField] private GameObject fx;
     [SerializeField] private GameObject fx1;
-    public bool isReady = true;
-
 
     [SerializeField] private GameObject[] tower;
+
+    public bool isReady = true;
+
+    private IEksyllPart footPart;
+    private IEksyllPart handPart;
+    private Animator footAnim1;
+    private Animator footAnim2;
+    private Animator handAnim;
+
     public override void Awake()
     {
         base.Awake();
@@ -34,15 +41,24 @@ public class Eksyll : Tower
         rangeState = fsmLibrary.ekRangeState;
         specialState = fsmLibrary.ekSpecialState;
 
+        footPart = Eksyll_Feet1.GetComponent<IEksyllPart>();
+        handPart = Eksyll_Hand.GetComponent<IEksyllPart>();
+
+        footAnim1 = Eksyll_Feet1.GetComponent<Animator>();
+        footAnim2 = Eksyll_Feet2.GetComponent<Animator>();
+        handAnim = Eksyll_Hand.GetComponent<Animator>();
+
         GiveStats(Eksyll_Feet1);
         GiveStats(Eksyll_Feet2);
         GiveStats(Eksyll_Hand);
     }
+
     public override void Update()
     {
         towerFSM.currentState.Update();
 
         if (timer > 0) timer -= Time.deltaTime;
+
         if (timer <= 0f && isReady)
         {
             timer = stats.cooldown.GetValue();
@@ -56,50 +72,38 @@ public class Eksyll : Tower
 
     public void Melee()
     {
-        Eksyll_Feet1.GetComponent<Eksyll_Feet>().anim.SetBool("Melee", true);    
-        Eksyll_Feet2.GetComponent<Eksyll_Feet>().anim.SetBool("Melee", true);
-        StartCoroutine(Delay());
-    }
-    IEnumerator Delay()
-    {
-        isReady = false;
-        var part = Eksyll_Feet1.GetComponent<IEksyllPart>();
-
-        // 기다림: IsDone이 true가 될 때까지
-        while (!part.IsDone)
-        {
-            yield return null;
-        }
-        part.IsDone = false;
-        isReady = true;
-        Eksyll_Feet1.GetComponent<Eksyll_Feet>().anim.SetBool("Melee", false);
-        Eksyll_Feet2.GetComponent<Eksyll_Feet>().anim.SetBool("Melee", false);
-        towerFSM.ChangeState(idleState);
+        footAnim1.SetBool("Melee", true);
+        footAnim2.SetBool("Melee", true);
+        StartCoroutine(WaitForPartDone(footPart, "Melee"));
     }
 
     public void Range()
     {
-        Eksyll_Hand.GetComponent<Eksyll_Hand>().anim.SetBool("Range", true);
+        handAnim.SetBool("Range", true);
         if (nearestREnemy != null)
         {
             Eksyll_Hand.GetComponent<Eksyll_Hand>().target = nearestREnemy;
         }
-        StartCoroutine(RDelay());
+        StartCoroutine(WaitForPartDone(handPart, "Range"));
     }
 
-    IEnumerator RDelay()
+    private IEnumerator WaitForPartDone(IEksyllPart part, string animParam)
     {
         isReady = false;
-        var part = Eksyll_Hand.GetComponent<IEksyllPart>();
-
-        // 기다림: IsDone이 true가 될 때까지
-        while (!part.IsDone)
-        {
-            yield return null;
-        }
+        yield return new WaitUntil(() => part.IsDone);
         part.IsDone = false;
         isReady = true;
-        Eksyll_Hand.GetComponent<Eksyll_Hand>().anim.SetBool("Range", false);
+
+        if (animParam == "Melee")
+        {
+            footAnim1.SetBool(animParam, false);
+            footAnim2.SetBool(animParam, false);
+        }
+        else if (animParam == "Range")
+        {
+            handAnim.SetBool(animParam, false);
+        }
+
         towerFSM.ChangeState(idleState);
     }
 
@@ -108,12 +112,13 @@ public class Eksyll : Tower
         StartCoroutine(SpecialDelay());
     }
 
-    IEnumerator SpecialDelay()
+    private IEnumerator SpecialDelay()
     {
         GameObject t = PoolManager.Instance.Get(fx);
         GameObject p = PoolManager.Instance.Get(fx1);
         t.transform.position = pos.position;
         p.transform.position = pos.position;
+
         yield return new WaitForSeconds(4f);
 
         GameObject selectedTower = tower[Random.Range(0, tower.Length)];
@@ -123,29 +128,27 @@ public class Eksyll : Tower
 
         Vector3[] offsets = new Vector3[]
         {
-            new Vector3(0f, -spacingY * 2, 0f),                    
-            new Vector3(-spacingX, -spacingY, 0f),                 // [1]
-            new Vector3(spacingX, -spacingY, 0f),                  // [2]
-            new Vector3(-spacingX * 2, -spacingY * 2, 0f),         // [3]
-            new Vector3(spacingX * 2, -spacingY * 2, 0f),          // [4]
+            new Vector3(0f, -spacingY * 2, 0f),
+            new Vector3(-spacingX, -spacingY, 0f),
+            new Vector3(spacingX, -spacingY, 0f),
+            new Vector3(-spacingX * 2, -spacingY * 2, 0f),
+            new Vector3(spacingX * 2, -spacingY * 2, 0f),
         };
 
-        for (int i = 0; i < 5; i++)
+        foreach (var offset in offsets)
         {
-            Vector3 spawnPosOffset = spawnPos.position + offsets[i];
-            GameObject clone = Instantiate(selectedTower, spawnPosOffset, Quaternion.identity);
+            GameObject clone = Instantiate(selectedTower, spawnPos.position + offset, Quaternion.identity);
             StartCoroutine(DestroyAfterDelay(clone, 30f));
         }
 
-
         yield return new WaitForSeconds(1f);
-
         towerFSM.ChangeState(idleState);
     }
 
-    IEnumerator DestroyAfterDelay(GameObject obj, float delay)
+    private IEnumerator DestroyAfterDelay(GameObject obj, float delay)
     {
         yield return new WaitForSeconds(delay);
         PoolManager.Instance.Return(obj);
     }
 }
+

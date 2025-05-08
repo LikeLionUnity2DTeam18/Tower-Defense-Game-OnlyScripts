@@ -2,27 +2,57 @@ using UnityEngine;
 
 public class Eksyll_Projectile : TowerProjectile
 {
+    [SerializeField] private GameObject pref;
+    [SerializeField] private float spawnCooldown = 5f;
+    private float spawnTimer;
+    private int enemyLayer;
+
+    private void Awake()
+    {
+        enemyLayer = LayerMask.NameToLayer("Enemy");
+        spawnTimer = spawnCooldown;
+    }
+
     public override void Update()
     {
         transform.Translate(direction * speed * Time.deltaTime, Space.World);
 
+        spawnTimer -= Time.deltaTime;
+        if (spawnTimer <= 0f)
+        {
+            SpawnCrossEffect();
+            spawnTimer = spawnCooldown;
+        }
 
-        //거리가 멀어지면 지우기
-        if (Vector3.Distance(startPos, transform.position) > maxDistance)
+        if ((transform.position - startPos).sqrMagnitude > maxDistance * maxDistance)
         {
             PoolManager.Instance.Return(gameObject);
         }
     }
 
+    private void SpawnCrossEffect()
+    {
+        for (int i = 0; i < 4; i++)
+        {
+            float angle = Random.Range(0f, 360f);
+            Vector3 dir = Quaternion.Euler(0f, 0f, angle) * Vector3.right;
+
+            GameObject t = PoolManager.Instance.Get(pref);
+            t.transform.position = transform.position;
+
+            var proj = t.GetComponent<Eksyll_Projectile1>();
+            proj.Init(dir);
+            proj.SetStats(stats);
+        }
+    }
+
     protected override void OnTriggerEnter2D(Collider2D collision)
     {
-        // Enemy 레이어만 통과
-        if (collision.gameObject.layer != LayerMask.NameToLayer("Enemy")) return;
+        if (collision.gameObject.layer != enemyLayer) return;
 
-        // 타겟 스탯 가져오기
-        collision.TryGetComponent<EnemyController>(out EnemyController targetStats);
-
-        // 내 스탯 기준으로 데미지 주기
-        stats?.DoSpecialDamage(targetStats);
+        if (collision.TryGetComponent<EnemyController>(out var targetStats))
+        {
+            stats?.DoMeleeDamage(targetStats);
+        }
     }
 }

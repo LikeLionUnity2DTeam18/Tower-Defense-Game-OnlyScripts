@@ -202,6 +202,14 @@ public class FSMLibrary
         #endregion
 
         #region Golem
+        zIdleState = new ZIdleState(tower, towerFSM, "Idle");
+        zMoveState = new ZMoveState(tower, towerFSM, "Move");
+        zMeleeState = new ZMeleeState(tower, towerFSM, "Melee");
+        zRangeState = new ZRangeState(tower, towerFSM, "Range");
+        zSpecialState = new ZSpecialState(tower, towerFSM, "Special");
+        #endregion
+
+        #region Golem
         goIdleState = new GOIdleState(tower, towerFSM, "Idle");
         goMoveState = new GOMoveState(tower, towerFSM, "Move");
         goMeleeState = new GOMeleeState(tower, towerFSM, "Melee");
