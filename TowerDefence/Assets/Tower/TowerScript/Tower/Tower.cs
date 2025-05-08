@@ -10,6 +10,7 @@ enum layer
 public interface IStatReceiver  
 {
     void SetStats(Tower tower,TowerStats stats);
+    void SetStats(TowerStats stats);
 }
 public class Tower : MonoBehaviour
 {
@@ -175,13 +176,13 @@ public class Tower : MonoBehaviour
         return nearest;
     }
     //범위 내 모든 적 데미지
-    private void DamageAllEnemiesInRange(Vector3 origin, float radius, LayerMask enemyLayer, Action<TowerStats> damageFunc)
+    private void DamageAllEnemiesInRange(Vector3 origin, float radius, LayerMask enemyLayer, Action<EnemyController> damageFunc)
     {
         Collider2D[] hits = Physics2D.OverlapCircleAll(origin, radius, enemyLayer);
 
         foreach (var hit in hits)
         {
-            if (hit.TryGetComponent<TestEnemyStats>(out var target))
+            if (hit.TryGetComponent<EnemyController>(out var target))
             {
                 damageFunc(target);
             }
