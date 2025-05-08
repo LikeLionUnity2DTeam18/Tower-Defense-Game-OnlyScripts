@@ -21,7 +21,7 @@ public class Boomer_ExplodeReadyState : EnemyState
         //도중에 죽을 경우
         if (enemy.currentHP <= 0f)
         {
-            //stateMachine.ChangeState(new Boomer_DeadState(enemy, stateMachine));
+            stateMachine.ChangeState(new Common_DeathState(enemy, stateMachine));
             return;
         }
         //자폭 성공
