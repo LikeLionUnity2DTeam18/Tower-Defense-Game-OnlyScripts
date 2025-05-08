@@ -10,8 +10,6 @@ public class PlayerBindShotState : PlayerState
         base.Enter();
         rb.linearVelocity = Vector2.zero;
         stateTimer = player.Skill.qskill.CastingTime;
-        //SetAnimationDirection(player.skill.qskill.previewDirection);
-        Debug.Log(player.Skill.qskill.previewDirection);
         player.SetLastDirection(player.Skill.qskill.previewDirection);
     }
 

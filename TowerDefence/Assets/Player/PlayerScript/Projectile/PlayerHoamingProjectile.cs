@@ -35,11 +35,14 @@ public class PlayerHoamingProjectile : PlayerProjectile
             destination = target.transform.position;
         }
 
+        // 대상을 향해 이동, 투사체 회전
         direction = destination - (Vector2)transform.position;
         RotateToMovingDirection();
         rb.linearVelocity = direction.normalized * speed;
 
+        // 대상이 비활성화 된 경우 새로운 대상 추적
         FindAnotherTarget();
+        // 대상 위치에 도착했다면 충돌처리
         HoamingCollisionCheck();
         
     }
@@ -50,13 +53,12 @@ public class PlayerHoamingProjectile : PlayerProjectile
     }
 
     /// <summary>
-    /// 
+    /// 대상 위치에 도착하면 대미지 주고 풀로 리턴
     /// </summary>
     protected virtual void HoamingCollisionCheck()
     {
         if (IsSamePosition(destination, (Vector2)transform.position))
         {
-
             target?.TakeDamage(damage);
             Release();
         }
@@ -65,7 +67,8 @@ public class PlayerHoamingProjectile : PlayerProjectile
     protected virtual void FindAnotherTarget()
     {
         // 타겟이 비활성화 된 경우 새 타겟 찾기
-        if (target.gameObject.activeInHierarchy)
+        
+        if (target?.gameObject.activeInHierarchy != true)
         {
             target = FindTargetInRange(changeTargetRange);
         }

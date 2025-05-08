@@ -1,7 +1,9 @@
-using NUnit.Framework;
-using System.Collections.Generic;
+
 using UnityEngine;
 
+/// <summary>
+/// 아이템 데이터를 저장하는 파일
+/// </summary>
 public enum EquipmentSlots { Head, Body, Weapon, Amulet}
 
 [CreateAssetMenu(fileName = "ItemData", menuName = "ScriptableObjects/Player/ItemData")]

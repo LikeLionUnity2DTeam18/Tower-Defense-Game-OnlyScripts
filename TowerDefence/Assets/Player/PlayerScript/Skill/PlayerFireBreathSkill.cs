@@ -1,8 +1,10 @@
 using System.Text;
 using UnityEngine;
 
-public enum FireBreathStatTypes { Duration, Damage, DamageInterval, Length}
 
+/// <summary>
+/// 화염 숨결
+/// </summary>
 public class PlayerFireBreathSkill : Skill
 {
     [SerializeField] float initial_duration;
@@ -43,6 +45,7 @@ public class PlayerFireBreathSkill : Skill
         player.StateMachine.ChangeState(player.BreathState);
     }
 
+
     private void CreateSkillObject()
     {
         var go = PoolManager.Instance.Get(skillPrefab);
@@ -50,7 +53,12 @@ public class PlayerFireBreathSkill : Skill
         obj.SetFireBreath(skillCenterPosition, duration.GetValue(), damage.GetValue(), damageInterval.GetValue(), length.GetValue());
     }
 
-
+    /// <summary>
+    /// 플레이어 스탯 타입으로 스탯 return
+    /// 다음에는 skillmanager에서 관리할수있게 해야겠음..
+    /// </summary>
+    /// <param name="type"></param>
+    /// <returns></returns>
     public override PlayerStat GetStatByType(PlayerStatTypes type)
     {
         return type switch
@@ -63,6 +71,10 @@ public class PlayerFireBreathSkill : Skill
         };
     }
 
+    /// <summary>
+    /// 툴팁 텍스트 get
+    /// </summary>
+    /// <returns></returns>
     public override string GetTooltipText()
     {
         if (tooltipText == null)
@@ -70,6 +82,9 @@ public class PlayerFireBreathSkill : Skill
         return tooltipText;
     }
 
+    /// <summary>
+    /// StringBuilder를 이용해 툴팁 문자열 생성
+    /// </summary>
     public override void SetTooltipText()
     {
 
