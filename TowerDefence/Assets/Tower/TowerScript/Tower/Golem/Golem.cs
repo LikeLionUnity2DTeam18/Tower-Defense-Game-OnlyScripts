@@ -33,8 +33,11 @@ public class Golem : Tower
         rangeState = fsmLibrary.goRangeState;
         specialState = fsmLibrary.goSpecialState;
 
-        GiveStats(LeftHand);
-        GiveStats(RightHand);
+
+        LeftHand.GetComponentInChildren<Golem_LeftHand>().SetStats(stats);
+        RightHand.GetComponentInChildren<Golem_RightHand>().SetStats(stats);
+        LeftFist.GetComponentInChildren<Golem_LeftFist>().SetStats(stats);
+        RightFist.GetComponentInChildren<Golem_RIghtFist>().SetStats(stats);
     }
 
     private void OnEnable()

@@ -104,6 +104,15 @@ public class FSMLibrary
     public GORangeState goRangeState { get; private set; }
     public GOSpecialState goSpecialState { get; private set; }
     #endregion
+
+    #region Eksyll State
+    public EKIdleState ekIdleState { get; private set; }
+    public EKMoveState ekMoveState { get; private set; }
+    public EKMeleeState ekMeleeState { get; private set; }
+    public EKRangeState ekRangeState { get; private set; }
+    public EKSpecialState ekSpecialState { get; private set; }
+    #endregion
+
     public FSMLibrary(Tower tower,TowerFSM towerFSM)
     {
         towerState = new TowerState(tower, towerFSM);
@@ -193,11 +202,27 @@ public class FSMLibrary
         #endregion
 
         #region Golem
+        zIdleState = new ZIdleState(tower, towerFSM, "Idle");
+        zMoveState = new ZMoveState(tower, towerFSM, "Move");
+        zMeleeState = new ZMeleeState(tower, towerFSM, "Melee");
+        zRangeState = new ZRangeState(tower, towerFSM, "Range");
+        zSpecialState = new ZSpecialState(tower, towerFSM, "Special");
+        #endregion
+
+        #region Golem
         goIdleState = new GOIdleState(tower, towerFSM, "Idle");
         goMoveState = new GOMoveState(tower, towerFSM, "Move");
         goMeleeState = new GOMeleeState(tower, towerFSM, "Melee");
         goRangeState = new GORangeState(tower, towerFSM, "Range");
         goSpecialState = new GOSpecialState(tower, towerFSM, "Special");
+        #endregion
+
+        #region Eksyll
+        ekIdleState = new EKIdleState(tower, towerFSM, "Idle");
+        ekMoveState = new EKMoveState(tower, towerFSM, "Move");
+        ekMeleeState = new EKMeleeState(tower, towerFSM, "Melee");
+        ekRangeState = new EKRangeState(tower, towerFSM, "Range");
+        ekSpecialState = new EKSpecialState(tower, towerFSM, "Special");
         #endregion
     }
 }

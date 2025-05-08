@@ -1,3 +1,5 @@
+using System;
+using System.Runtime.CompilerServices;
 using System.Text;
 using UnityEngine;
 
@@ -15,8 +17,10 @@ public class PlayerBindShotSkill : Skill
     [SerializeField] private float initial_damage;
     [SerializeField] private float initial_bindTime;
     [SerializeField] private float initial_castingTime;
+    [SerializeField] private float skillPowerFactor; // 스킬파워 계수
 
     private PlayerStat damage;
+    private PlayerStatModifier skillPowerMod;
     private PlayerStat bindTime;
     private PlayerStat castingTime;
 
@@ -29,6 +33,7 @@ public class PlayerBindShotSkill : Skill
         base.Start();
         canBeFlipX = false;
         InitilizeStats();
+
     }
 
     private void InitilizeStats()
@@ -36,6 +41,21 @@ public class PlayerBindShotSkill : Skill
         damage = new PlayerStat(initial_damage);
         bindTime = new PlayerStat(initial_bindTime);
         castingTime = new PlayerStat(initial_castingTime);
+
+        skillPowerMod = new PlayerStatModifier(player.SkillPower * skillPowerFactor,PlayerStatModifierMode.additive);
+        damage.AddModifier(skillPowerMod);
+
+        player.Stats.SkillPower.OnValueChanged += OnSkillPowerChanged;
+    }
+
+    private void OnSkillPowerChanged()
+    {
+        skillPowerMod.SetValue(player.SkillPower * skillPowerFactor);
+    }
+
+    private void OnDestroy()
+    {
+        player.Stats.SkillPower.OnValueChanged -= OnSkillPowerChanged;
     }
 
     protected override void UseSkill()
