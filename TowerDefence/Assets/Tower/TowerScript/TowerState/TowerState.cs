@@ -32,7 +32,7 @@ public class TowerState
         if(stateName != null) tower.anim.SetBool(stateName, true);
         else return;
         TriggerSet();
-        //Debug.Log("State : " + stateName);
+        Debug.Log("State : " + stateName);
     }
     public virtual void Update()
     {

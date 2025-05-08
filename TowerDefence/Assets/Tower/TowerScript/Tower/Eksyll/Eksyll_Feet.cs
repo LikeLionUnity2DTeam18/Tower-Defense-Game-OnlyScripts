@@ -1,18 +1,30 @@
 using UnityEngine;
-using UnityEngine.XR;
 
-public class Golem_LeftHand : MonoBehaviour, IStatReceiver, IGolemPart
+public class Eksyll_Feet : MonoBehaviour, IEksyllPart, IStatReceiver
 {
     [SerializeField] private GameObject DamageArea;
     [SerializeField] private GameObject splashEffectPrefab;
+    [SerializeField] private GameObject pos;
+    [HideInInspector]public Animator anim;
     public bool IsDone { get; set; }
     TowerStats stats;
-    public void EndTrigger()
+
+    public void Start()
+    {
+        anim = GetComponent<Animator>();
+    }
+
+    public void AttTiming()
     {
         GameObject t = SpawnWithStats(DamageArea);
-        t.transform.position = transform.position;
+        t.transform.position = pos.transform.position;
+        t.transform.localScale = t.transform.localScale * 2f;
         GameObject splashEffect = PoolManager.Instance.Get(splashEffectPrefab);
         splashEffect.transform.position = transform.position;
+    }
+
+    public void EndTrigger()
+    {
         IsDone = true;
     }
 

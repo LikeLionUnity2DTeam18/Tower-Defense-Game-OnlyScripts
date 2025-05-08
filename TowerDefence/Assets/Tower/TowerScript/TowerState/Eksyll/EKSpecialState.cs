@@ -11,10 +11,10 @@ public class EKSpecialState : TSpecialState
     public override void Enter()
     {
         base.Enter();
+        eksyll.Special();
     }
     public override void Update()
     {
-        base.Update();
     }
     public override void Exit()
     {

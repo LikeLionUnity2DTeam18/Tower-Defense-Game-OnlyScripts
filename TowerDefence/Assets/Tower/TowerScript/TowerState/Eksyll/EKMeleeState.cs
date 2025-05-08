@@ -13,7 +13,7 @@ public class EKMeleeState : TMeleeState
     }
     public override void Update()
     {
-
+        eksyll.Melee();
     }
     public override void Exit()
     {

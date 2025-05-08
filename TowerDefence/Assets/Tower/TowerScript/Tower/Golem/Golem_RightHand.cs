@@ -21,8 +21,9 @@ public class Golem_RightHand : MonoBehaviour, IStatReceiver, IGolemPart
         stats = _stats;
     }
 
-    public void SetStats(TowerStats stats)
+    public void SetStats(TowerStats _stats)
     {
+        stats = _stats;
     }
 
     public GameObject SpawnWithStats(GameObject prefab)

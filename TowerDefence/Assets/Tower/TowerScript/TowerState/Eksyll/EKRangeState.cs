@@ -13,6 +13,7 @@ public class EKRangeState : TRangeState
     }
     public override void Update()
     {
+        eksyll.Range();
     }
     public override void Exit()
     {
