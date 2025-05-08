@@ -23,6 +23,8 @@ public class Blocker_MoveState : EnemyState
     {
         base.LogicUpdate();
 
+        CheckDeath(new Common_DeathState(enemy, stateMachine));
+
         float distance = Vector2.Distance(enemy.transform.position, EnemyTarget.TargetPostion);
 
         if (distance <= enemy.TargetRange)

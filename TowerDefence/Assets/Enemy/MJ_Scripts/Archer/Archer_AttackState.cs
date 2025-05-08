@@ -55,6 +55,8 @@ public class Archer_AttackState : EnemyState
         
         base.LogicUpdate();
 
+        CheckDeath(new Common_DeathState(enemy, stateMachine));
+
         if (stateTimer <= 0f)
         {
             stateMachine.ChangeState(new Archer_IdleState(enemy, stateMachine));

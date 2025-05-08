@@ -65,6 +65,8 @@ public class BountyHunter_AttackState : EnemyState
 
         base.LogicUpdate();
 
+        CheckDeath(new Common_DeathState(enemy, stateMachine));
+
         if (stateTimer <= 0f)
         {
             stateMachine.ChangeState(new BountyHunter_IdleState(enemy, stateMachine));
