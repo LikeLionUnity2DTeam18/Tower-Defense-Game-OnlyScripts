@@ -8,6 +8,7 @@ public class PlayerStatView : MonoBehaviour
     [SerializeField] private TextMeshProUGUI attackRangeText;
     [SerializeField] private TextMeshProUGUI skillPowerText;
     [SerializeField] private TextMeshProUGUI moveSpeedText;
+    [SerializeField] private TextMeshProUGUI Level;
 
     private void Start()
     {
@@ -61,5 +62,10 @@ public class PlayerStatView : MonoBehaviour
             float value = stats.GetStatValue(type);
             OnStatsChanged(new PlayerStatChanged(type, value));
         }
+    }
+
+    private void OnPlayerLevelChanged(PlayerLevelChanged evt)
+    {
+
     }
 }
