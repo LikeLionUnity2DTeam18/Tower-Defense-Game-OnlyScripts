@@ -41,7 +41,7 @@ public class PlayerStatManager
     private PlayerStat CreateStat(PlayerStatTypes _type, float value)
     {
         PlayerStat newStat = new PlayerStat(value);
-        newStat.OnValueChanged = () => EventManager.Trigger(new PlayerStatChanged(_type, newStat.GetValue()));
+        newStat.OnValueChanged += () => EventManager.Trigger(new PlayerStatChanged(_type, newStat.GetValue()));
         return newStat;
     }
 
