@@ -2,10 +2,12 @@ using UnityEngine;
 
 public class EnemyTarget : MonoBehaviour
 {
-    public static Vector2 TargetPostion;
+    public static EnemyTarget instance;
 
     private void Awake()
     {
-        TargetPostion = transform.position;
+        instance = this;
     }
+
+    public static Vector2 TargetPostion => instance.transform.position;
 }

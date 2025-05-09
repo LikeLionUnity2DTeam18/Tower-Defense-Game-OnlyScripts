@@ -13,6 +13,9 @@ public class Common_DeathState : EnemyState
         // 방향에 따라 flipX만 조정
         enemy.SpriteRenderer.flipX = enemy.MoveDir.x < 0;
 
+        // 골드 지급
+        EventManager.Trigger<MonsterDied>(new MonsterDied(enemy.Data.rewardGold, enemy.transform.position));
+
         // 죽음 처리용 물리 제거
         if (enemy.TryGetComponent<Rigidbody2D>(out var rb))
             rb.simulated = false;
