@@ -4,14 +4,14 @@ using UnityEngine;
 /// <summary>
 /// 아이템 데이터를 저장하는 파일
 /// </summary>
-public enum EquipmentSlots { Head, Body, Weapon, Amulet}
+public enum EquipmentSlotType { Head, Body, Weapon, Amulet}
 
 [CreateAssetMenu(fileName = "ItemData", menuName = "ScriptableObjects/Player/ItemData")]
 public class ItemData : ScriptableObject
 {
     [Header("아이템 기본 정보")]
     public string ItemName;
-    public EquipmentSlots ItemSlot;
+    public EquipmentSlotType ItemSlot;
     public Sprite ItemIcon;
 
     [Header("플레이어 스탯 관련")]

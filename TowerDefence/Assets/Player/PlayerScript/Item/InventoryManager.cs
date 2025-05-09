@@ -24,9 +24,14 @@ public class InventoryManager : MonoBehaviour
     public Dictionary<ItemData, PlayerItem> equipmentDictionary;
 
     //인벤토리에 있는 아이템 관리
-    public List<PlayerItem> inventory;
+    public List<PlayerItem> inventory; // 인벤토리도 10칸 고정
     public Dictionary<ItemData, PlayerItem> inventoryDictionary;
+    private int inventoryMaxSlot = 10;
+    private int inventoryItemCount;
 
+    // UI로 전달할 스프라이트 리스트
+    private List<Sprite> equipmentSprites;
+    private List<Sprite> inventorySprites;
 
 
     private void Awake()
@@ -40,13 +45,25 @@ public class InventoryManager : MonoBehaviour
 
         //리스트, 딕셔너리 초기화
         //장비슬롯은 4개짜리 List를 null로 채워서 EquipmentSLots에 대응하는 인덱스로 관리
-        int slotCount = System.Enum.GetValues(typeof(EquipmentSlots)).Length;
+        int slotCount = System.Enum.GetValues(typeof(EquipmentSlotType)).Length;
         equipment = new List<PlayerItem>();
+        equipmentSprites = new();
         for (int i = 0; i < slotCount; i++)
+        {
             equipment.Add(null);
+            equipmentSprites.Add(null);
+        }
+
+        inventory = new();
+        inventorySprites = new();
+        for (int i = 0; i < inventoryMaxSlot; i++)
+        {
+            inventory.Add(null);
+            inventorySprites.Add(null);
+        }
+        inventoryItemCount = 0;
 
         equipmentDictionary = new();
-        inventory = new();
         inventoryDictionary = new();
     }
 
@@ -56,6 +73,18 @@ public class InventoryManager : MonoBehaviour
         EquipStartingItems();
         // 생성가능 아이템 리스트 초기화
         InitilizePossibleItemList();
+
+        EventManager.AddListener<InventorySlotClicked>(OnInventorySlotClicked);
+        EventManager.AddListener<EquipmentSlotClicked>(OnEquipmentSlotClicked);
+        EventManager.AddListener<InventoryTooltipOnMouse>(OnInventoryMouseEvent);
+        
+    }
+
+    private void OnDisable()
+    {
+        EventManager.RemoveListener<InventorySlotClicked>(OnInventorySlotClicked);
+        EventManager.RemoveListener<EquipmentSlotClicked>(OnEquipmentSlotClicked);
+        EventManager.RemoveListener<InventoryTooltipOnMouse>(OnInventoryMouseEvent);
     }
 
     /// <summary>
@@ -72,7 +101,7 @@ public class InventoryManager : MonoBehaviour
     /// </summary>
     private void EquipStartingItems()
     {
-        foreach(var data in startingItems)
+        foreach (var data in startingItems)
         {
             var newItem = new PlayerItem(data);
             EquipItem(newItem);
@@ -87,7 +116,7 @@ public class InventoryManager : MonoBehaviour
     private PlayerItem AddNewItemToInventory(ItemData data)
     {
         PlayerItem newItem = null;
-        if(inventoryDictionary.ContainsKey(data)) // 딕셔너리 키에 이미 아이템이 있으면 경고
+        if (inventoryDictionary.ContainsKey(data)) // 딕셔너리 키에 이미 아이템이 있으면 경고
         {
             Debug.LogWarning("이미 존재하는 아이템 중복 생성");
         }
@@ -108,14 +137,15 @@ public class InventoryManager : MonoBehaviour
     /// <param name="item"></param>
     private void AddExistingItemToInventory(PlayerItem item)
     {
-        if(inventoryDictionary.ContainsKey(item.data))
+        if (inventoryDictionary.ContainsKey(item.data))
         {
             Debug.LogWarning("이미 존재하는 아이템 중복 생성");
         }
         else
         {
-            inventory.Add(item);
+            inventory[inventoryItemCount] = item;
             inventoryDictionary.Add(item.data, item);
+            inventoryItemCount++;
         }
         UpdateInventoryUI();
     }
@@ -128,8 +158,12 @@ public class InventoryManager : MonoBehaviour
     {
         if (inventoryDictionary.TryGetValue(data, out PlayerItem itemToRemove))
         {
+            //아이템 제거 후 제일 뒤에 한칸 추가해서 슬롯 땡기기
             inventory.Remove(itemToRemove);
+            inventory.Add(null);
+
             inventoryDictionary.Remove(data);
+            inventoryItemCount--;
         }
         UpdateInventoryUI();
     }
@@ -167,6 +201,8 @@ public class InventoryManager : MonoBehaviour
         item.RemoveModifiersOnUnequip();  // 아이템 효과를 플레이어 및 스킬 스탯에서 제거 
 
         AddExistingItemToInventory(item);
+
+        UpdateEquipmentUI();
     }
     /// <summary>
     /// 인벤토리 및 장비창 UI 업데이트
@@ -182,7 +218,14 @@ public class InventoryManager : MonoBehaviour
     /// </summary>
     private void UpdateInventoryUI()
     {
-
+        for(int i = 0; i < inventoryMaxSlot; i ++)
+        {
+            if (inventory[i] == null)
+                inventorySprites[i] = null;
+            else
+                inventorySprites[i] = inventory[i].data.ItemIcon;
+        }
+        EventManager.Trigger<PlayerInventorySlotChanged>(new PlayerInventorySlotChanged(inventorySprites));
     }
 
     /// <summary>
@@ -190,7 +233,14 @@ public class InventoryManager : MonoBehaviour
     /// </summary>
     private void UpdateEquipmentUI()
     {
-
+        for(int i = 0; i < 4; i ++)
+        {
+            if(equipment[i] == null)
+                equipmentSprites[i] = null;
+            else
+                equipmentSprites[i] = equipment[i].data.ItemIcon;
+        }
+        EventManager.Trigger<PlayerEquipmentSlotChanged>(new PlayerEquipmentSlotChanged(equipmentSprites));
     }
 
     /// <summary>
@@ -203,7 +253,7 @@ public class InventoryManager : MonoBehaviour
             Debug.LogWarning("추가 가능한 아이템 없음");
             return;
         }
-        int index = Random.Range(0,possibleItems.Count);
+        int index = Random.Range(0, possibleItems.Count);
         var data = possibleItems[index];
 
 
@@ -225,5 +275,42 @@ public class InventoryManager : MonoBehaviour
     public string GetTooltipText(PlayerItem item, PlayerStatDisplayNamesSO def)
     {
         return item.GetTooltipText(def);
+    }
+
+
+    private void OnInventorySlotClicked(InventorySlotClicked evt)
+    {
+        int index = evt.slotNumber - 1;
+        if (inventory[index] == null)
+            return;
+        else
+            EquipItem(inventory[index]);
+        Debug.Log($"인벤트리 {evt.slotNumber} 클릭됨");
+    }
+
+    private void OnEquipmentSlotClicked(EquipmentSlotClicked evt)
+    {
+        int index = (int)evt.slot;
+        if (equipment[index] == null)
+            return;
+        else
+            UnequipItem(equipment[index]);
+        Debug.Log($"장비창 {evt.slot} 클릭됨");
+    }
+
+    private void OnInventoryMouseEvent(InventoryTooltipOnMouse evt)
+    {
+        if (inventory[evt.SlotNumber - 1] == null)
+            return;
+        if(evt.IsTooltipOn) // 마우스 enter
+        {
+            //툴팁 표시
+            string tooltip = GetTooltipText(inventory[evt.SlotNumber - 1],statDisplayNames);
+            Debug.Log(tooltip);
+        }
+        else // 마우스 exit
+        {
+            //툴팁 제거 
+        }
     }
 }

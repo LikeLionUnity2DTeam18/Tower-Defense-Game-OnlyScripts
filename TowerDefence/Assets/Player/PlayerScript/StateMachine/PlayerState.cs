@@ -92,7 +92,7 @@ public class PlayerState
         var targets = Physics2D.OverlapCircleAll(player.transform.position, _range, LayerMask.GetMask("Enemy"));
         if (targets.Length <= 0)
         {
-            Debug.Log("대상 없음!");
+            //Debug.Log("대상 없음!");
             return null;
         }
         float nearestDistance = Mathf.Infinity;

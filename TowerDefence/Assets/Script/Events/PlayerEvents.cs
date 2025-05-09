@@ -6,6 +6,10 @@
  */
 
 
+using NUnit.Framework;
+using System.Collections.Generic;
+using UnityEngine;
+
 /// <summary>
 /// 플레이어 체력이 변경됐을 때, 
 /// 생성자 (변경 전 체력, 변경 후 체력)
@@ -54,5 +58,56 @@ public struct PlayerLevelChanged
     public PlayerLevelChanged(int newLevel)
     {
         this.newLevel = newLevel;
+    }
+}
+
+public struct PlayerEquipmentSlotChanged
+{
+    public List<Sprite> sprites;
+    public PlayerEquipmentSlotChanged(List<Sprite> sprites)
+    {
+        this.sprites = sprites;
+    }
+}
+
+public struct PlayerInventorySlotChanged
+{
+    public List<Sprite> sprites;
+    public PlayerInventorySlotChanged(List<Sprite> sprites)
+    {
+        this.sprites = sprites;
+    }
+}
+
+public struct InventorySlotClicked
+{
+    public int slotNumber;
+    public InventorySlotClicked(int slotNumber)
+    {
+        this.slotNumber = slotNumber;
+    }
+}
+
+public struct EquipmentSlotClicked
+{
+    public EquipmentSlotType slot;
+    public EquipmentSlotClicked(EquipmentSlotType slot)
+    {
+        this.slot = slot;
+    }
+}
+
+//
+public struct InventoryTooltipOnMouse
+{
+    public bool IsTooltipOn;
+    public Vector2 UIposition;
+    public int SlotNumber;
+
+    public InventoryTooltipOnMouse(bool isTooltipOn, Vector2 uiposition, int slotNumber)
+    {
+        this.IsTooltipOn = isTooltipOn;
+        this.UIposition = uiposition;
+        this.SlotNumber = slotNumber;
     }
 }
