@@ -99,6 +99,7 @@ public class Golem : Tower
 
         Vector3 targetLocalPos = transform.InverseTransformPoint(nearestREnemy.transform.position);
 
+        SoundManager.Instance.Play(SoundType.None, fist.transform);
         while (Vector3.Distance(fist.transform.localPosition, targetLocalPos) > 0.05f)
         {
             fist.transform.localPosition = Vector3.MoveTowards(fist.transform.localPosition, targetLocalPos, speed * Time.deltaTime);

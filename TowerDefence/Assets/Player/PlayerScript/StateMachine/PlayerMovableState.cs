@@ -59,7 +59,7 @@ public class PlayerMovableState : PlayerState
     {
         Vector2 mousePos = Mouse.current.position.ReadValue();
         Vector2 destination = Camera.main.ScreenToWorldPoint(mousePos);
-        Debug.Log($"마우스 클릭 : {destination}");
+        //Debug.Log($"마우스 클릭 : {destination}");
 
 
         // UI인 경우

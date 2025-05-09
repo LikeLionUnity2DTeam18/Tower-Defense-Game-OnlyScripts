@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.XR;
 
 public class Golem_Splash : TowerStay
 {
@@ -12,6 +13,7 @@ public class Golem_Splash : TowerStay
     private void OnEnable()
     {
         transform.localScale = originalScale;
+        SoundManager.Instance.Play(SoundType.Explosion, transform);
     }
 
     protected override void OnTriggerEnter2D(Collider2D collision)
