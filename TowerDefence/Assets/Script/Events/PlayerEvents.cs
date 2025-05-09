@@ -111,3 +111,17 @@ public struct InventoryTooltipOnMouse
         this.SlotNumber = slotNumber;
     }
 }
+
+public struct EquipmentTooltipOnMouse
+{
+    public bool IsTooltipOn;
+    public Vector2 UIPosition;
+    public EquipmentSlotType Slot;
+
+    public EquipmentTooltipOnMouse(bool isTooltipOn, Vector2 uiposition, EquipmentSlotType slot)
+    {
+        this.IsTooltipOn = isTooltipOn;
+        this.UIPosition = uiposition;
+        this.Slot = slot;
+    }
+}

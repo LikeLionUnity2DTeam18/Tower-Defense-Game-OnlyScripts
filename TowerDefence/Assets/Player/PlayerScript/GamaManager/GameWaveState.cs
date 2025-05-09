@@ -26,6 +26,10 @@ public class GameWaveState : GameState
         // 스태이지 보상 획득
         Debug.Log($"스태이지 보상 골드 획득 : {stageData.GoldRewardOnEnd} 골드");
         EventManager.Trigger(new MonsterDied(stageData.GoldRewardOnEnd, PlayerManager.Instance.Player.transform.position));
+        for (int i = 0; i < stageData.NumberOfItems; i++)
+        {
+            InventoryManager.Instance.AddRandomPossibleItemToInventory();
+        }
 
         game.ProceedStage();
     }
