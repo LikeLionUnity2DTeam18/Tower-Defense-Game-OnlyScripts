@@ -40,7 +40,7 @@ public class Golem : Tower
         RightFist.GetComponentInChildren<Golem_RIghtFist>().SetStats(stats);
     }
 
-    private void OnEnable()
+    public void OnEnable()
     {
         //위치 초기화
         if (LeftFist != null)
