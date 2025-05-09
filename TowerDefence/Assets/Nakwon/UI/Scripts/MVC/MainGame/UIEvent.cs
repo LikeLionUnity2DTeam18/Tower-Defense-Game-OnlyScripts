@@ -61,3 +61,15 @@ public struct TooltipRequested
         Position = position;
     }
 }
+
+/// <summary>
+/// 일시정지/해제
+/// </summary>
+public struct GamePaused
+{
+    public bool IsPaused;
+    public GamePaused(bool ispaused)
+    {
+        IsPaused = ispaused;
+    }
+}
