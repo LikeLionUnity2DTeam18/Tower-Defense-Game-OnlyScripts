@@ -10,11 +10,22 @@ public struct StageChangeEvent
 {
     public StageChangeEventType EventType;
     public int Stage;
-
-    public StageChangeEvent (StageChangeEventType type, int stage)
+    public StageData StageData;
+    public StageChangeEvent(StageChangeEventType type, int stage)
+    {
+        EventType = type;
+        Stage = stage;
+        StageData = null;
+    }
+    public StageChangeEvent (StageChangeEventType type, int stage, StageData stageData)
     {
         EventType = type; 
         Stage = stage;
+        StageData = stageData;
     }
 }
 
+public struct StartButtonClick
+{
+
+}
