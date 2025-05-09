@@ -30,12 +30,20 @@ public class GoldController : MonoBehaviour
     {
         model.AddGold(evt.RewardGold);
     }
+
+    public void OnGoldSpended(GoldSpended evt)
+    {
+        model.SpendGold(evt.Amount);
+    }
+    
     private void OnEnable()
     {
         EventManager.AddListener<MonsterDied>(OnMonsterDied);
+        EventManager.AddListener<GoldSpended>(OnGoldSpended);
     }
     private void OnDisable()
     {
         EventManager.RemoveListener<MonsterDied>(OnMonsterDied);
+        EventManager.RemoveListener<GoldSpended>(OnGoldSpended);
     }
 }
