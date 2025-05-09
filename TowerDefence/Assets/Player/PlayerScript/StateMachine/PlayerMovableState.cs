@@ -6,7 +6,7 @@ using UnityEngine.InputSystem;
 /// </summary>
 public class PlayerMovableState : PlayerState
 {
-    private LayerMask cannotMoveMask = LayerMask.GetMask("Enemy", "Beacon");
+    private LayerMask cannotMoveMask = LayerMask.GetMask("Enemy", "Beacon", "TowerIcon", "Tower");
     Vector2 direction;
 
     public PlayerMovableState(PlayerController _player, int animBoolParam) : base(_player, animBoolParam)

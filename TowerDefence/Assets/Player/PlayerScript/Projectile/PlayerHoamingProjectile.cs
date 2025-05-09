@@ -68,7 +68,7 @@ public class PlayerHoamingProjectile : PlayerProjectile
     {
         // 타겟이 비활성화 된 경우 새 타겟 찾기
         
-        if (target?.gameObject.activeInHierarchy != true)
+        if (target == null || target.gameObject.activeInHierarchy != true)
         {
             target = FindTargetInRange(changeTargetRange);
         }
