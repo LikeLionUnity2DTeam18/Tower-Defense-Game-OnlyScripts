@@ -10,6 +10,11 @@ public struct GoldChanged
     public GoldChanged(int gold) => NewGold = gold;
 }
 
+public struct GoldSpended
+{
+    public int Amount {get; private set;}
+    public GoldSpended(int amount)=> Amount = amount;
+}
 
 //몬스터가 죽으면 보상 골드와 죽은 위치를 전달
 public struct MonsterDied
@@ -44,6 +49,26 @@ public struct SpeedChanged
     public SpeedChanged(SpeedType speed)
     {
         NewSpeed = speed;
+    }
+}
+
+public struct EnemySpawned
+{
+    public Transform enemyTransform;
+
+    public EnemySpawned(Transform enemyTransform)
+    {
+        this.enemyTransform = enemyTransform;
+    }
+}
+
+public struct TowerSpawned
+{
+    public Transform towerTransform;
+
+    public TowerSpawned(Transform towerTransform)
+    {
+        this.towerTransform = towerTransform;
     }
 }
 

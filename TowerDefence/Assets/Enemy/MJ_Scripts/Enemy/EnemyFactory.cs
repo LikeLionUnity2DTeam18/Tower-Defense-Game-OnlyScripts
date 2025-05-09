@@ -12,6 +12,9 @@ public class EnemyFactory : MonoBehaviour
             controller.Initialize(data);
         }
 
-        return enemy;
+        // 이벤트 발사
+        EventManager.Trigger(new EnemySpawned(enemy.transform));
+
+        return enemy; 
     }
 }

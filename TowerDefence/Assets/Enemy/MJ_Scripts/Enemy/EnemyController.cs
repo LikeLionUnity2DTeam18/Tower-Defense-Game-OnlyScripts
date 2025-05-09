@@ -126,6 +126,7 @@ public class EnemyController : MonoBehaviour
     //애니메이션 이벤트로 호출
     public void DestroySelf()
     {
+        Debug.Log("제발");
         Destroy(gameObject);
     }
     //DPS 확인용

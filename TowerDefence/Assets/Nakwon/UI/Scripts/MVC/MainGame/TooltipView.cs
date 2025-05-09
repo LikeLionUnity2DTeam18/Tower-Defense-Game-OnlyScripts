@@ -10,26 +10,18 @@ public class TooltipView : MonoBehaviour
         Hide();
     }
 
-    public void Show(string content, Vector2 mousePosition)
-{
-    if (pannel.activeSelf) return;
+    public void Show(string content, RectTransform targetIcon)
+    {
+        if (pannel.activeSelf) return;
 
-    pannel.SetActive(true);
-    text.text = content;
+        pannel.SetActive(true);
+        text.text = content;
 
-    Vector2 offset = new Vector2(0, 25f);
-
-    // 스크린 좌표(mousePosition)를 Canvas 내부 로컬 좌표로 변환
-    RectTransformUtility.ScreenPointToLocalPointInRectangle(
-        transform as RectTransform,
-        mousePosition + offset,
-        null, // 👉 만약 Screen Space - Camera라면 여기에 Camera 넣어야 함
-        out Vector2 localPoint
-    );
-
-    // 로컬 좌표로 적용
-    (pannel.transform as RectTransform).anchoredPosition = localPoint;
-}
+        // 기준 아이콘의 위쪽에 툴팁 위치 고정
+        Vector2 offset = new Vector2(150f, 150f); // Y축 위로 50 정도 띄움
+        Vector3 worldPos = targetIcon.position;
+        pannel.transform.position = worldPos + (Vector3)offset;
+    }
 
     public void Hide()
     {
