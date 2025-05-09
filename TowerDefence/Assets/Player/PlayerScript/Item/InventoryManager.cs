@@ -246,7 +246,7 @@ public class InventoryManager : MonoBehaviour
     /// <summary>
     /// 생성가능한 아이템중 하나 추가 
     /// </summary>
-    private void AddRandomPossibleItemToInventory()
+    public void AddRandomPossibleItemToInventory()
     {
         if (possibleItems.Count <= 0)
         {
