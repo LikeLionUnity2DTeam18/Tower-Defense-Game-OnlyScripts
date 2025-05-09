@@ -7,7 +7,7 @@ public class Zylad_GreatSword : TowerEntity
     private Vector3 returnPoint;
     private bool isReturning = false;
     private float speed = 5f;
-    private float maxDistance = 5f;
+    private float maxDistance = 8f;
     private Vector3 initialPos;
 
     public void Init(Vector2 dir, Transform t)

@@ -27,7 +27,7 @@ public class FElement_OnOff : TowerOnOff
     public override void Update()
     {
         var target = element?.nearestREnemy;
-        if (target == null)
+        if (target == null || element.nearestEnemy != null)
         {
             if (ps != null && ps.isPlaying)
                 ps.Stop();

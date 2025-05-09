@@ -13,6 +13,7 @@ public class TowerEntity : MonoBehaviour,IStatReceiver
 
     public void SetStats(TowerStats stats)
     {
+        this.stats = stats;
     }
 
     public virtual void Update()

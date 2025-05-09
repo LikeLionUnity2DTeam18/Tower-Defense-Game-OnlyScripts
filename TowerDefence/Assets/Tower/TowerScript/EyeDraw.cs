@@ -54,11 +54,11 @@ public class EyeDraw : MonoBehaviour
     {
         int rand = Random.Range(0, 100);
         int index;
-        if (rand < 80) 
+        if (rand < 90) 
         {
             index= Random.Range(0, 5);
         }
-        else if (rand < 95)
+        else if (rand < 99)
         {
             index= Random.Range(5, 9);
         }
