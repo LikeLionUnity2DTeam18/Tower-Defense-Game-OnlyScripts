@@ -50,8 +50,12 @@ public class TowerStats : MonoBehaviour
         _targetStats.TakeDamage(totalDamage);
     }
 
+    private float lastDamageTime = -999f;
     public virtual void TakeDamage(float _damage)
     {
+        if (Time.time - lastDamageTime < 1f) return; // 1초 쿨다운
+
+        lastDamageTime = Time.time;
         currentHealth -= _damage;
         GameObject t =PoolManager.Instance.Get(HitVFX);
         t.transform.position = transform.position;
