@@ -274,9 +274,20 @@ public class InventoryManager : MonoBehaviour
     /// <returns></returns>
     public string GetTooltipText(PlayerItem item, PlayerStatDisplayNamesSO def)
     {
+        if (item == null) return null;
         return item.GetTooltipText(def);
     }
 
+    public string GetEquipmentTooltipText(EquipmentSlotType type)
+    {
+        int index = (int)type;
+        return GetTooltipText(equipment[index], statDisplayNames);
+    }
+
+    public string GetInventoryTooltipText(int slotNumber)
+    {
+        return GetTooltipText(inventory[slotNumber-1], statDisplayNames);
+    }
 
     private void OnInventorySlotClicked(InventorySlotClicked evt)
     {

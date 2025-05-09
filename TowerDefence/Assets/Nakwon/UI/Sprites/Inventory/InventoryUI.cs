@@ -1,6 +1,4 @@
 using System.Collections.Generic;
-using System.Threading;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -9,6 +7,7 @@ public class InventoryUI : MonoBehaviour
     [SerializeField] private Sprite slotImage;
     [SerializeField] private List<Image> EquipmentSlotImages;
     [SerializeField] private List<Image> InventorySlotImages;
+    [SerializeField] private InventoryTooltip tooltip;
     private Canvas canvas;
 
 
@@ -17,6 +16,8 @@ public class InventoryUI : MonoBehaviour
         canvas = GetComponentInParent<Canvas>();
         EventManager.AddListener<PlayerEquipmentSlotChanged>(OnEquipItemChanged);
         EventManager.AddListener<PlayerInventorySlotChanged>(OnInventoryItemChanged);
+        EventManager.AddListener<InventoryTooltipOnMouse>(OnInventoryTooltipOnMouse);
+        EventManager.AddListener<EquipmentTooltipOnMouse>(OnEquipmentTooltipOnMouse);
         EventManager.AddListener<ToggleInventory>(OnToggleInventory);
     }
 
@@ -29,6 +30,8 @@ public class InventoryUI : MonoBehaviour
     {
         EventManager.RemoveListener<PlayerEquipmentSlotChanged>(OnEquipItemChanged);
         EventManager.RemoveListener<PlayerInventorySlotChanged>(OnInventoryItemChanged);
+        EventManager.RemoveListener<InventoryTooltipOnMouse>(OnInventoryTooltipOnMouse);
+        EventManager.RemoveListener<EquipmentTooltipOnMouse>(OnEquipmentTooltipOnMouse);
         EventManager.RemoveListener<ToggleInventory>(OnToggleInventory);
     }
 
@@ -69,5 +72,37 @@ public class InventoryUI : MonoBehaviour
     private void OnToggleInventory(ToggleInventory _)
     {
         canvas.enabled = !canvas.enabled;
+    }
+
+    private void OnInventoryTooltipOnMouse(InventoryTooltipOnMouse evt)
+    {
+        if (evt.IsTooltipOn)
+        {
+            string text = InventoryManager.Instance.GetInventoryTooltipText(evt.SlotNumber);
+            if (text == null)
+                return;
+            Vector2 pos = evt.UIposition + new Vector2(280, -150);
+            tooltip.ShowTooltip(pos, text);
+        }
+        else
+        {
+            tooltip.HideTooltip();
+        }
+    }
+
+    private void  OnEquipmentTooltipOnMouse(EquipmentTooltipOnMouse evt)
+    {
+        if(evt.IsTooltipOn)
+        {
+            string text = InventoryManager.Instance.GetEquipmentTooltipText(evt.Slot);
+            if (text == null)
+                return;
+            Vector2 pos = evt.UIPosition + new Vector2(280, -150);
+            tooltip.ShowTooltip(pos, text);
+        }
+        else
+        {
+            tooltip.HideTooltip();            
+        }
     }
 }
