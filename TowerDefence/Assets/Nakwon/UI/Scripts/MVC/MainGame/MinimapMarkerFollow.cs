@@ -24,6 +24,7 @@ public class MinimapMarkerFollow : MonoBehaviour
         GetComponent<Image>().color = color;
 
         isInitialized = true;
+        enabled = true; //재사용 시 다시 켜줘야 함
     }
 
     private void Update()
@@ -32,10 +33,12 @@ public class MinimapMarkerFollow : MonoBehaviour
             return;
 
         // target이 null이거나 비활성화되었거나, 파괴 직전인 경우
-        if (target == null || !target.gameObject.activeSelf)
+        if (!target || !target.gameObject.activeSelf)
         {
             pool.Return(gameObject);
-            Destroy(this); // 반복 호출 방지
+            target = null; //이전 타겟 완전 제거
+            isInitialized = false;
+            enabled = false;
             return;
         }
         float halfMap = mapSizeWorld * 0.5f;
