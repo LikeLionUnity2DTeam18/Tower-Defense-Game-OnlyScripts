@@ -4,6 +4,7 @@ public class TowerStats : MonoBehaviour
 {
     //참조
     DraggableTower Dtower; //드래그 타워 스크립트 참조
+    [SerializeField] GameObject HitVFX;
 
     [Header("기본적인 스탯")]
     public TStat hp;
@@ -32,19 +33,19 @@ public class TowerStats : MonoBehaviour
 
     public virtual void DoMeleeDamage(EnemyController _targetStats)
     {
-        Debug.Log("DoMeleeDamage");
+        //Debug.Log("DoMeleeDamage");
         float totalDamage = melee.GetValue();
         _targetStats.TakeDamage(totalDamage);
     }
     public virtual void DoRangeDamage(EnemyController _targetStats)
     {
-        Debug.Log("DoRangeDamage");
+        //Debug.Log("DoRangeDamage");
         float totalDamage = range.GetValue();
         _targetStats.TakeDamage(totalDamage);
     }
     public virtual void DoSpecialDamage(EnemyController _targetStats)
     {
-        Debug.Log("DoSpeicalDamage");
+        //Debug.Log("DoSpeicalDamage");
         float totalDamage = special.GetValue();
         _targetStats.TakeDamage(totalDamage);
     }
@@ -52,6 +53,8 @@ public class TowerStats : MonoBehaviour
     public virtual void TakeDamage(float _damage)
     {
         currentHealth -= _damage;
+        GameObject t =PoolManager.Instance.Get(HitVFX);
+        t.transform.position = transform.position;
         if (currentHealth < 0)
             Die();
     }
