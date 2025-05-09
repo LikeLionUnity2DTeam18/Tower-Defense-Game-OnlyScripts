@@ -129,12 +129,14 @@ public class EnemyController : MonoBehaviour
         Debug.Log("제발");
         Destroy(gameObject);
     }
-
+    //DPS 확인용
+    public System.Action<float> OnDamageTaken;
     //데미지 입기
     public void TakeDamage(float dmg)
     {
         currentHP -= dmg;
-        Debug.Log("현재 체력"+currentHP);
+        //Debug.Log("현재 체력"+currentHP);
+        OnDamageTaken?.Invoke(dmg);
         if (currentHP <= 0f)
         {
             currentHP = 0f; // 혹시 모를 음수 방지

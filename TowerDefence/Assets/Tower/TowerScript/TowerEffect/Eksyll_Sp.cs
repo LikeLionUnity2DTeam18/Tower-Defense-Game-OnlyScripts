@@ -14,6 +14,5 @@ public class Eksyll_Sp : MonoBehaviour
 
         // 내 스탯 기준으로 데미지 주기
         stats?.DoMeleeDamage(targetStats);
-        Debug.Log("타워 스플래시 데미지");
     }
 }

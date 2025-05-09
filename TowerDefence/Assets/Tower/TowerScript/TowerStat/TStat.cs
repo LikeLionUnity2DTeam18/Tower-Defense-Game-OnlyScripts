@@ -34,7 +34,14 @@ public class TStat
 
     public void RemoveModifier(int _modifier)
     {
-        modifiers.RemoveAt(_modifier);
+        if (modifiers.Contains(_modifier))
+        {
+            modifiers.Remove(_modifier); // 처음 나오는 해당 값을 제거
+        }
+        else
+        {
+            Debug.LogWarning($"RemoveModifier 실패: 값 {_modifier}가 리스트에 없음");
+        }
     }
 
 

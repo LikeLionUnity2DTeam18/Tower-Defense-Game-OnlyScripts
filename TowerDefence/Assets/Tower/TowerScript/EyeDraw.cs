@@ -42,6 +42,7 @@ public class EyeDraw : MonoBehaviour
 
     private void DrawTowerIcon()
     {
+        //골드 소모
         GameObject t = PoolManager.Instance.Get(icons[DrawRandom()]);
         t.transform.position = transform.position;
         StartCoroutine(summonEffect(t));
