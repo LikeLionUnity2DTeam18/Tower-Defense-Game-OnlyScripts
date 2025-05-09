@@ -8,8 +8,9 @@ public class Golem_LeftFist : MonoBehaviour, IStatReceiver, IGolemPart
     TowerStats stats;
     public void EndTrigger()
     {
-        GameObject t = SpawnWithStats(DamageArea);
+        GameObject t = PoolManager.Instance.Get(DamageArea);
         t.transform.position = transform.position;
+        t.GetComponent<Golem_Special>().SetStats(stats);
         t.transform.localScale = t.transform.localScale * 4f;
         GameObject splashEffect = PoolManager.Instance.Get(splashEffectPrefab);
         splashEffect.transform.position = transform.position;
@@ -21,18 +22,20 @@ public class Golem_LeftFist : MonoBehaviour, IStatReceiver, IGolemPart
         stats = _stats;
     }
 
-    public void SetStats(TowerStats stats)
+    public void SetStats(TowerStats _stats)
     {
+        stats = _stats;
     }
 
-    public GameObject SpawnWithStats(GameObject prefab)
+    protected void OnTriggerEnter2D(Collider2D collision)
     {
-        GameObject obj = PoolManager.Instance.Get(prefab);
+        // Enemy 레이어만 통과
+        if (collision.gameObject.layer != LayerMask.NameToLayer("Enemy")) return;
 
-        if (obj.TryGetComponent<IStatReceiver>(out var receiver))
-        {
-            receiver.SetStats(this.stats);
-        }
-        return obj;
+        // 타겟 스탯 가져오기
+        collision.TryGetComponent<EnemyController>(out EnemyController targetStats);
+
+        // 내 스탯 기준으로 데미지 주기
+        stats?.DoRangeDamage(targetStats);
     }
 }

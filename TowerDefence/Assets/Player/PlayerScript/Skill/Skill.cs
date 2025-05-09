@@ -226,6 +226,11 @@ public abstract class Skill : MonoBehaviour
         SetTooltipText();
     }
 
+    public void SetSmartCasting(bool smartCasting)
+    {
+        this.smartCasting = smartCasting;
+    }
+
     // 추상함수 선언
 
     //타입에 맞는 스탯 반환

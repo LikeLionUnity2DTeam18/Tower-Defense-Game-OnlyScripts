@@ -39,7 +39,7 @@ public class PlayerState
 
     }
 
-    protected void SetAnimationDirection()
+    protected virtual void SetAnimationDirection()
     {
         // 마지막으로 바라보던 방향과 이동방향이 같으면 굳이 애니매이터 파라미터 변경X
         if (rb.linearVelocity.sqrMagnitude > 0.01f)

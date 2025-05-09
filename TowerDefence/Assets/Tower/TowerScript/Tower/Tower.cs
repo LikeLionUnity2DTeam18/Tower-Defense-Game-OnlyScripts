@@ -280,7 +280,7 @@ public class Tower : MonoBehaviour
     {
         if (obj.TryGetComponent<IStatReceiver>(out var receiver))
         {
-            receiver.SetStats(this, this.stats);
+            receiver.SetStats(this.stats);
         }
         return obj;
     }

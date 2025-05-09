@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.UIElements;
 
 /// <summary>
 /// 화염 숨결 이펙트
@@ -15,10 +16,16 @@ public class FireBreathController : PlayerSkillEntity, ISkillAnimationEvents
     private float damageTimer;
     private float length = 2f; // 스킬 길이
     private float rotateAngle;
+    private float findEnemyTimer;
+    private float findEnemyInterval = 0.1f; // 0.1초에 한번 가까운적 찾아서 방향 변경]
+    private float findEnemyRadius;
+    private EnemyController target;
+    
+    public Direction4Custom TargetDir { get; private set; }
 
     private Vector2 skillStartPos; // 스킬 시작점(손)
     private Vector2 skillCenterPos; // 스킬 중앙(overlapbox 회전용)
-    private Vector2 baseSize = new Vector2(2.4f,0.7f); // 스캐일1일때 overlapbox가 이펙트랑 일치하는 사이즈 보정
+    private Vector2 baseSize = new Vector2(2.4f, 0.7f); // 스캐일1일때 overlapbox가 이펙트랑 일치하는 사이즈 보정
     private Vector2 currentSize;
 
 
@@ -30,15 +37,26 @@ public class FireBreathController : PlayerSkillEntity, ISkillAnimationEvents
         enemyLayer = LayerMask.GetMask("Enemy");
     }
 
-    
+
 
     protected override void Update()
     {
         base.Update();
 
-        UpdatePosotion();
+        findEnemyTimer -= Time.deltaTime;
+        if (findEnemyTimer < 0)
+        {
+            findEnemyTimer = findEnemyInterval;
+            target = FindTargetInRange(findEnemyRadius);
+        }
 
-        RotateToPlayerDirection();
+        if (HasTarget()) // 타겟이 있으면 타겟 방향으로
+            RotateToTargetDirection();
+        else  // 타겟이 없으면 플레이어 방향으로 
+            RotateToPlayerDirection();
+            
+
+        UpdatePosotion();
         ExtendToLength();
 
         DoDamageOverTime();
@@ -79,6 +97,9 @@ public class FireBreathController : PlayerSkillEntity, ISkillAnimationEvents
         transform.localScale = Vector3.one;
         canDamage = false;
         currentSize = baseSize;
+        target = null;
+        findEnemyTimer = 0;
+        findEnemyRadius = 3 * length;
     }
 
     /// <summary>
@@ -98,9 +119,9 @@ public class FireBreathController : PlayerSkillEntity, ISkillAnimationEvents
         damageInterval = _damageInterval;
         damageTimer = _damageInterval;
         length = _length;
-        
+
         ExtendToLength();
-        
+
     }
 
     /// <summary>
@@ -118,7 +139,12 @@ public class FireBreathController : PlayerSkillEntity, ISkillAnimationEvents
     /// </summary>
     private void UpdatePosotion()
     {
-        Direction4Custom playerDir = PlayerManager.Instance.Player.LastDir;
+        Direction4Custom playerDir;
+        if (target == null)
+            playerDir = PlayerManager.Instance.Player.LastDir;
+        else
+            playerDir = TargetDir;
+
         Vector2 fireOffset = playerDir switch
         {
             Direction4Custom.NE => new Vector2(0.4f, 0.1f),
@@ -130,11 +156,11 @@ public class FireBreathController : PlayerSkillEntity, ISkillAnimationEvents
         //플레이어 크기를 스캐일로 조절할 것 같아서 보정
         fireOffset *= PlayerManager.Instance.Player.transform.localScale.x;
 
-        
-        skillStartPos = (Vector2) PlayerManager.Instance.Player.transform.position + fireOffset;
+
+        skillStartPos = (Vector2)PlayerManager.Instance.Player.transform.position + fireOffset;
 
         transform.position = skillStartPos;
-        skillCenterPos = skillStartPos + (Vector2) transform.right * currentSize.x / 2;
+        skillCenterPos = skillStartPos + (Vector2)transform.right * currentSize.x / 2;
     }
 
     /// <summary>
@@ -185,6 +211,48 @@ public class FireBreathController : PlayerSkillEntity, ISkillAnimationEvents
         Vector2 directionVector = DirectionHelper.ToDirectionVector(PlayerManager.Instance.Player.LastDir);
         rotateAngle = Mathf.Atan2(directionVector.y, directionVector.x) * Mathf.Rad2Deg;
         transform.rotation = Quaternion.Euler(0, 0, rotateAngle);
+    }
+
+    private void RotateToTargetDirection()
+    {
+        Vector2 directionVector = target.transform.position - PlayerManager.Instance.Player.transform.position;
+        TargetDir = DirectionHelper.ToDirection4Custom(directionVector);
+        rotateAngle = Mathf.Atan2(directionVector.y, directionVector.x) * Mathf.Rad2Deg;
+        transform.rotation = Quaternion.Euler(0, 0, rotateAngle);
+    }
+
+    public bool HasTarget()
+    {
+        if(target == null || !target.gameObject.activeInHierarchy)
+            return false;
+        return true;
+    }
+    /// <summary>
+    /// range 안의 가장 가까운 몬스터 대상을 반환
+    /// </summary>
+    /// <returns></returns>
+    protected virtual EnemyController FindTargetInRange(float _range)
+    {
+        var targets = Physics2D.OverlapCircleAll(transform.position, _range, LayerMask.GetMask("Enemy"));
+        if (targets.Length <= 0)
+        {
+            Debug.Log("대상 없음!");
+            return null;
+        }
+        float nearestDistance = Mathf.Infinity;
+        int nearestTargetIndex = 0;
+        EnemyController nearestTarget;
+        for (int i = 0; i < targets.Length; i++)
+        {
+            float currentdistance = Vector3.Distance(targets[i].transform.position, transform.position);
+            if (nearestDistance < currentdistance)
+            {
+                nearestDistance = currentdistance;
+                nearestTargetIndex = i;
+            }
+        }
+        nearestTarget = targets[nearestTargetIndex].gameObject.GetComponent<EnemyController>();
+        return nearestTarget;
     }
 
 }

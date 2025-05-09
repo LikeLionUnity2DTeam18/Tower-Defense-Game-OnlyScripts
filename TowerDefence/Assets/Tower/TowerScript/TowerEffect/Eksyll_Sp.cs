@@ -1,20 +1,10 @@
+using Unity.VisualScripting.Antlr3.Runtime.Misc;
 using UnityEngine;
 
-public class Golem_Splash : TowerStay
+public class Eksyll_Sp : MonoBehaviour
 {
-    private Vector3 originalScale;
-
-    private void Awake()
-    {
-        originalScale = transform.localScale;
-    }
-
-    private void OnEnable()
-    {
-        transform.localScale = originalScale;
-    }
-
-    protected override void OnTriggerEnter2D(Collider2D collision)
+    public TowerStats stats {get; set; }
+    protected void OnTriggerEnter2D(Collider2D collision)
     {
         // Enemy 레이어만 통과
         if (collision.gameObject.layer != LayerMask.NameToLayer("Enemy")) return;
@@ -24,5 +14,6 @@ public class Golem_Splash : TowerStay
 
         // 내 스탯 기준으로 데미지 주기
         stats?.DoMeleeDamage(targetStats);
+        Debug.Log("타워 스플래시 데미지");
     }
 }
