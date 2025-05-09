@@ -1,7 +1,7 @@
 using System.Collections;
 using UnityEngine;
 
-public class Blocker_AttackState : EnemyState
+public class Blocker_AttackState : EnemyAttackState
 {
     public Blocker_AttackState(EnemyController enemy, EnemyStateMachine stateMachine)
         : base(enemy, stateMachine) { }
@@ -33,6 +33,34 @@ public class Blocker_AttackState : EnemyState
         // 예: PlaySound("AttackSFX"); or Instantiate(effectPrefab, enemy.transform.position, Quaternion.identity);
 
         yield return new WaitForSeconds(0.1f);
+
+        // 데미지 입히기
+        if (enemy.currentTarget != null)
+        {
+            // Tower
+            var tower = enemy.currentTarget.GetComponent<TowerStats>();
+            if (tower != null)
+            {
+                tower.TakeDamage(enemy.Data.attackPower);
+                yield break;
+            }
+
+            // Wall
+            var wall = enemy.currentTarget.GetComponent<WallSkillController>();
+            if (wall != null)
+            {
+                wall.TakeDamage(enemy.Data.attackPower);
+                yield break;
+            }
+
+            // BaseTower
+            var baseTower = enemy.currentTarget.GetComponent<BaseTowerController>();
+            if (baseTower != null)
+            {
+                baseTower.TakeDamage((int)enemy.Data.attackPower);
+                yield break;
+            }
+        }
 
         // 원래 위치로 되돌리기
         enemy.transform.position = originalPos;

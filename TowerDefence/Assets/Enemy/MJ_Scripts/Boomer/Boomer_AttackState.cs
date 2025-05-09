@@ -12,21 +12,42 @@ public class Boomer_AttackState : EnemyState
 
         enemy.SpriteRenderer.flipX = enemy.MoveDir.x < 0;
 
-        //범위 내 타겟 감지 후 데미지
-        //Collider2D[] targets = Physics2D.OverlapCircleAll(
-        //    enemy.transform.position,
-        //    enemy.Data.explosionRadius,
-        //    LayerMask.GetMask("Tower") // 타겟 레이어
-        //    );
-        //foreach (var t in targets)
-        //{
-        //    if (t.TryGetComponent(out TargetController target))
-        //    {
-        //        target.TakeDamage(enemy.Data.attackPower);
-        //    }
-        //}
+        // 데미지 처리
+        ExplodeDamage();
 
     }
+
+    private void ExplodeDamage()
+    {
+        Collider2D[] hits = Physics2D.OverlapCircleAll(enemy.transform.position, enemy.Data.explosionRadius);
+
+        foreach (var hit in hits)
+        {
+            // Tower
+            var tower = hit.GetComponent<TowerStats>();
+            if (tower != null)
+            {
+                tower.TakeDamage(enemy.Data.attackPower);
+                continue;
+            }
+
+            // Wall
+            var wall = hit.GetComponent<WallSkillController>();
+            if (wall != null)
+            {
+                wall.TakeDamage(enemy.Data.attackPower);
+                continue;
+            }
+
+            // BaseTower
+            var baseTower = hit.GetComponent<BaseTowerController>();
+            if (baseTower != null)
+            {
+                baseTower.TakeDamage((int)enemy.Data.attackPower);
+            }
+        }
+    }
+
     public override void LogicUpdate()
     {
         
