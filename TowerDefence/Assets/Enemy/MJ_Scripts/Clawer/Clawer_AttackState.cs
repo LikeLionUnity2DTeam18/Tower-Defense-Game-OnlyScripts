@@ -1,7 +1,7 @@
 using System.Collections;
 using UnityEngine;
 
-public class Clawer_AttackState : EnemyState
+public class Clawer_AttackState : EnemyAttackState
 {
     public Clawer_AttackState(EnemyController enemy, EnemyStateMachine stateMachine) : base(enemy, stateMachine)
     {
@@ -48,6 +48,35 @@ public class Clawer_AttackState : EnemyState
             Object.Destroy(effect, 0.5f); // 이펙트가 자동으로 사라지도록 설정
         }
         yield return new WaitForSeconds(0.1f);
+
+        // 데미지 입히기
+        if (enemy.currentTarget != null)
+        {
+            // Tower
+            var tower = enemy.currentTarget.GetComponent<TowerStats>();
+            if (tower != null)
+            {
+                tower.TakeDamage(enemy.Data.attackPower);
+                yield break;
+            }
+
+            // Wall
+            var wall = enemy.currentTarget.GetComponent<WallSkillController>();
+            if (wall != null)
+            {
+                wall.TakeDamage(enemy.Data.attackPower);
+                yield break;
+            }
+
+            // BaseTower
+            var baseTower = enemy.currentTarget.GetComponent<BaseTowerController>();
+            if (baseTower != null)
+            {
+                baseTower.TakeDamage((int)enemy.Data.attackPower);
+                yield break;
+            }
+        }
+
 
         // 원래 위치로 되돌리기
         enemy.transform.position = originalPos;

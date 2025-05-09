@@ -1,7 +1,7 @@
 using System.Collections;
 using UnityEngine;
 
-public class Ghost_AttackState : EnemyState
+public class Ghost_AttackState : EnemyAttackState
 {
     public Ghost_AttackState(EnemyController enemy, EnemyStateMachine stateMachine) : base(enemy, stateMachine)
     {
@@ -29,6 +29,8 @@ public class Ghost_AttackState : EnemyState
     }
     private IEnumerator AttackEffect()
     {
+        yield return new WaitForSeconds(0.2f);
+
         GameObject selectedEffect = null;
 
         // 위 or 아래
@@ -36,7 +38,7 @@ public class Ghost_AttackState : EnemyState
             enemy.Data.attackEffectBack :
             enemy.Data.attackEffectFront;
 
-        // 이펙트 생성
+        // 공격 이펙트
         if (selectedEffect != null)
         {
             Vector3 effectPos = enemy.effectSpawnPoint != null ?
@@ -55,8 +57,57 @@ public class Ghost_AttackState : EnemyState
             Object.Destroy(effect, 1f); // 이펙트가 자동으로 사라지도록 설정
         }
 
-        yield return new WaitForSeconds(0.1f);
+        // 약간의 딜레이 (공격 모션 타이밍 조절용)
+        yield return new WaitForSeconds(1f);
 
+        // 피격 이펙트
+        if (enemy.currentTarget != null)
+        {
+            GameObject hitFX = (enemy.MoveDir.y > 0) ?
+                enemy.Data.hitEffectBack :
+                enemy.Data.hitEffectFront;
+
+            if (hitFX != null)
+            {
+                Vector3 hitPos = enemy.currentTarget.position;
+
+                GameObject hitEffect = Object.Instantiate(hitFX, hitPos, Quaternion.identity);
+
+                SpriteRenderer sr = hitEffect.GetComponent<SpriteRenderer>();
+                if (sr != null)
+                    sr.flipX = enemy.MoveDir.x < 0;
+
+                Object.Destroy(hitEffect, 0.6f);
+            }
+        }
+
+        // 데미지 입히기
+        if (enemy.currentTarget != null)
+        {
+            // Tower
+            var tower = enemy.currentTarget.GetComponent<TowerStats>();
+            if (tower != null)
+            {
+                tower.TakeDamage(enemy.Data.attackPower);
+                yield break;
+            }
+
+            // Wall
+            var wall = enemy.currentTarget.GetComponent<WallSkillController>();
+            if (wall != null)
+            {
+                wall.TakeDamage(enemy.Data.attackPower);
+                yield break;
+            }
+
+            // BaseTower
+            var baseTower = enemy.currentTarget.GetComponent<BaseTowerController>();
+            if (baseTower != null)
+            {
+                baseTower.TakeDamage((int)enemy.Data.attackPower);
+                yield break;
+            }
+        }
 
     }
 
