@@ -9,7 +9,7 @@ public class GameBuildState : GameState
     public override void Enter()
     {
         base.Enter();
-        EventManager.AddListener<StartButtonClick>(OnStartButtonClicked);
+        EventManager.AddListener<GameStarted>(OnStartButtonClicked);
         EventManager.Trigger(new StageChangeEvent(StageChangeEventType.End, game.CurrentStage));
 
         Debug.Log("타워 건설 페이즈 진입");
@@ -18,7 +18,7 @@ public class GameBuildState : GameState
     public override void Exit()
     {
         base.Exit();
-        EventManager.RemoveListener<StartButtonClick>(OnStartButtonClicked);
+        EventManager.RemoveListener<GameStarted>(OnStartButtonClicked);
     }
 
     public override void Update()
@@ -26,7 +26,7 @@ public class GameBuildState : GameState
         base.Update();
     }
 
-    private void OnStartButtonClicked(StartButtonClick _)
+    private void OnStartButtonClicked(GameStarted _)
     {
         stateMachine.ChangeState(game.WaveState);
     }

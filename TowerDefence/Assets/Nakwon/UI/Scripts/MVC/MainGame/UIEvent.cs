@@ -1,3 +1,4 @@
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -72,4 +73,27 @@ public struct GamePaused
     {
         IsPaused = ispaused;
     }
+}
+
+/// <summary>
+/// 시작버튼 클릭(or 스페이스바)
+/// </summary>
+public struct StartButtonClick
+{
+
+}
+
+/// <summary>
+/// 스태이지 시작 이벤트
+/// </summary>
+public struct GameStarted
+{
+
+}
+
+/// <summary>
+/// 인벤토리 온오프
+/// </summary>
+public struct ToggleInventory
+{
 }
