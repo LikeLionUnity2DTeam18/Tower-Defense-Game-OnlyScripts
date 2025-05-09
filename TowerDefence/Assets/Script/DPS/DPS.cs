@@ -5,15 +5,13 @@ public class DPS : MonoBehaviour
     [Header("적 데이터")]
     public EnemyData enemyData;
 
-    [Header("DPS 측정")]
-    [SerializeField] private float damagePerMinute;
-    [SerializeField] private float measureDuration = 60f;
     [SerializeField] private float totalDamage = 0f;
-    [SerializeField] private float elapsedTime = 0f;
+    public float TotalDamage => totalDamage;
 
-    [Header("이동")]
-    [SerializeField] private float moveSpeed = 2f;
-    [SerializeField] private float sideLength = 3f;
+    [Header("이동 설정")]
+    [SerializeField] private float moveSpeed = 5f;
+    [SerializeField] private float sideLength = 5f;
+
     private Vector3 startPos;
     private float movedDistance = 0f;
     private int moveDirIndex = 0;
@@ -36,7 +34,6 @@ public class DPS : MonoBehaviour
 
     void Update()
     {
-        MeasureDPS();
         MoveInSquare();
     }
 
@@ -45,18 +42,9 @@ public class DPS : MonoBehaviour
         totalDamage += dmg;
     }
 
-    private void MeasureDPS()
+    public void ResetDamage()
     {
-        elapsedTime += Time.deltaTime;
-
-        if (elapsedTime >= measureDuration)
-        {
-            damagePerMinute = totalDamage / elapsedTime;
-            Debug.Log($"[DPS 측정] 분당 데미지: {damagePerMinute:F2}");
-
-            totalDamage = 0f;
-            elapsedTime = 0f;
-        }
+        totalDamage = 0f;
     }
 
     private void MoveInSquare()

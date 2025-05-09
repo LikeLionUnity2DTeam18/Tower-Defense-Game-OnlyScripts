@@ -93,7 +93,7 @@ public class Golem : Tower
 
         float speed = 100f;
         float pauseDuration = 0.08f;
-        float returnSpeed = 10f;
+        float returnSpeed = 14f;
 
         isReady = false;
 

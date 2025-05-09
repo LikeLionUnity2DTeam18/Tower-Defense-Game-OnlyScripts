@@ -6,6 +6,7 @@ public class Otto : Tower
     [SerializeField] private GameObject prefab;
     [SerializeField] private Transform right;
     [SerializeField] private Transform left;
+    [SerializeField] private int num;
 
     //Otto 스페셜 스킬에 반응
     public static event Action OnAnyOttoSpecial;
@@ -44,9 +45,13 @@ public class Otto : Tower
 
     public void Range()
     {
-        GameObject skeleton = PoolManager.Instance.Get(prefab);
-        Transform a; if (towerRight) a = right; else a = left;
-        skeleton.transform.position = a.position;
+        for (int i = 0; i < num; i++)
+        {
+            GameObject skeleton = PoolManager.Instance.Get(prefab);
+            Transform a; if (towerRight) a = right; else a = left;
+            skeleton.transform.position = a.position;
+        }
+        
     }
     public void Special()
     {

@@ -11,7 +11,7 @@ public class Golem_LeftFist : MonoBehaviour, IStatReceiver, IGolemPart
         GameObject t = PoolManager.Instance.Get(DamageArea);
         t.transform.position = transform.position;
         t.GetComponent<Golem_Special>().SetStats(stats);
-        t.transform.localScale = t.transform.localScale * 4f;
+        t.transform.localScale = t.transform.localScale * 6f;
         GameObject splashEffect = PoolManager.Instance.Get(splashEffectPrefab);
         splashEffect.transform.position = transform.position;
         IsDone = true;

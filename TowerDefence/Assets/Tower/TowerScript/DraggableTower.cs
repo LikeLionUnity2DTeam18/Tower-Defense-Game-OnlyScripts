@@ -17,6 +17,21 @@ public class DraggableTower : MonoBehaviour
         if(!enabled) return;
         SwapObject();
     }
+    
+    private void OnEnable()
+    {
+        EventManager.AddListener<StageChangeEvent>(OnStageChange);
+    }
+
+    private void OnDisable()
+    {
+        EventManager.RemoveListener<StageChangeEvent>(OnStageChange);
+    }
+
+    private void OnStageChange(StageChangeEvent evt)
+    {
+        ActiveSwitch();
+    }
 
     public void ActiveSwitch()
     {

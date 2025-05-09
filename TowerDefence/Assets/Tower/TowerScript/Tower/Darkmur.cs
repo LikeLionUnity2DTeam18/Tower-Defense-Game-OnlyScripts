@@ -78,6 +78,8 @@ public class Darkmur : Tower
         clone.GetComponent<Darkmur>().isClone = true;
         clone.GetComponent<DraggableTower>().enabled = false;
         clone.GetComponent<SpriteRenderer>().color = Color.black;
+        Vector2 offset = UnityEngine.Random.insideUnitCircle.normalized * 1.5f;
+        clone.transform.position = transform.position + (Vector3)offset;
     }
 
     //클론 삭제
