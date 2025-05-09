@@ -57,7 +57,7 @@ public class EnemyController : MonoBehaviour
     public void TakeDamage(float dmg)
     {
         currentHP -= dmg;
-
+        Debug.Log("현재 체력"+currentHP);
         if (currentHP <= 0f)
         {
             currentHP = 0f; // 혹시 모를 음수 방지
