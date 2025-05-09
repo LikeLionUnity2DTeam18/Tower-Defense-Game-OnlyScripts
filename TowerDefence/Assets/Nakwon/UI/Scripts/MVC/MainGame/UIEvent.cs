@@ -52,6 +52,26 @@ public struct SpeedChanged
     }
 }
 
+public struct EnemySpawned
+{
+    public Transform enemyTransform;
+
+    public EnemySpawned(Transform enemyTransform)
+    {
+        this.enemyTransform = enemyTransform;
+    }
+}
+
+public struct TowerSpawned
+{
+    public Transform towerTransform;
+
+    public TowerSpawned(Transform towerTransform)
+    {
+        this.towerTransform = towerTransform;
+    }
+}
+
 /// <summary>
 /// 툴팁이 표시되어야 할 때
 /// </summary>

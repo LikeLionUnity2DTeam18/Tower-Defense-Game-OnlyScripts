@@ -34,11 +34,11 @@ public class MinimapMarkerManager : MonoBehaviour
         {
             RegisterTarget(enemy.transform, MinimapMarkerType.Enemy);
         }
-        //Enemy 자동 등록
+        //Tower 자동 등록
         GameObject[] towers = GameObject.FindGameObjectsWithTag("Tower");
-        foreach (GameObject enemy in enemies)
+        foreach (GameObject tower in towers)
         {
-            RegisterTarget(enemy.transform, MinimapMarkerType.Enemy);
+            RegisterTarget(tower.transform, MinimapMarkerType.Tower);
         }
     }
 
@@ -63,4 +63,25 @@ public class MinimapMarkerManager : MonoBehaviour
         };
     }
 
+    private void OnEnable()
+    {
+        EventManager.AddListener<EnemySpawned>(OnEnemySpawned);
+        EventManager.AddListener<TowerSpawned>(OnTowerSpawned);
+    }
+
+    private void OnDisable()
+    {
+        EventManager.RemoveListener<EnemySpawned>(OnEnemySpawned);
+        EventManager.RemoveListener<TowerSpawned>(OnTowerSpawned);
+    }
+
+    private void OnEnemySpawned(EnemySpawned evt)
+    {
+        RegisterTarget(evt.enemyTransform, MinimapMarkerType.Enemy);
+    }
+
+    private void OnTowerSpawned(TowerSpawned evt)
+    {
+        RegisterTarget(evt.towerTransform, MinimapMarkerType.Tower);
+    }
 }
