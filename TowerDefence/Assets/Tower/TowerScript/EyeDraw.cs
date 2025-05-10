@@ -101,6 +101,7 @@ public class EyeDraw : MonoBehaviour
                 break;
             case StageChangeEventType.End:
                 isClickable = true;
+                priceGold += 100;
                 break;
         }
     }
