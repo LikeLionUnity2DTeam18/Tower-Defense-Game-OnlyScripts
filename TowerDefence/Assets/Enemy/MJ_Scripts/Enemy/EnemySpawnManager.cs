@@ -34,7 +34,6 @@ public class EnemySpawnManager : MonoBehaviour
     //}
 
 
-    IEnumerator SpawnLoop()
     private bool isActive = false;
     IEnumerator SpawnLoop(int Stage)
     {
