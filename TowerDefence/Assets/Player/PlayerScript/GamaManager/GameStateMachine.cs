@@ -7,6 +7,7 @@ public class GameStateMachine
     public GameState currentState { get; private set; }
     public GameState prevState { get; private set; }
     private GameManager game;
+    private bool isPausedBeforeMenu;
 
     public void Initialize(GameState state)
     {
@@ -43,6 +44,18 @@ public class GameStateMachine
         currentState.Exit();
         currentState = prevState;
         prevState = null;
+    }
+
+    public void OpenMenu()
+    {
+        isPausedBeforeMenu = currentState is GamePauseState;
+        Pause();
+    }
+
+    public void CloseMenu()
+    {
+        if(isPausedBeforeMenu) return;
+        Resume();
     }
 
 }

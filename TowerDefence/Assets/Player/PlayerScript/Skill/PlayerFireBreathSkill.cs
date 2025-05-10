@@ -21,7 +21,7 @@ public class PlayerFireBreathSkill : Skill
 
     float Duration => duration.GetValue();
     float Damage => damage.GetValue();
-    float DamageInterval => damageInterval.GetValue();
+    float DamageInterval => Mathf.Max(0.1f, damageInterval.GetValue());
     float Length => length.GetValue();
 
     protected override void Start()

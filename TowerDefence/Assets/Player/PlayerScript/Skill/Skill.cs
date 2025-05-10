@@ -172,7 +172,7 @@ public abstract class Skill : MonoBehaviour
     {
         //if (hasPreviewState) return false;
 
-        skillCenterPosition = previewPos;
+        skillCenterPosition = mousePos;
         UseSkill();
         return true;
     }
