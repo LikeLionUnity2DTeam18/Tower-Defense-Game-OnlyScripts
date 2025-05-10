@@ -64,7 +64,7 @@ public class EnemySpawnManager : MonoBehaviour
                 isActive = true;
                 StartCoroutine(SpawnLoop(evt.Stage));
                 break;
-            case StageChangeEventType.End:
+            case StageChangeEventType.SpawnEnd:
                 isActive = false;
                 StopCoroutine(SpawnLoop(evt.Stage));
                 break;

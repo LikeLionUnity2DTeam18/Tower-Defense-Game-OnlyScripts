@@ -39,7 +39,7 @@ public class GameManager : MonoBehaviour
         CurrentStage = 1;
         StateMachine.Initialize(BuildState);
         isMenuOn = false;
-        menuObj.gameObject.SetActive(false);
+        menuObj.SetActive(false);
 
         Input.OnInventoryPressed += ToggleInventory;
         EventManager.AddListener<ToggleMenu>(OnToggleMenu);
