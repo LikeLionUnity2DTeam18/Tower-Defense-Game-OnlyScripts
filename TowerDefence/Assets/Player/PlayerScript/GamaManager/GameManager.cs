@@ -79,7 +79,14 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public void ProceedStage() => CurrentStage++;
+    public void ProceedStage()
+    {
+        CurrentStage++;
+        if(CurrentStage >= StageDataList.Count)
+        {
+            Debug.Log("게임 끝");
+        }
+    }
 
     public void ToggleInventory()
     {
