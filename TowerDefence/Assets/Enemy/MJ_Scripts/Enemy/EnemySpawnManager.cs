@@ -11,11 +11,28 @@ public class EnemySpawnManager : MonoBehaviour
     [SerializeField] private float spawnTime = 2f;
     [SerializeField] private int spawnCount = 5; // 한번에 생성할 적의 수
 
+    //private Coroutine spawnCoroutine;
 
-    private void Start()
-    {
-        StartCoroutine(SpawnLoop());
-    }
+    //private void Start()
+    //{
+    //    StartCoroutine(SpawnLoop());
+    //}
+
+    //public void StartSpawning()
+    //{
+    //    if (spawnCoroutine == null)
+    //        spawnCoroutine = StartCoroutine(SpawnLoop());
+    //}
+
+    //public void StopSpawning()
+    //{
+    //    if (spawnCoroutine != null)
+    //    {
+    //        StopCoroutine(spawnCoroutine);
+    //        spawnCoroutine = null;
+    //    }
+    //}
+
 
     IEnumerator SpawnLoop()
     {
