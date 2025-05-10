@@ -14,7 +14,26 @@ public class DraggableIcon : MonoBehaviour
     private Beacon beacon;
     private MergeBeacon mergeBeacon; // 조합비콘
     private TowerIcon icon;
+    private bool isActive = true; //스왑 가능 여부
 
+
+    private void OnStageChange(StageChangeEvent evt)
+    {
+        ActiveSwitch(evt);
+    }
+
+    public void ActiveSwitch(StageChangeEvent evt)
+    {
+        switch (evt.EventType)
+        {
+            case StageChangeEventType.Start:
+                isActive = false;
+                break;
+            case StageChangeEventType.End:
+                isActive = true;
+                break;
+        }
+    }
 
     private void Awake()
     {
@@ -24,11 +43,17 @@ public class DraggableIcon : MonoBehaviour
     private void OnEnable() // 오브젝트풀에서 다시 꺼낼때 조합체크 bool값 초기화용
     {
         isInMergeBeacon = false;
+        EventManager.AddListener<StageChangeEvent>(OnStageChange);
+    }
+    private void OnDisable()
+    {
+        EventManager.RemoveListener<StageChangeEvent>(OnStageChange);
     }
 
     //아이콘 상태에서 드래그
     void OnMouseDown()
     {
+        if(isActive == false) return;
         var mp = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         offset = transform.position - mp;
         dragging = true;
@@ -38,12 +63,14 @@ public class DraggableIcon : MonoBehaviour
     }
     void OnMouseDrag()
     {
+        if (isActive == false) return;
         if (!dragging) return;
         var mp = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         transform.position = mp + offset;
     }
     void OnMouseUp()
     {
+        if (isActive == false) return;
         dragging = false;
 
 
