@@ -130,3 +130,17 @@ public struct ToggleMenu
 {
 
 }
+
+/// <summary>
+/// 인게임 메뉴 버튼 3개
+/// </summary>
+public enum MenuButtonTypes { Start, Option, Exit}
+public struct MenuButtonClicked
+{
+    public MenuButtonTypes type;
+
+    public MenuButtonClicked(MenuButtonTypes type) 
+        {
+            this.type = type;
+        }
+}
