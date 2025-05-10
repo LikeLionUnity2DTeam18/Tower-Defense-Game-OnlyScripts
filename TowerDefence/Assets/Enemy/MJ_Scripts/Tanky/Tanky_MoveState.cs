@@ -23,28 +23,36 @@ public class Tanky_MoveState : EnemyState
     {
         base.LogicUpdate();
 
-        // 1. 죽음 감지
+        // 죽음 감지
         CheckDeath(new Common_DeathState(enemy, stateMachine));
 
-        // 2. 주변 Tower 감지 → 타겟 변경
-        enemy.DetectNearbyTower();
-
-        // 3. 이동 방향 갱신
+        // 이동 방향 갱신
         enemy.UpdateMoveDir();
 
-        // 4. 거리 확인 후 이동 또는 공격 전환
-        float distance = Vector2.Distance(enemy.transform.position, enemy.currentTarget.position);
+        // 4. 거리 확인 후 상태 전환 결정
+        if (enemy.currentTarget != null)
+        {
+            Collider2D targetCollider = enemy.currentTarget.GetComponent<Collider2D>();
+            if (targetCollider != null)
+            {
+                Vector2 targetPoint = enemy.currentTarget.GetComponent<Collider2D>().ClosestPoint(enemy.transform.position);
+                float distance = Vector2.Distance(enemy.transform.position, targetPoint);
 
-        if (distance > enemy.TargetRange)
-        {
-            // 타겟까지 멀면 velocity로 계속 이동
-            enemy.Rigidbody2D.linearVelocity = enemy.MoveDir * enemy.Data.moveSpeed;
-        }
-        else
-        {
-            // 도달 → 멈추고 공격 상태로 전환
-            enemy.Rigidbody2D.linearVelocity = Vector2.zero;
-            stateMachine.ChangeState(new Tanky_AttackState(enemy, stateMachine));
+                if (distance > enemy.TargetRange)
+                {
+                    enemy.Rigidbody2D.linearVelocity = enemy.MoveDir * enemy.Data.moveSpeed;
+                }
+                else
+                {
+                    enemy.Rigidbody2D.linearVelocity = Vector2.zero;
+                    stateMachine.ChangeState(new Tanky_AttackState(enemy, stateMachine));
+                }
+            }
+            else
+            {
+                // Collider가 없으면 타겟 무시하고 다시 찾도록 유도
+                enemy.currentTarget = null;
+            }
         }
     }
 
