@@ -1,22 +1,31 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using System.Collections;
 
 public class MainMenuUI : MonoBehaviour
 {
+    [Header("페이더 설정")]
+    public ScreenFader fader;
+
     [Header("설정 패널 (옵션)")]
-    public GameObject settingPanel;
+    public GameObject settingPannel;
 
     public void OnClickStart()
     {
-        SceneManager.LoadScene("3rdTest"); // 실제 게임 씬 이름으로 교체
+        StartCoroutine(LoadSceneWithFade());
     }
 
     public void OnClickSetting()
     {
-        if (settingPanel != null)
-            settingPanel.SetActive(true);
+        if (settingPannel != null)
+            ToggleSetting();
         else
             Debug.LogWarning("설정 패널이 연결되지 않았습니다.");
+    }
+
+    public void ToggleSetting()
+    {
+        settingPannel.SetActive(!settingPannel.activeSelf);
     }
 
     public void OnClickExit()
@@ -26,5 +35,11 @@ public class MainMenuUI : MonoBehaviour
 #else
         Application.Quit();
 #endif
+    }
+
+    private IEnumerator LoadSceneWithFade()
+    {
+        yield return StartCoroutine(fader.FadeOut(1f));
+        UnityEngine.SceneManagement.SceneManager.LoadScene("3rdTest");
     }
 }
