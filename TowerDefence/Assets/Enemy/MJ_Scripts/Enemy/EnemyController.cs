@@ -172,6 +172,7 @@ public class EnemyController : MonoBehaviour
     public void TakeDamage(float dmg)
     {
         currentHP -= dmg;
+        SoundManager.Instance.Play(SoundType.EnemyHit, transform);
         //Debug.Log("현재 체력"+currentHP);
         OnDamageTaken?.Invoke(dmg);
         if (currentHP <= 0f)
