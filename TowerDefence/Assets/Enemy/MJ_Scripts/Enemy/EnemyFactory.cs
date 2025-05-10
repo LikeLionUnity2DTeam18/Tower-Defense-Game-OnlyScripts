@@ -17,6 +17,8 @@ public class EnemyFactory : MonoBehaviour
             Debug.LogError("[EnemyFactory] EnemyController가 프리팹에 없습니다!");
         }
 
+        // 이벤트 발사
+        EventManager.Trigger(new EnemySpawned(enemy.transform));
         return enemy;
     }
 }
