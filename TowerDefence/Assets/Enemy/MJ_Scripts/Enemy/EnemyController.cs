@@ -23,6 +23,8 @@ public class EnemyController : MonoBehaviour
 
     public void ApplyStageScaling(int currentStage)
     {
+        Data.ResetToBaseValues();
+
         var stats = stageBalanceData.GetStatsForStage(currentStage);
         if (stats == null) return;
 
@@ -30,7 +32,7 @@ public class EnemyController : MonoBehaviour
         Data.attackPower *= stats.attackMultiplier;
         Data.moveSpeed *= stats.moveSpeedMultiplier;
 
-        Debug.Log($"[Stage Scaling] Stage: {currentStage}, HP: {currentHP}, Attack: {Data.attackPower}, Speed: {Data.moveSpeed}");
+        Debug.Log($"[Stage Scaling] Stage: {currentStage}, Name : {Data.enemyName} HP: {currentHP}, Attack: {Data.attackPower}, Speed: {Data.moveSpeed}");
     }
 
 
