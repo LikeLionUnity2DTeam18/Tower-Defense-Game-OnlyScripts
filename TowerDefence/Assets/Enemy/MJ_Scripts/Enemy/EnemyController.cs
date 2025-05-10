@@ -10,6 +10,7 @@ public class EnemyController : MonoBehaviour
     public Vector2 MoveDir { get; private set; }
     public float currentHP { get; private set; }
     public float TargetRange => Data.targetRange;
+    //public enum StageChangeEventType { Start, End }
 
     private EnemyStateMachine stateMachine;
     public Transform effectSpawnPoint;    // 이펙트 생성 위치 (optional)
@@ -17,6 +18,24 @@ public class EnemyController : MonoBehaviour
     public Transform currentTarget;
     public Transform baseTarget { get; private set; } // 기본 목표 (EnemyTarget)
 
+    //public struct StageChangeEvent
+    //{
+    //    public StageChangeEventType EventType;
+    //    public int Stage;
+    //    public StageData StageData;
+    //    public StageChangeEvent(StageChangeEventType type, int stage)
+    //    {
+    //        EventType = type;
+    //        Stage = stage;
+    //        StageData = null;
+    //    }
+    //    public StageChangeEvent(StageChangeEventType type, int stage, StageData stageData)
+    //    {
+    //        EventType = type;
+    //        Stage = stage;
+    //        StageData = stageData;
+    //    }
+    //}
 
     public void Initialize(EnemyData data)
     {
