@@ -17,15 +17,41 @@ public class DraggableTower : MonoBehaviour
         if(!enabled) return;
         SwapObject();
     }
+    
+    private void OnEnable()
+    {
+        EventManager.AddListener<StageChangeEvent>(OnStageChange);
+    }
 
+    private void OnDisable()
+    {
+        EventManager.RemoveListener<StageChangeEvent>(OnStageChange);
+    }
+
+    private void OnStageChange(StageChangeEvent evt)
+    {
+        ActiveSwitch(evt);
+    }
+
+    public void ActiveSwitch(StageChangeEvent evt)
+    {
+        switch (evt.EventType)
+        {
+            case StageChangeEventType.Start:
+                isActive = false;
+                break;
+            case StageChangeEventType.End:
+                isActive = true;
+                break;
+        }
+    }
     public void ActiveSwitch()
     {
         isActive = !isActive;
     }
-
     public void SwapObject()   //아이콘으로 변경
     {
-        if (!isActive) return;
+        if (isActive == false) return;
         ToIcon();
 
         // 드래그 상태를 넘겨주기 위해 강제로 드래그 시작

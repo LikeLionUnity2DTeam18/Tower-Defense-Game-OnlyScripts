@@ -12,7 +12,7 @@ public class ZIdleState : TIdleState
     }
     public override void Update()
     {
-        base.Update();
+        if (tower.nearestREnemy != null) towerFSM.ChangeState(tower.rangeState);
     }
     public override void Exit()
     {

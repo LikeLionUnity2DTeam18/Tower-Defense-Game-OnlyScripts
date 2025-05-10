@@ -17,6 +17,7 @@ public class Eksyll_Hand : MonoBehaviour, IEksyllPart, IStatReceiver
 
     public void AttTiming()
     {
+        if(target == null) return;
         GameObject t = SpawnWithStats(projectile);
         t.transform.position = pos.transform.position;
         dir = (target.transform.position - pos.transform.position).normalized;
