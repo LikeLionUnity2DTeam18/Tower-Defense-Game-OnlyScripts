@@ -18,7 +18,7 @@ public class EnemySpawnManager : MonoBehaviour
 
         while (isActive)
         {
-            for (int i = 0; i < spawnCount; i++)
+            for (int i = 0; i < spawnCount + Stage*2; i++)
             {
                 int index = Random.Range(0, spawnPoints.Length);
                 Vector3 spawnPos = spawnPoints[index].position;
@@ -64,7 +64,7 @@ public class EnemySpawnManager : MonoBehaviour
                 isActive = true;
                 StartCoroutine(SpawnLoop(evt.Stage));
                 break;
-            case StageChangeEventType.End:
+            case StageChangeEventType.SpawnEnd:
                 isActive = false;
                 StopCoroutine(SpawnLoop(evt.Stage));
                 break;

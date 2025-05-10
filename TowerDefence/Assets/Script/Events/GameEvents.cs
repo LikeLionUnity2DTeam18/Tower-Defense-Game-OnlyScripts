@@ -5,7 +5,7 @@
  * Trigger(new PlayerHealthChanged(20,10);
  */
 
-public enum StageChangeEventType { Start, End}
+public enum StageChangeEventType { Start, End, SpawnEnd }
 public struct StageChangeEvent
 {
     public StageChangeEventType EventType;
@@ -17,9 +17,9 @@ public struct StageChangeEvent
         Stage = stage;
         StageData = null;
     }
-    public StageChangeEvent (StageChangeEventType type, int stage, StageData stageData)
+    public StageChangeEvent(StageChangeEventType type, int stage, StageData stageData)
     {
-        EventType = type; 
+        EventType = type;
         Stage = stage;
         StageData = stageData;
     }
