@@ -122,6 +122,8 @@ public class FireBreathController : PlayerSkillEntity, ISkillAnimationEvents
 
         ExtendToLength();
 
+        //임시로 그냥 계속 데미지 가능
+        canDamage = true;
     }
 
     /// <summary>
@@ -169,6 +171,14 @@ public class FireBreathController : PlayerSkillEntity, ISkillAnimationEvents
     private void DoDamageOnArea()
     {
         var hits = Physics2D.OverlapBoxAll(skillCenterPos, currentSize, rotateAngle, enemyLayer);
+        if (hits.Length < 0)
+            return;
+
+        foreach (var hit in hits)
+        {
+            Debug.Log("스킬 히트");
+            hit.GetComponent<EnemyController>().TakeDamage(damage);
+        }
     }
 
     /// <summary>
@@ -194,7 +204,7 @@ public class FireBreathController : PlayerSkillEntity, ISkillAnimationEvents
     /// <summary>
     /// 대미지 영역 확인용 기즈모
     /// </summary>
-    private void OnDrawGizmosSelected()
+    private void OnDrawGizmos()
     {
         Gizmos.color = Color.red;
 

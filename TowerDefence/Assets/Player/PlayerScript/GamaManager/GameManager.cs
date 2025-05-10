@@ -12,8 +12,11 @@ public class GameManager : MonoBehaviour
 
     [SerializeField] private InventoryUI inventoryUI;
     [SerializeField] private StageDataSO stageDataSO;
+    [SerializeField] private GameObject menuObj;
     public List<StageData> StageDataList => stageDataSO.data;
+    private PlayerController player;
     public int CurrentStage {  get; private set; }
+    private bool isMenuOn;
 
 
     public static GameManager Instance { get; private set; }
@@ -35,13 +38,21 @@ public class GameManager : MonoBehaviour
         PauseState = new GamePauseState(StateMachine, Input, this);
         CurrentStage = 1;
         StateMachine.Initialize(BuildState);
+        isMenuOn = false;
+        menuObj.gameObject.SetActive(false);
 
         Input.OnInventoryPressed += ToggleInventory;
+        EventManager.AddListener<ToggleMenu>(OnToggleMenu);
+        EventManager.AddListener<MenuButtonClicked>(OnMenuButtonClicked);
+
+        player = PlayerManager.Instance.Player;
     }
 
     private void OnDestroy()
     {
         Input.OnInventoryPressed -= ToggleInventory;
+        EventManager.RemoveListener<ToggleMenu>(OnToggleMenu);
+        EventManager.RemoveListener<MenuButtonClicked>(OnMenuButtonClicked);
     }
 
     // Update is called once per frame
@@ -50,6 +61,10 @@ public class GameManager : MonoBehaviour
         StateMachine.Update();
 
 
+        if (UnityEngine.Input.GetKeyDown(KeyCode.Escape))
+        {
+            EventManager.Trigger(new ToggleMenu());
+        }
         if(UnityEngine.Input.GetKeyDown(KeyCode.Space))
         {
             EventManager.Trigger(new StartButtonClick());
@@ -69,6 +84,40 @@ public class GameManager : MonoBehaviour
     public void ToggleInventory()
     {
         EventManager.Trigger(new ToggleInventory());
+    }
+
+    private void OnToggleMenu(ToggleMenu _)
+    {
+        if(isMenuOn)
+        {
+            //메뉴닫기
+            isMenuOn = false;
+            StateMachine.CloseMenu();
+            menuObj.SetActive(false);
+        }
+        else
+        {
+            //메뉴열기
+            isMenuOn = true;
+            StateMachine.OpenMenu();
+            menuObj.SetActive(true);
+        }
+    }
+
+    private void OnMenuButtonClicked(MenuButtonClicked evt)
+    {
+        switch(evt.type)
+        {
+            case MenuButtonTypes.Start:
+                OnToggleMenu(new ToggleMenu());
+                break;
+            case MenuButtonTypes.Option:
+                player.Skill.SetSmartCastingAll(true);
+                break;
+            case MenuButtonTypes.Exit:
+                break;
+                    
+        }
     }
 
 }
