@@ -10,7 +10,6 @@ public class GameBuildState : GameState
     {
         base.Enter();
         EventManager.AddListener<GameStarted>(OnStartButtonClicked);
-        EventManager.Trigger(new StageChangeEvent(StageChangeEventType.End, game.CurrentStage));
 
         Debug.Log("타워 건설 페이즈 진입");
     }

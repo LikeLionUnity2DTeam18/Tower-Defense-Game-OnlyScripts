@@ -39,7 +39,7 @@ public class GameManager : MonoBehaviour
         CurrentStage = 1;
         StateMachine.Initialize(BuildState);
         isMenuOn = false;
-        menuObj.gameObject.SetActive(false);
+        menuObj.SetActive(false);
 
         Input.OnInventoryPressed += ToggleInventory;
         EventManager.AddListener<ToggleMenu>(OnToggleMenu);
@@ -79,7 +79,14 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public void ProceedStage() => CurrentStage++;
+    public void ProceedStage()
+    {
+        CurrentStage++;
+        if(CurrentStage >= StageDataList.Count)
+        {
+            Debug.Log("게임 끝");
+        }
+    }
 
     public void ToggleInventory()
     {
