@@ -17,9 +17,9 @@ public struct StageChangeEvent
         Stage = stage;
         StageData = null;
     }
-    public StageChangeEvent (StageChangeEventType type, int stage, StageData stageData)
+    public StageChangeEvent(StageChangeEventType type, int stage, StageData stageData)
     {
-        EventType = type; 
+        EventType = type;
         Stage = stage;
         StageData = stageData;
     }

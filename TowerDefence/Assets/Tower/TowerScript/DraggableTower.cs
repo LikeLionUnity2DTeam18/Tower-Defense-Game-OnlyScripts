@@ -64,6 +64,7 @@ public class DraggableTower : MonoBehaviour
 
     public void ToIcon()
     {
+        if (isActive == false) return;
         newObj = PoolManager.Instance.Get(swapPrefab);
         newObj.transform.position = transform.position;
         if (tower.beacon != null) tower.beacon.isActive = false;

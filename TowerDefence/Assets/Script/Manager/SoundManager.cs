@@ -83,8 +83,11 @@ public enum SoundType
 {
     None,
     Explosion,
+    StageStart,
+    StageEnd,
+    Money,
+    Gacha,
+    Hit,
     Click,
-    EnemyHit,
-    TowerHit,
     TowerSummon,
 }

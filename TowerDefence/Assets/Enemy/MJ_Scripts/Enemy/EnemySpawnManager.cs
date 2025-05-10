@@ -38,8 +38,6 @@ public class EnemySpawnManager : MonoBehaviour
     private bool isActive = false;
     IEnumerator SpawnLoop(int Stage)
     {
-        yield return new WaitForSeconds(1f);
-
         while (isActive)
         {
             for (int i = 0; i < spawnCount; i++)
@@ -87,6 +85,7 @@ public class EnemySpawnManager : MonoBehaviour
             case StageChangeEventType.Start:
                 isActive = true;
                 StartCoroutine(SpawnLoop(evt.Stage));
+                spawnCount = evt.Stage+5;
                 break;
             case StageChangeEventType.SpawnEnd:
                 isActive = false;
