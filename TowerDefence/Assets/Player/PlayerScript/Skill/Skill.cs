@@ -171,6 +171,7 @@ public abstract class Skill : MonoBehaviour
     public virtual bool TryUseSkillWithoutPreview()
     {
         //if (hasPreviewState) return false;
+        if (!CanUseSkill()) return false;
 
         skillCenterPosition = mousePos;
         UseSkill();
