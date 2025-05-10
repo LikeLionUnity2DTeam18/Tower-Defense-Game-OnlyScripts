@@ -75,4 +75,33 @@ public class EyeDraw : MonoBehaviour
         }
         return index;
     }
+
+
+    private void OnEnable()
+    {
+        EventManager.AddListener<StageChangeEvent>(OnStageChange);
+    }
+
+    private void OnDisable()
+    {
+        EventManager.RemoveListener<StageChangeEvent>(OnStageChange);
+    }
+
+    private void OnStageChange(StageChangeEvent evt)
+    {
+        ActiveSwitch(evt);
+    }
+
+    public void ActiveSwitch(StageChangeEvent evt)
+    {
+        switch (evt.EventType)
+        {
+            case StageChangeEventType.Start:
+                isClickable = false;
+                break;
+            case StageChangeEventType.End:
+                isClickable = true;
+                break;
+        }
+    }
 }
