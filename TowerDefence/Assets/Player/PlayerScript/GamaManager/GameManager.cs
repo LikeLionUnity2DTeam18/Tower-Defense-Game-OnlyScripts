@@ -15,7 +15,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private GameObject menuObj;
     public List<StageData> StageDataList => stageDataSO.data;
     private PlayerController player;
-    public int CurrentStage {  get; private set; }
+    public int CurrentStage { get; private set; }
     private bool isMenuOn;
 
 
@@ -46,6 +46,20 @@ public class GameManager : MonoBehaviour
         EventManager.AddListener<MenuButtonClicked>(OnMenuButtonClicked);
 
         player = PlayerManager.Instance.Player;
+
+
+        /// 경고 처리용
+        var allGOs = Resources.FindObjectsOfTypeAll<GameObject>();
+        foreach (var go in allGOs)
+        {
+            var comps = go.GetComponents<MonoBehaviour>();
+            for (int i = 0; i < comps.Length; i++)
+            {
+                if (comps[i] == null)
+                    Debug.Log($"Missing script on [{go.name}]", go);
+            }
+        }
+
     }
 
     private void OnDestroy()
@@ -65,7 +79,7 @@ public class GameManager : MonoBehaviour
         {
             EventManager.Trigger(new ToggleMenu());
         }
-        if(UnityEngine.Input.GetKeyDown(KeyCode.Space))
+        if (UnityEngine.Input.GetKeyDown(KeyCode.Space))
         {
             EventManager.Trigger(new StartButtonClick());
         }
@@ -82,7 +96,7 @@ public class GameManager : MonoBehaviour
     public void ProceedStage()
     {
         CurrentStage++;
-        if(CurrentStage >= StageDataList.Count)
+        if (CurrentStage >= StageDataList.Count)
         {
             Debug.Log("게임 끝");
         }
@@ -95,7 +109,7 @@ public class GameManager : MonoBehaviour
 
     private void OnToggleMenu(ToggleMenu _)
     {
-        if(isMenuOn)
+        if (isMenuOn)
         {
             //메뉴닫기
             isMenuOn = false;
@@ -113,7 +127,7 @@ public class GameManager : MonoBehaviour
 
     private void OnMenuButtonClicked(MenuButtonClicked evt)
     {
-        switch(evt.type)
+        switch (evt.type)
         {
             case MenuButtonTypes.Start:
                 OnToggleMenu(new ToggleMenu());
@@ -122,8 +136,13 @@ public class GameManager : MonoBehaviour
                 player.Skill.SetSmartCastingAll(true);
                 break;
             case MenuButtonTypes.Exit:
+#if UNITY_EDITOR
+                UnityEditor.EditorApplication.isPlaying = false;
+#else
+        Application.Quit();
+#endif
                 break;
-                    
+
         }
     }
 
