@@ -9,7 +9,7 @@ using UnityEngine.InputSystem;
 /// </summary>
 public class PlayerMovableState : PlayerState
 {
-    private LayerMask cannotMoveMask = LayerMask.GetMask("Enemy", "Beacon", "TowerIcon", "Tower");
+    private LayerMask cannotMoveMask = LayerMask.GetMask("Enemy", "Beacon", "TowerIcon", "Tower", "Eye");
     Vector2 direction;
 
     public PlayerMovableState(PlayerController _player, int animBoolParam) : base(_player, animBoolParam)
@@ -101,6 +101,7 @@ public class PlayerMovableState : PlayerState
             {
                 return;
             }
+            return;
         }
 
         player.SetDestination(destination);
