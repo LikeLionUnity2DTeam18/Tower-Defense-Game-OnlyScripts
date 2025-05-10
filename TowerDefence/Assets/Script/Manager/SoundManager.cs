@@ -36,10 +36,27 @@ public class SoundManager : MonoBehaviour
             Destroy(gameObject);
         }
     }
-
     void Start()
     {
         // 초기화 작업이 있다면 여기에
+        EventManager.AddListener<StageChangeEvent>(OnStageChange);
+    }
+    private void OnDestroy()
+    {
+        EventManager.RemoveListener<StageChangeEvent>(OnStageChange);
+    }
+
+    private void OnStageChange(StageChangeEvent evt)
+    {
+        switch (evt.EventType)
+        {
+            case StageChangeEventType.Start:
+                Play(SoundType.StageStart, transform);
+                break;
+            case StageChangeEventType.End:
+                Play(SoundType.StageEnd, transform);
+                break;
+        }
     }
 
     void Update()
@@ -88,6 +105,7 @@ public enum SoundType
     Money,
     Gacha,
     Hit,
+    EnemyHit,
     Click,
     TowerSummon,
 }
