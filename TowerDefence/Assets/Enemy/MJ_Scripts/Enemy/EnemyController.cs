@@ -113,6 +113,7 @@ public class EnemyController : MonoBehaviour
         if (nearest != null)
         {
             currentTarget = nearest;
+            Debug.Log($"[Target Detected] Target: {currentTarget.name}");
         }
         // 감지된 게 없거나, 기존 타워가 파괴 -> baseTower로 이동
         else if (currentTarget == null || !currentTarget.gameObject.activeSelf)
@@ -192,7 +193,7 @@ public class EnemyController : MonoBehaviour
         }
     }
 
-    //Collider감지해서 공격
+    //Collider감지
     private void OnTriggerStay2D(Collider2D other)
     {
         if (currentHP <= 0f) return;
@@ -201,37 +202,13 @@ public class EnemyController : MonoBehaviour
              other.gameObject.layer == LayerMask.NameToLayer("Wall"))
             && other.gameObject.activeSelf)
         {
-            float distance = Vector2.Distance(transform.position, other.transform.position);
-            if (distance <= TargetRange)
+            // 타겟 후보만 갱신
+            Vector2 targetPoint = other.GetComponent<Collider2D>().ClosestPoint(transform.position);
+            float distance = Vector2.Distance(transform.position, targetPoint);
+
+            if (distance <= Data.detectTowerRange)  // 탐지 범위 내일 때만
             {
-                // 이미 공격 상태라면 무시
-                if (stateMachine.CurrentState is EnemyAttackState) return;
-
                 currentTarget = other.transform;
-
-                // 몬스터 타입에 따라 상태 전환
-                switch (Data.enemyType)
-                {
-                    case EnemyType.Blocker:
-                        stateMachine.ChangeState(new Blocker_AttackState(this, stateMachine));
-                        break;
-                    case EnemyType.Tanky:
-                        stateMachine.ChangeState(new Tanky_AttackState(this, stateMachine));
-                        break;
-                    case EnemyType.Clawer:
-                        stateMachine.ChangeState(new Clawer_AttackState(this, stateMachine));
-                        break;
-                    case EnemyType.Archer:
-                        stateMachine.ChangeState(new Archer_AttackState(this, stateMachine));
-                        break;
-                    case EnemyType.BountyHunter:
-                        stateMachine.ChangeState(new BountyHunter_AttackState(this, stateMachine));
-                        break;
-                    case EnemyType.Ghost:
-                        stateMachine.ChangeState(new Ghost_AttackState(this, stateMachine));
-                        break;
-                        // Boomer는 제외 — 따로 자폭 로직으로 이동
-                }
             }
         }
     }

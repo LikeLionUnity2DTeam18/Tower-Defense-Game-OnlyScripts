@@ -48,7 +48,7 @@ public class EnemySpawnManager : MonoBehaviour
                 Vector3 spawnPos = spawnPoints[index].position;
 
                 // 약간 위치 차이 주면 겹치지 않게 됨
-                Vector3 offset = new Vector3(Random.Range(-0.4f, 0.4f), Random.Range(-0.4f, 0.4f), 0);
+                Vector3 offset = new Vector3(Random.Range(-0.4f, 0.4f), Random.Range(-0.2f, 0.2f), 0);
 
                 if (enemyTypes != null && enemyTypes.Count > 0)
                 {

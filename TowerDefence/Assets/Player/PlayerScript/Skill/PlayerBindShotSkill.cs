@@ -76,6 +76,7 @@ public class PlayerBindShotSkill : Skill
         bool isEast = previewDirection == Direction4Custom.SE || previewDirection == Direction4Custom.NE;
         GameObject go = PoolManager.Instance.Get(casterPrefab);
         go.GetComponent<BindShotCasterEffectController>().SetEffect(effectPosition, isEast, this);
+        SoundManager.Instance.Play(SoundType.BindShotCast, player.transform);
     }
 
     /// <summary>
@@ -90,6 +91,7 @@ public class PlayerBindShotSkill : Skill
             go = PoolManager.Instance.Get(skillPrefab);
 
         go.GetComponent<BindShotController>().SetBindShot(skillCenterPosition, Damage, BindTime, previewDirection);
+        SoundManager.Instance.Play(SoundType.BindShotLand, player.transform);
     }
 
     /// <summary>

@@ -19,4 +19,6 @@ public enum SoundType
     EnemyHit,
     Click,
     TowerSummon,
+    BindShotCast,
+    BindShotLand,
 }
