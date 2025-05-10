@@ -2,19 +2,20 @@ using UnityEngine;
 
 public class EnemyFactory : MonoBehaviour
 {
-    public GameObject CreateEnemy(EnemyData data, Vector2 spawnPosition)
+    public EnemyController CreateEnemy(EnemyData data, Vector3 spawnPosition)
     {
-        GameObject enemy = Instantiate(data.enemyPrefab, spawnPosition, Quaternion.identity);
+        GameObject obj = Instantiate(data.enemyPrefab, spawnPosition, Quaternion.identity);
+        EnemyController enemy = obj.GetComponent<EnemyController>();
 
-        EnemyController controller = enemy.GetComponent<EnemyController>();
-        if(controller != null)
+        if (enemy != null)
         {
-            controller.Initialize(data);
+            enemy.Initialize(data);
+        }
+        else
+        {
+            Debug.LogError("[EnemyFactory] EnemyController가 프리팹에 없습니다!");
         }
 
-        // 이벤트 발사
-        EventManager.Trigger(new EnemySpawned(enemy.transform));
-
-        return enemy; 
+        return enemy;
     }
 }

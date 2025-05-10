@@ -18,6 +18,22 @@ public class EnemyController : MonoBehaviour
     public Transform currentTarget;
     public Transform baseTarget { get; private set; } // 기본 목표 (EnemyTarget)
 
+    public StageBalanceData stageBalanceData;
+
+
+    public void ApplyStageScaling(int currentStage)
+    {
+        var stats = stageBalanceData.GetStatsForStage(currentStage);
+        if (stats == null) return;
+
+        currentHP = Data.maxHealth * stats.healthMultiplier;
+        Data.attackPower *= stats.attackMultiplier;
+        Data.moveSpeed *= stats.moveSpeedMultiplier;
+
+        Debug.Log($"[Stage Scaling] Stage: {currentStage}, HP: {currentHP}, Attack: {Data.attackPower}, Speed: {Data.moveSpeed}");
+    }
+
+
     //public struct StageChangeEvent
     //{
     //    public StageChangeEventType EventType;
@@ -145,7 +161,7 @@ public class EnemyController : MonoBehaviour
     //애니메이션 이벤트로 호출
     public void DestroySelf()
     {
-        Debug.Log("제발");
+        //Debug.Log("제발");
         Destroy(gameObject);
     }
     //DPS 확인용

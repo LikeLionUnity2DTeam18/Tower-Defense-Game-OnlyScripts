@@ -27,6 +27,7 @@ public class EyeDraw : MonoBehaviour
 
         //골드 소모
         EventManager.Trigger<GoldSpended>(new GoldSpended(priceGold));
+        SoundManager.Instance.Play(SoundType.Gacha, transform);
     }
 
     private void OnMouseExit() 
@@ -42,7 +43,6 @@ public class EyeDraw : MonoBehaviour
 
     private void DrawTowerIcon()
     {
-        //골드 소모
         GameObject t = PoolManager.Instance.Get(icons[DrawRandom()]);
         t.transform.position = transform.position;
         StartCoroutine(summonEffect(t));
@@ -101,6 +101,7 @@ public class EyeDraw : MonoBehaviour
                 break;
             case StageChangeEventType.End:
                 isClickable = true;
+                priceGold += 100;
                 break;
         }
     }

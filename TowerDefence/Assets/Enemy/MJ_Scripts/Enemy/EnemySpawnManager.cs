@@ -4,9 +4,12 @@ using UnityEngine;
 
 public class EnemySpawnManager : MonoBehaviour
 {
+
     public List<EnemyData> enemyTypes;
     public Transform[] spawnPoints;
     public EnemyFactory factory;
+
+    public StageBalanceData stageBalanceData;
 
     [SerializeField] private float spawnTime = 2f;
     [SerializeField] private int spawnCount = 5; // 한번에 생성할 적의 수
@@ -51,9 +54,15 @@ public class EnemySpawnManager : MonoBehaviour
                 {
                     // 랜덤하게 적군 선택
                     EnemyData selectedEnemy = enemyTypes[Random.Range(0, enemyTypes.Count)];
-
                     // 적 생성
-                    factory.CreateEnemy(selectedEnemy, spawnPos + offset);
+                    var enemy = factory.CreateEnemy(selectedEnemy, spawnPos + offset);
+
+                    // 스테이지 보정
+                    if (enemy != null && stageBalanceData != null)
+                    {
+                        enemy.stageBalanceData = stageBalanceData;
+                        enemy.ApplyStageScaling(Stage);
+                    }
                 }
                 
             }
