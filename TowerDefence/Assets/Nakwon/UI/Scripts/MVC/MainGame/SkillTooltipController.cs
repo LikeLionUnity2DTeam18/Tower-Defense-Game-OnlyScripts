@@ -6,12 +6,17 @@ public class SkillTooltipController : MonoBehaviour, IPointerEnterHandler, IPoin
 
     [SerializeField] private Skill skill; // 연결된 Skill
     [SerializeField] private TooltipView tooltipView; // TooltipView 참조 (직접 연결)
+    private RectTransform rectTransform;
 
+    private void Awake()
+    {
+        rectTransform = transform as RectTransform;
+    }
     public void OnPointerEnter(PointerEventData eventData)
     {
         string tooltip = skill.GetTooltipText();
         Vector2 pos = Input.mousePosition;
-        tooltipView.Show(tooltip, pos);
+        tooltipView.Show(tooltip, rectTransform);
     }
 
     public void OnPointerExit(PointerEventData eventData)

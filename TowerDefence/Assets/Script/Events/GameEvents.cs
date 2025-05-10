@@ -24,8 +24,3 @@ public struct StageChangeEvent
         StageData = stageData;
     }
 }
-
-public struct StartButtonClick
-{
-
-}

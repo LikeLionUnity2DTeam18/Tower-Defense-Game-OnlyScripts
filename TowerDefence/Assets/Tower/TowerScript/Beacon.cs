@@ -94,6 +94,8 @@ public class Beacon : MonoBehaviour
         t.GetComponent<Tower>().Beacon = gameObject;
         t.GetComponent<Tower>().beacon = this;
         isActive = true;
+        //미니맵 마커(낙원)
+        EventManager.Trigger(new TowerSpawned(t.transform));
     }
 
     private void OnDrawGizmos()

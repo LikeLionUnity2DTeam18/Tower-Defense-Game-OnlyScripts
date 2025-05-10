@@ -1,3 +1,4 @@
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -10,6 +11,11 @@ public struct GoldChanged
     public GoldChanged(int gold) => NewGold = gold;
 }
 
+public struct GoldSpended
+{
+    public int Amount {get; private set;}
+    public GoldSpended(int amount)=> Amount = amount;
+}
 
 //몬스터가 죽으면 보상 골드와 죽은 위치를 전달
 public struct MonsterDied
@@ -47,6 +53,26 @@ public struct SpeedChanged
     }
 }
 
+public struct EnemySpawned
+{
+    public Transform enemyTransform;
+
+    public EnemySpawned(Transform enemyTransform)
+    {
+        this.enemyTransform = enemyTransform;
+    }
+}
+
+public struct TowerSpawned
+{
+    public Transform towerTransform;
+
+    public TowerSpawned(Transform towerTransform)
+    {
+        this.towerTransform = towerTransform;
+    }
+}
+
 /// <summary>
 /// 툴팁이 표시되어야 할 때
 /// </summary>
@@ -72,4 +98,27 @@ public struct GamePaused
     {
         IsPaused = ispaused;
     }
+}
+
+/// <summary>
+/// 시작버튼 클릭(or 스페이스바)
+/// </summary>
+public struct StartButtonClick
+{
+
+}
+
+/// <summary>
+/// 스태이지 시작 이벤트
+/// </summary>
+public struct GameStarted
+{
+
+}
+
+/// <summary>
+/// 인벤토리 온오프
+/// </summary>
+public struct ToggleInventory
+{
 }

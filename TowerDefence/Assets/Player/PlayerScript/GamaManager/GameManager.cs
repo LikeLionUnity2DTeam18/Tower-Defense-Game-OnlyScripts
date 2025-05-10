@@ -10,6 +10,7 @@ public class GameManager : MonoBehaviour
     public GameBuildState BuildState { get; private set; }
     public GamePauseState PauseState { get; private set; }
 
+    [SerializeField] private InventoryUI inventoryUI;
     [SerializeField] private StageDataSO stageDataSO;
     public List<StageData> StageDataList => stageDataSO.data;
     public int CurrentStage {  get; private set; }
@@ -23,7 +24,7 @@ public class GameManager : MonoBehaviour
         else
             Destroy(gameObject);
 
-
+        Input = GetComponent<PlayerInputHandler>();
         StateMachine = new GameStateMachine();
     }
 
@@ -34,6 +35,13 @@ public class GameManager : MonoBehaviour
         PauseState = new GamePauseState(StateMachine, Input, this);
         CurrentStage = 1;
         StateMachine.Initialize(BuildState);
+
+        Input.OnInventoryPressed += ToggleInventory;
+    }
+
+    private void OnDestroy()
+    {
+        Input.OnInventoryPressed -= ToggleInventory;
     }
 
     // Update is called once per frame
@@ -57,4 +65,10 @@ public class GameManager : MonoBehaviour
     }
 
     public void ProceedStage() => CurrentStage++;
+
+    public void ToggleInventory()
+    {
+        EventManager.Trigger(new ToggleInventory());
+    }
+
 }

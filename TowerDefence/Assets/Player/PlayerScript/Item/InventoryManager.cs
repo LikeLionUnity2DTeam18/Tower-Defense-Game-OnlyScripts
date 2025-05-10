@@ -246,7 +246,7 @@ public class InventoryManager : MonoBehaviour
     /// <summary>
     /// 생성가능한 아이템중 하나 추가 
     /// </summary>
-    private void AddRandomPossibleItemToInventory()
+    public void AddRandomPossibleItemToInventory()
     {
         if (possibleItems.Count <= 0)
         {
@@ -274,9 +274,20 @@ public class InventoryManager : MonoBehaviour
     /// <returns></returns>
     public string GetTooltipText(PlayerItem item, PlayerStatDisplayNamesSO def)
     {
+        if (item == null) return null;
         return item.GetTooltipText(def);
     }
 
+    public string GetEquipmentTooltipText(EquipmentSlotType type)
+    {
+        int index = (int)type;
+        return GetTooltipText(equipment[index], statDisplayNames);
+    }
+
+    public string GetInventoryTooltipText(int slotNumber)
+    {
+        return GetTooltipText(inventory[slotNumber-1], statDisplayNames);
+    }
 
     private void OnInventorySlotClicked(InventorySlotClicked evt)
     {

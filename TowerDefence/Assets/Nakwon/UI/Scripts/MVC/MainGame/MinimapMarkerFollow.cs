@@ -9,6 +9,8 @@ public class MinimapMarkerFollow : MonoBehaviour
     private ObjectPool pool;
     private float mapSizeWorld;
 
+    private bool isInitialized = false;
+
     public void Init(Transform target, Color color, ObjectPool pool, RectTransform minimapArea, float mapSizeWorld)
     {
         this.target = target;
@@ -20,23 +22,25 @@ public class MinimapMarkerFollow : MonoBehaviour
 
         color.a = 1f; // 알파값 1로 초기화
         GetComponent<Image>().color = color;
+
+        isInitialized = true;
+        enabled = true; //재사용 시 다시 켜줘야 함
     }
 
     private void Update()
     {
-        // Init() 호출 전 Update()가 실행될 수 있으므로 먼저 pool, target null 체크
-        if (pool == null || target == null || minimapArea == null || markerRect == null)
-        {
+        if (!isInitialized || pool == null || minimapArea == null || markerRect == null)
             return;
-        }
 
-        if (!target.gameObject.activeInHierarchy)
+        // target이 null이거나 비활성화되었거나, 파괴 직전인 경우
+        if (!target || !target.gameObject.activeSelf)
         {
             pool.Return(gameObject);
-            Destroy(this);
+            target = null; //이전 타겟 완전 제거
+            isInitialized = false;
+            enabled = false;
             return;
         }
-
         float halfMap = mapSizeWorld * 0.5f;
         float normalizedX = (target.position.x + halfMap) / mapSizeWorld;
         float normalizedY = (target.position.y + halfMap) / mapSizeWorld;
@@ -46,4 +50,5 @@ public class MinimapMarkerFollow : MonoBehaviour
 
         markerRect.anchoredPosition = new Vector2(uiX, uiY);
     }
+
 }
