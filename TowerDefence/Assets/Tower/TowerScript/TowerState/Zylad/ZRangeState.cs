@@ -13,7 +13,11 @@ public class ZRangeState : TRangeState
     }
     public override void Update()
     {
-        base.Update();
+        if (triggerCalled1)
+        {
+            triggerCalled1 = false;
+            if (tower.nearestREnemy == null) towerFSM.ChangeState(tower.idleState);
+        }
 
         if (triggerCalled3 && tower.nearestREnemy != null && zylad.count == 0) 
         {

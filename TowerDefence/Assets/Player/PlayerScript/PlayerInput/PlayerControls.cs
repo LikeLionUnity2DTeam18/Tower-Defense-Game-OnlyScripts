@@ -162,6 +162,15 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""ToggleInventory_I"",
+                    ""type"": ""Button"",
+                    ""id"": ""0cf5cc8a-5d65-4238-9d1e-d99eb9b8b919"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -296,6 +305,17 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""action"": ""FlipSkill_G"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""3e265d67-5756-4d52-8285-447ec5244cbc"",
+                    ""path"": ""<Keyboard>/i"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""ToggleInventory_I"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -329,6 +349,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         m_PlayerControl_Skill_E = m_PlayerControl.FindAction("Skill_E", throwIfNotFound: true);
         m_PlayerControl_Skill_R = m_PlayerControl.FindAction("Skill_R", throwIfNotFound: true);
         m_PlayerControl_FlipSkill_G = m_PlayerControl.FindAction("FlipSkill_G", throwIfNotFound: true);
+        m_PlayerControl_ToggleInventory_I = m_PlayerControl.FindAction("ToggleInventory_I", throwIfNotFound: true);
     }
 
     ~@PlayerControls()
@@ -417,6 +438,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
     private readonly InputAction m_PlayerControl_Skill_E;
     private readonly InputAction m_PlayerControl_Skill_R;
     private readonly InputAction m_PlayerControl_FlipSkill_G;
+    private readonly InputAction m_PlayerControl_ToggleInventory_I;
     /// <summary>
     /// Provides access to input actions defined in input action map "PlayerControl".
     /// </summary>
@@ -460,6 +482,10 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         /// Provides access to the underlying input action "PlayerControl/FlipSkill_G".
         /// </summary>
         public InputAction @FlipSkill_G => m_Wrapper.m_PlayerControl_FlipSkill_G;
+        /// <summary>
+        /// Provides access to the underlying input action "PlayerControl/ToggleInventory_I".
+        /// </summary>
+        public InputAction @ToggleInventory_I => m_Wrapper.m_PlayerControl_ToggleInventory_I;
         /// <summary>
         /// Provides access to the underlying input action map instance.
         /// </summary>
@@ -510,6 +536,9 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @FlipSkill_G.started += instance.OnFlipSkill_G;
             @FlipSkill_G.performed += instance.OnFlipSkill_G;
             @FlipSkill_G.canceled += instance.OnFlipSkill_G;
+            @ToggleInventory_I.started += instance.OnToggleInventory_I;
+            @ToggleInventory_I.performed += instance.OnToggleInventory_I;
+            @ToggleInventory_I.canceled += instance.OnToggleInventory_I;
         }
 
         /// <summary>
@@ -545,6 +574,9 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @FlipSkill_G.started -= instance.OnFlipSkill_G;
             @FlipSkill_G.performed -= instance.OnFlipSkill_G;
             @FlipSkill_G.canceled -= instance.OnFlipSkill_G;
+            @ToggleInventory_I.started -= instance.OnToggleInventory_I;
+            @ToggleInventory_I.performed -= instance.OnToggleInventory_I;
+            @ToggleInventory_I.canceled -= instance.OnToggleInventory_I;
         }
 
         /// <summary>
@@ -654,5 +686,12 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnFlipSkill_G(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "ToggleInventory_I" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnToggleInventory_I(InputAction.CallbackContext context);
     }
 }

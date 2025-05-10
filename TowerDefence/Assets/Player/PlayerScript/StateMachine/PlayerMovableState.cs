@@ -1,4 +1,7 @@
+
+using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 
 /// <summary>
@@ -6,7 +9,7 @@ using UnityEngine.InputSystem;
 /// </summary>
 public class PlayerMovableState : PlayerState
 {
-    private LayerMask cannotMoveMask = LayerMask.GetMask("Enemy", "Beacon", "TowerIcon", "Tower");
+    private LayerMask cannotMoveMask = LayerMask.GetMask("Enemy", "Beacon", "TowerIcon", "Tower", "Eye");
     Vector2 direction;
 
     public PlayerMovableState(PlayerController _player, int animBoolParam) : base(_player, animBoolParam)
@@ -57,13 +60,24 @@ public class PlayerMovableState : PlayerState
     /// </summary>
     protected void SetDestination()
     {
+
+
         Vector2 mousePos = Mouse.current.position.ReadValue();
         Vector2 destination = Camera.main.ScreenToWorldPoint(mousePos);
-        Debug.Log($"마우스 클릭 : {destination}");
+        //Debug.Log($"마우스 클릭 : {destination}");
 
 
         // UI인 경우
-        // if(UI) return;
+        var ped = new PointerEventData(EventSystem.current) { position = mousePos };
+        var allResult = new List<RaycastResult>();
+
+        EventSystem.current.RaycastAll(ped,allResult);
+
+        if (allResult.Count > 0)
+        {
+            Debug.Log("UI 클릭함");
+            return;
+        }
 
         // 몬스터,타워 등을 클릭한 경우
         RaycastHit2D hit = Physics2D.Raycast(destination, Vector2.zero, 0f, cannotMoveMask);
@@ -87,6 +101,7 @@ public class PlayerMovableState : PlayerState
             {
                 return;
             }
+            return;
         }
 
         player.SetDestination(destination);

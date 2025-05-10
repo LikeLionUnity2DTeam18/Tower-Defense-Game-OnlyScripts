@@ -93,12 +93,13 @@ public class Golem : Tower
 
         float speed = 100f;
         float pauseDuration = 0.08f;
-        float returnSpeed = 10f;
+        float returnSpeed = 14f;
 
         isReady = false;
 
         Vector3 targetLocalPos = transform.InverseTransformPoint(nearestREnemy.transform.position);
 
+        SoundManager.Instance.Play(SoundType.None, fist.transform);
         while (Vector3.Distance(fist.transform.localPosition, targetLocalPos) > 0.05f)
         {
             fist.transform.localPosition = Vector3.MoveTowards(fist.transform.localPosition, targetLocalPos, speed * Time.deltaTime);

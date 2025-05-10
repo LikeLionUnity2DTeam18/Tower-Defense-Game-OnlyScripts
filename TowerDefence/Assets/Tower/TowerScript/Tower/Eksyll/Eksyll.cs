@@ -138,6 +138,8 @@ public class Eksyll : Tower
         foreach (var offset in offsets)
         {
             GameObject clone = Instantiate(selectedTower, spawnPos.position + offset, Quaternion.identity);
+            clone.GetComponent<DraggableTower>().ActiveSwitch();
+            clone.GetComponent<TowerStats>().hp.AddModifier(99899);
             StartCoroutine(DestroyAfterDelay(clone, 30f));
         }
 

@@ -35,10 +35,12 @@ public class EnemySpawnManager : MonoBehaviour
 
 
     IEnumerator SpawnLoop()
+    private bool isActive = false;
+    IEnumerator SpawnLoop(int Stage)
     {
         yield return new WaitForSeconds(1f);
 
-        while (true)
+        while (isActive)
         {
             for (int i = 0; i < spawnCount; i++)
             {
@@ -62,4 +64,34 @@ public class EnemySpawnManager : MonoBehaviour
         }
     }
 
+    //스테이지 변경 연결
+    private void OnEnable()
+    {
+        EventManager.AddListener<StageChangeEvent>(OnSpawnEnemy);
+    }
+
+    private void OnDisable()
+    {
+        EventManager.RemoveListener<StageChangeEvent>(OnSpawnEnemy);
+    }
+
+    private void OnSpawnEnemy(StageChangeEvent evt)
+    {
+        ActiveSwitch(evt);
+    }
+
+    public void ActiveSwitch(StageChangeEvent evt)
+    {
+        switch (evt.EventType)
+        {
+            case StageChangeEventType.Start:
+                isActive = true;
+                StartCoroutine(SpawnLoop(evt.Stage));
+                break;
+            case StageChangeEventType.SpawnEnd:
+                isActive = false;
+                StopCoroutine(SpawnLoop(evt.Stage));
+                break;
+        }
+    }
 }
