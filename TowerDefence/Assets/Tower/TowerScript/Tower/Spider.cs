@@ -32,8 +32,9 @@ public class Spider : Tower
 
     public void SpinWheel()
     {
+        if (nearestREnemy == null) return;
         Vector3 start = transform.position;
-        Vector3 end = nearestREnemy.transform.position;
+        Vector3 end = nearestREnemy?.transform.position ?? transform.position;
 
         // 중간 점들 계산 (원호 형태 궤적)
         Vector3 mid1 = Vector3.Lerp(start, end, 0.5f) + Vector3.up * arcHeight;

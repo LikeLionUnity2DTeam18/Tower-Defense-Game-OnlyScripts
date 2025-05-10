@@ -76,6 +76,7 @@ public class Darkmur : Tower
         if (isClone) return;
         GameObject clone = SpawnWithStats(gameObject);
         clone.GetComponent<Darkmur>().isClone = true;
+        clone.GetComponent<TowerStats>().hp.SetDefaultValue(99999);
         clone.GetComponent<DraggableTower>().enabled = false;
         clone.GetComponent<SpriteRenderer>().color = Color.black;
         Vector2 offset = UnityEngine.Random.insideUnitCircle.normalized * 1.5f;
