@@ -32,7 +32,7 @@ public class Boomer_AttackState : EnemyState
             }
 
             // Wall
-            var wall = hit.GetComponent<WallSkillController>();
+            var wall = hit.GetComponentInParent<WallSkillController>();
             if (wall != null)
             {
                 wall.TakeDamage(enemy.Data.attackPower);
@@ -40,7 +40,7 @@ public class Boomer_AttackState : EnemyState
             }
 
             // BaseTower
-            var baseTower = hit.GetComponent<BaseTowerController>();
+            var baseTower = hit.GetComponentInParent<BaseTowerController>();
             if (baseTower != null)
             {
                 baseTower.TakeDamage((int)enemy.Data.attackPower);
