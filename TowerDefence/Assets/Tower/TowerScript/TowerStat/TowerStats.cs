@@ -54,7 +54,7 @@ public class TowerStats : MonoBehaviour
     public virtual void TakeDamage(float _damage)
     {
         if (Time.time - lastDamageTime < 1f) return; // 1초 쿨다운
-
+        SoundManager.Instance.Play(SoundType.Hit, transform);
         lastDamageTime = Time.time;
         currentHealth -= _damage;
         GameObject t =PoolManager.Instance.Get(HitVFX);
