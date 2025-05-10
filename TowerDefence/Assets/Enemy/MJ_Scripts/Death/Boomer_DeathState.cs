@@ -14,6 +14,9 @@ public class Boomer_DeathState : EnemyState
         // 방향에 따라 sprite flip 처리
         enemy.SpriteRenderer.flipX = enemy.MoveDir.x < 0;
 
+        // 골드 지급
+        EventManager.Trigger<MonsterDied>(new MonsterDied(enemy.Data.rewardGold, enemy.transform.position));
+
         if (enemy.TryGetComponent<Rigidbody2D>(out var rb))
             rb.simulated = false;
 
