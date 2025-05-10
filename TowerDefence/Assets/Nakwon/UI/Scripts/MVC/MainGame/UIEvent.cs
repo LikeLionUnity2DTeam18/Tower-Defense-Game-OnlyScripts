@@ -122,3 +122,11 @@ public struct GameStarted
 public struct ToggleInventory
 {
 }
+
+/// <summary>
+/// 인게임 메뉴 온오프
+/// </summary>
+public struct ToggleMenu
+{
+
+}

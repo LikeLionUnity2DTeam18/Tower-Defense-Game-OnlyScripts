@@ -12,8 +12,10 @@ public class GameManager : MonoBehaviour
 
     [SerializeField] private InventoryUI inventoryUI;
     [SerializeField] private StageDataSO stageDataSO;
+    [SerializeField] private GameObject menuObj;
     public List<StageData> StageDataList => stageDataSO.data;
     public int CurrentStage {  get; private set; }
+    private bool isMenuOn;
 
 
     public static GameManager Instance { get; private set; }
@@ -35,13 +37,16 @@ public class GameManager : MonoBehaviour
         PauseState = new GamePauseState(StateMachine, Input, this);
         CurrentStage = 1;
         StateMachine.Initialize(BuildState);
+        isMenuOn = false;
 
         Input.OnInventoryPressed += ToggleInventory;
+        EventManager.AddListener<ToggleMenu>(OnToggleMenu);
     }
 
     private void OnDestroy()
     {
         Input.OnInventoryPressed -= ToggleInventory;
+        EventManager.RemoveListener<ToggleMenu>(OnToggleMenu);
     }
 
     // Update is called once per frame
@@ -69,6 +74,24 @@ public class GameManager : MonoBehaviour
     public void ToggleInventory()
     {
         EventManager.Trigger(new ToggleInventory());
+    }
+
+    private void OnToggleMenu(ToggleMenu _)
+    {
+        if(isMenuOn)
+        {
+            //메뉴닫기
+            isMenuOn = false;
+            StateMachine.CloseMenu();
+            menuObj.SetActive(false);
+        }
+        else
+        {
+            //메뉴열기
+            isMenuOn = true;
+            StateMachine.OpenMenu();
+            menuObj.SetActive(true);
+        }
     }
 
 }
