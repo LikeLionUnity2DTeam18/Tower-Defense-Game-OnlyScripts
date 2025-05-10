@@ -61,7 +61,7 @@ public class Clawer_AttackState : EnemyAttackState
             }
 
             // Wall
-            var wall = enemy.currentTarget.GetComponent<WallSkillController>();
+            var wall = enemy.currentTarget.GetComponentInParent<WallSkillController>();
             if (wall != null)
             {
                 wall.TakeDamage(enemy.Data.attackPower);
@@ -69,7 +69,7 @@ public class Clawer_AttackState : EnemyAttackState
             }
 
             // BaseTower
-            var baseTower = enemy.currentTarget.GetComponent<BaseTowerController>();
+            var baseTower = enemy.currentTarget.GetComponentInParent<BaseTowerController>();
             if (baseTower != null)
             {
                 baseTower.TakeDamage((int)enemy.Data.attackPower);
