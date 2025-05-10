@@ -9,7 +9,8 @@ public class EnemyFactory : MonoBehaviour
 
         if (enemy != null)
         {
-            enemy.Initialize(data);
+            EnemyData clonedData = data.Clone();  // ✅ 복제본 사용
+            enemy.Initialize(clonedData);
         }
         else
         {

@@ -32,4 +32,53 @@ public class EnemyData : ScriptableObject
     public GameObject hitEffectPrefab;  // 단일형 (Archer, BountyHunter)
     public GameObject hitEffectFront;   // Ghost 전용
     public GameObject hitEffectBack;
+
+    #region 원본 값 저장
+    [HideInInspector] public float baseMaxHealth;
+    [HideInInspector] public float baseAttackPower;
+    [HideInInspector] public float baseMoveSpeed;
+
+    public void CacheBaseValues()
+    {
+        baseMaxHealth = maxHealth;
+        baseAttackPower = attackPower;
+        baseMoveSpeed = moveSpeed;
+    }
+
+    public void ResetToBaseValues()
+    {
+        maxHealth = baseMaxHealth;
+        attackPower = baseAttackPower;
+        moveSpeed = baseMoveSpeed;
+    }
+    #endregion
+
+    public EnemyData Clone()
+    {
+        EnemyData clone = ScriptableObject.CreateInstance<EnemyData>();
+        clone.enemyType = this.enemyType;
+        clone.enemyName = this.enemyName;
+        clone.enemyAnim = this.enemyAnim;
+        clone.enemyPrefab = this.enemyPrefab;
+
+        clone.maxHealth = this.maxHealth;
+        clone.attackPower = this.attackPower;
+        clone.moveSpeed = this.moveSpeed;
+        clone.targetRange = this.targetRange;
+        clone.detectTowerRange = this.detectTowerRange;
+        clone.rewardGold = this.rewardGold;
+        clone.explosionRadius = this.explosionRadius;
+
+        clone.attackEffectPrefab = this.attackEffectPrefab;
+        clone.attackEffectFront = this.attackEffectFront;
+        clone.attackEffectBack = this.attackEffectBack;
+        clone.hitEffectPrefab = this.hitEffectPrefab;
+        clone.hitEffectFront = this.hitEffectFront;
+        clone.hitEffectBack = this.hitEffectBack;
+
+        clone.CacheBaseValues();
+
+        return clone;
+    }
+
 }
