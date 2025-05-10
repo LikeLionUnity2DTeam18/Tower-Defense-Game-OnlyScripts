@@ -34,7 +34,10 @@ public class DraggableIcon : MonoBehaviour
                 break;
         }
     }
-
+    public void ActiveSwitch()
+    {
+        isActive = !isActive;
+    }
     private void Awake()
     {
         icon = GetComponent<TowerIcon>();

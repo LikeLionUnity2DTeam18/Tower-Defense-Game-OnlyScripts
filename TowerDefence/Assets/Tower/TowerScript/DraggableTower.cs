@@ -31,6 +31,7 @@ public class DraggableTower : MonoBehaviour
     private void OnStageChange(StageChangeEvent evt)
     {
         ActiveSwitch(evt);
+        tower.stats.SetHP();
     }
 
     public void ActiveSwitch(StageChangeEvent evt)
@@ -67,6 +68,15 @@ public class DraggableTower : MonoBehaviour
         if (isActive == false) return;
         newObj = PoolManager.Instance.Get(swapPrefab);
         newObj.transform.position = transform.position;
+        if (tower.beacon != null) tower.beacon.isActive = false;
+        PoolManager.Instance.Return(gameObject);
+        transform.DOKill();
+    }
+    public void ToIconWhenPlay()
+    {
+        newObj = PoolManager.Instance.Get(swapPrefab);
+        newObj.transform.position = transform.position;
+        newObj.GetComponent<DraggableIcon>().ActiveSwitch();
         if (tower.beacon != null) tower.beacon.isActive = false;
         PoolManager.Instance.Return(gameObject);
         transform.DOKill();

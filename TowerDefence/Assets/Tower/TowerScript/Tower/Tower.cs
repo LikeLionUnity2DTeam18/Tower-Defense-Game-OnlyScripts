@@ -286,6 +286,10 @@ public class Tower : MonoBehaviour
         return obj;
     }
 
+    private void OnEnable()
+    {
+        stats.SetHP();
+    }
 
     public void AnimationTrigger1()
     {
