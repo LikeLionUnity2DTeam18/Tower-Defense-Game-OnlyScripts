@@ -28,8 +28,7 @@ public class DMMoveState : TMoveState
         }
         else if (tower.nearestEnemy != null)
         {
-            tower.anim.Play("move", 1);
-            tower.anim.Play("move", 2);
+            tower.anim.Play("move", 0);
         }
     }
     public override void Exit()
