@@ -31,19 +31,30 @@ public class Boomer_MoveState : EnemyState
         // 3. 이동 방향 갱신
         enemy.UpdateMoveDir();
 
-        // 4. 타겟까지 거리 확인
-        float distance = Vector2.Distance(enemy.transform.position, enemy.currentTarget.position);
+        // 4. 거리 확인 후 상태 전환 결정
+        if (enemy.currentTarget != null)
+        {
+            Collider2D targetCollider = enemy.currentTarget.GetComponent<Collider2D>();
+            if (targetCollider != null)
+            {
+                Vector2 targetPoint = enemy.currentTarget.GetComponent<Collider2D>().ClosestPoint(enemy.transform.position);
+                float distance = Vector2.Distance(enemy.transform.position, targetPoint);
 
-        if (distance > enemy.TargetRange)
-        {
-            // 타겟까지 멀면 velocity로 계속 이동
-            enemy.Rigidbody2D.linearVelocity = enemy.MoveDir * enemy.Data.moveSpeed;
-        }
-        else 
-        {
-            // 타겟 범위 도달 → 자폭 준비 상태로 전환
-            enemy.Rigidbody2D.linearVelocity = Vector2.zero;
-            stateMachine.ChangeState(new Boomer_ExplodeReadyState(enemy, stateMachine));
+                if (distance > enemy.TargetRange)
+                {
+                    enemy.Rigidbody2D.linearVelocity = enemy.MoveDir * enemy.Data.moveSpeed;
+                }
+                else
+                {
+                    enemy.Rigidbody2D.linearVelocity = Vector2.zero;
+                    stateMachine.ChangeState(new Boomer_ExplodeReadyState(enemy, stateMachine));
+                }
+            }
+            else
+            {
+                // Collider가 없으면 타겟 무시하고 다시 찾도록 유도
+                enemy.currentTarget = null;
+            }
         }
 
     }
