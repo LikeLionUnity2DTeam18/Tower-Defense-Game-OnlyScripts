@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Threading;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
@@ -98,6 +99,7 @@ public class GameManager : MonoBehaviour
     public void ProceedStage()
     {
         CurrentStage++;
+        EventManager.Trigger<StageNumberChanged>(new StageNumberChanged(CurrentStage));
         if (CurrentStage >= StageDataList.Count)
         {
             Debug.Log("게임 끝");
@@ -167,4 +169,5 @@ public class GameManager : MonoBehaviour
         Time.timeScale = 1f;
         UnityEngine.SceneManagement.SceneManager.LoadScene("StartScene");
     }
+
 }
