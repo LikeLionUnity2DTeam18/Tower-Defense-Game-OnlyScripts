@@ -109,7 +109,7 @@ public class MergeBeacon : MonoBehaviour
         if (index != 0)
         {
             GameObject t = PoolManager.Instance.Get(icons[index]);
-            t.transform.position = transform.position;
+            t.transform.position = transform.position + new Vector3(0f, -1f, 0f);
         }
     }
 
@@ -122,5 +122,27 @@ public class MergeBeacon : MonoBehaviour
             TowerType.Zylad or TowerType.Eksyll or TowerType.Golem => 3,
             _ => 0
         };
+    }
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.F1))
+        {
+            GameObject t = PoolManager.Instance.Get(icons[9]);
+            t.transform.position = transform.position + new Vector3(0f, -1f, 0f);
+        }
+
+        if (Input.GetKeyDown(KeyCode.F2))
+        {
+            GameObject t = PoolManager.Instance.Get(icons[10]);
+            t.transform.position = transform.position + new Vector3(0f, -1f, 0f);
+        }
+
+        if (Input.GetKeyDown(KeyCode.F3))
+        {
+
+            GameObject t = PoolManager.Instance.Get(icons[11]);
+            t.transform.position = transform.position + new Vector3(0f, -1f, 0f);
+        }
     }
 }

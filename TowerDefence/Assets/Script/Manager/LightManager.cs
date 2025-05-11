@@ -21,7 +21,7 @@ public class LightManager : MonoBehaviour
         switch (evt.EventType)
         {
             case StageChangeEventType.Start:
-                DOTween.To(() => light2D.intensity,x => light2D.intensity = x,0.3f,1f);
+                DOTween.To(() => light2D.intensity,x => light2D.intensity = x,0.5f,1f);
                 break;
             case StageChangeEventType.End:
                 DOTween.To(() => light2D.intensity,x => light2D.intensity = x,1f,1f);
