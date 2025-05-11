@@ -20,7 +20,7 @@ public class TowerProjectile : TowerEntity
         direction = dir;
         startPos = transform.position;
     }
-    private void Awake()
+    public virtual void Awake()
     {
         anim = GetComponent<Animator>();
     }
