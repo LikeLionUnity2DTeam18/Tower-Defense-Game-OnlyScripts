@@ -10,14 +10,7 @@ public class BountyHunter_AttackState : EnemyAttackState
     public override void Enter()
     {
         stateTimer = 1f;
-        if (enemy.MoveDir.y > 0)
-        {
-            enemy.Animator.Play("Idle_back");
-        }
-        else
-        {
-            enemy.Animator.Play("Idle_front");
-        }
+        enemy.PlayIdleAnimation();
         enemy.SpriteRenderer.flipX = enemy.MoveDir.x < 0;
 
         //EffectSpawner 스폰 위치에 따른 flip
@@ -108,6 +101,11 @@ public class BountyHunter_AttackState : EnemyAttackState
 
     public override void LogicUpdate()
     {
+        if (enemy.IsBind)
+        {
+            enemy.Rigidbody2D.linearVelocity = Vector2.zero;
+            return; // 속박 중 → 아무 동작도 안 함
+        }
 
         base.LogicUpdate();
 

@@ -7,14 +7,7 @@ public class Blocker_IdleState : EnemyState
 
     public override void Enter()
     {
-        if (enemy.MoveDir.y > 0)
-        {
-            enemy.Animator.Play("Idle_back");
-        }
-        else
-        {
-            enemy.Animator.Play("Idle_front");
-        }
+        enemy.PlayIdleAnimation();
         enemy.SpriteRenderer.flipX = enemy.MoveDir.x < 0;
         stateTimer = 1f;
         enemy.Animator.speed = 1f;

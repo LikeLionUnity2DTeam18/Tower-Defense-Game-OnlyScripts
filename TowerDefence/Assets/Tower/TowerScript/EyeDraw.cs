@@ -9,6 +9,7 @@ public class EyeDraw : MonoBehaviour
     private bool isClickable = true;
     // 소환 골드
     [SerializeField] private int priceGold;
+    [SerializeField] private GoldController goldController;
     private void Awake()
     {
         anim = GetComponent<Animator>();
@@ -21,8 +22,13 @@ public class EyeDraw : MonoBehaviour
     {
         if (!isClickable) return;
 
+
+        int currentGold = goldController.Model.CurrentGold;
+        if (currentGold < priceGold) return;
+
         isClickable = false;
         anim.SetBool("Click", true);
+
         DrawTowerIcon();
 
         //골드 소모

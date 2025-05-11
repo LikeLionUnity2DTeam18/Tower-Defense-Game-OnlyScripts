@@ -9,7 +9,7 @@ public class WElement_Projectile : TowerProjectile
     private ParticleSystem ps;
     private ShapeModule shape;
 
-    void Awake()
+    public override void Awake()
     {
         initialScale = transform.localScale;  // 원래 크기 저장
         ps = waterVFX.GetComponent<ParticleSystem>();
