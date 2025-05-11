@@ -1,12 +1,17 @@
 using System.Collections.Generic;
 using UnityEngine;
+using DG.Tweening;
 
 public class SoundManager : MonoBehaviour
 {
     private static SoundManager instance;
+    [SerializeField] private AudioSource bgmSource;
 
-    [Header("사운드 배열")]
-    [SerializeField] public SoundData[] soundArray;
+
+    [Header("사운드 데이터 배열")]
+    [SerializeField] private SoundData[] soundArray;
+    [Header("오디오소스 풀용 프리팹")]
+    [SerializeField] private GameObject audioSourcePrefab;
 
     public static SoundManager Instance
     {
@@ -14,7 +19,6 @@ public class SoundManager : MonoBehaviour
         {
             if (instance == null)
             {
-                // 씬에 SoundManager 오브젝트가 없으면 새로 생성
                 GameObject obj = new GameObject("SoundManager");
                 instance = obj.AddComponent<SoundManager>();
                 DontDestroyOnLoad(obj);
@@ -23,9 +27,8 @@ public class SoundManager : MonoBehaviour
         }
     }
 
-    void Awake()
+    private void Awake()
     {
-        // 중복 생성 방지
         if (instance == null)
         {
             instance = this;
@@ -35,12 +38,15 @@ public class SoundManager : MonoBehaviour
         {
             Destroy(gameObject);
         }
+
+        PoolManager.Instance.CreatePool(audioSourcePrefab, 10);
     }
-    void Start()
+
+    private void Start()
     {
-        // 초기화 작업이 있다면 여기에
         EventManager.AddListener<StageChangeEvent>(OnStageChange);
     }
+
     private void OnDestroy()
     {
         EventManager.RemoveListener<StageChangeEvent>(OnStageChange);
@@ -52,19 +58,15 @@ public class SoundManager : MonoBehaviour
         {
             case StageChangeEventType.Start:
                 Play(SoundType.StageStart, transform);
+                bgmSource.DOPitch(0.8f, 1f);
                 break;
             case StageChangeEventType.End:
                 Play(SoundType.StageEnd, transform);
+                bgmSource.DOPitch(1f, 1f);
                 break;
         }
     }
 
-    void Update()
-    {
-        // 프레임마다 할 일 있다면 여기에
-    }
-
-    // 예시: 효과음 재생 함수
     public void Play(SoundType type, Transform pos)
     {
         int index = (int)type;
@@ -77,14 +79,15 @@ public class SoundManager : MonoBehaviour
 
         AudioClip clip = soundArray[index].clip;
 
-        if (clip != null)
-        {
-            AudioSource.PlayClipAtPoint(clip, pos.position);
-        }
-        else
+        if (clip == null)
         {
             Debug.LogWarning($"[SoundManager] SoundType.{type} 에 대응하는 오디오 클립이 없습니다.");
+            return;
         }
+
+        GameObject obj = PoolManager.Instance.Get(audioSourcePrefab);
+        SoundPlayer player = obj.GetComponent<SoundPlayer>();
+        player.Play(clip, pos.position);
     }
 }
 

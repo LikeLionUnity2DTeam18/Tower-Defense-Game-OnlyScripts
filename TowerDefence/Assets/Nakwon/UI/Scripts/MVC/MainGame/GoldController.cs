@@ -4,7 +4,7 @@ public class GoldController : MonoBehaviour
 {
     [SerializeField] private GoldView view;
     private GoldModel model;
-
+    public GoldModel Model => model;//eye에서 골드 모델 접근하기 위함.
     private void Start()
     {
         model = new GoldModel();

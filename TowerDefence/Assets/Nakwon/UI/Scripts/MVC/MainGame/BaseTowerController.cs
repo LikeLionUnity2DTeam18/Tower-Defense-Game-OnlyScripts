@@ -6,7 +6,7 @@ public class BaseTowerController : MonoBehaviour
 
     void Start()
     {
-        model = new BaseTowerModel(200); // 체력 초기화
+        model = new BaseTowerModel(10000); // 체력 초기화
     }
 
     void Update()
@@ -25,7 +25,7 @@ public class BaseTowerController : MonoBehaviour
         if(model.IsDead())
         {
             Debug.Log("기지 파괴!!!");
-            //GameManager.Instance.GameOver();
+            GameManager.Instance.GameOver();
         }
     }
 }
