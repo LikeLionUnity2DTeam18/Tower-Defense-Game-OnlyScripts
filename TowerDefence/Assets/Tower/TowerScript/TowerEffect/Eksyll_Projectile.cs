@@ -7,7 +7,7 @@ public class Eksyll_Projectile : TowerProjectile
     private float spawnTimer;
     private int enemyLayer;
 
-    private void Awake()
+    public override void Awake()
     {
         enemyLayer = LayerMask.NameToLayer("Enemy");
         spawnTimer = spawnCooldown;
