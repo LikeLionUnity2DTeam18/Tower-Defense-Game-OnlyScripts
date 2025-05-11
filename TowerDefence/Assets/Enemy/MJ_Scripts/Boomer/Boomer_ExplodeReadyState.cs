@@ -16,6 +16,12 @@ public class Boomer_ExplodeReadyState : EnemyState
     }
     public override void LogicUpdate()
     {
+        if (enemy.IsBind)
+        {
+            enemy.Rigidbody2D.linearVelocity = Vector2.zero;
+            return; // 속박 중 → 아무 동작도 안 함
+        }
+
         base.LogicUpdate();
 
         //도중에 죽을 경우

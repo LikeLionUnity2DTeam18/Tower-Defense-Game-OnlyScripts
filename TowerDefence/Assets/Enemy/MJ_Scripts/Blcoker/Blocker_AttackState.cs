@@ -9,14 +9,7 @@ public class Blocker_AttackState : EnemyAttackState
     public override void Enter()
     {
         stateTimer = 1f;
-        if (enemy.MoveDir.y > 0)
-        {
-            enemy.Animator.Play("Idle_back");
-        }
-        else
-        {
-            enemy.Animator.Play("Idle_front");
-        }
+        enemy.PlayIdleAnimation();
         enemy.SpriteRenderer.flipX = enemy.MoveDir.x < 0;
         enemy.StartCoroutine(AttackEffect());
     }
@@ -68,6 +61,12 @@ public class Blocker_AttackState : EnemyAttackState
 
     public override void LogicUpdate()
     {
+        if (enemy.IsBind)
+        {
+            enemy.Rigidbody2D.linearVelocity = Vector2.zero;
+            return; // 속박 중 → 아무 동작도 안 함
+        }
+
         base.LogicUpdate();
 
         CheckDeath(new Common_DeathState(enemy, stateMachine));

@@ -1,4 +1,5 @@
 
+using System.Collections;
 using UnityEngine;
 
 public class EnemyController : MonoBehaviour
@@ -13,12 +14,15 @@ public class EnemyController : MonoBehaviour
     //public enum StageChangeEventType { Start, End }
 
     private EnemyStateMachine stateMachine;
+
     public Transform effectSpawnPoint;    // 이펙트 생성 위치 (optional)
 
     public Transform currentTarget;
     public Transform baseTarget { get; private set; } // 기본 목표 (EnemyTarget)
 
     public StageBalanceData stageBalanceData;
+
+    public bool IsBind { get; private set; } = false;
 
 
     public void ApplyStageScaling(int currentStage)
@@ -116,7 +120,7 @@ public class EnemyController : MonoBehaviour
             Debug.Log($"[Target Detected] Target: {currentTarget.name}");
         }
         // 감지된 게 없거나, 기존 타워가 파괴 -> baseTower로 이동
-        else if (currentTarget == null || !currentTarget.gameObject.activeSelf)
+        else if (currentTarget == null || !currentTarget.gameObject.activeInHierarchy)
         {
             // 복귀할 기본 목표는 항상 EnemyTarget
             currentTarget = baseTarget;
@@ -209,6 +213,38 @@ public class EnemyController : MonoBehaviour
             {
                 currentTarget = other.transform;
             }
+        }
+    }
+
+    //속박 상태
+    public void Bind(float duration)
+    {
+        if (!IsBind)
+            StartCoroutine(BindCoroutine(duration));
+    }
+
+    private IEnumerator BindCoroutine(float duration)
+    {
+        IsBind = true;
+        Rigidbody2D.linearVelocity = Vector2.zero;
+        PlayIdleAnimation();
+
+        yield return new WaitForSeconds(duration);
+
+        IsBind = false;
+    }
+
+    public void PlayIdleAnimation()
+    {
+        if (MoveDir.y > 0)
+        {
+            Animator.Play("Idle_back");
+            SpriteRenderer.flipX = MoveDir.x < 0;
+        }
+        else
+        {
+            Animator.Play("Idle_front");
+            SpriteRenderer.flipX = MoveDir.x < 0;
         }
     }
 
