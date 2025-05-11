@@ -51,6 +51,8 @@ public class StartButton : MonoBehaviour
         {
             image.sprite = pauseSprite;
         }
+        else if (evt.EventType == StageChangeEventType.SpawnEnd)
+            return;
         else
         {
             image.sprite = startSprite;
