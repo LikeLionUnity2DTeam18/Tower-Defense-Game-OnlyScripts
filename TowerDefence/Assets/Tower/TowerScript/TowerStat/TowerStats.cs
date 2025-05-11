@@ -35,6 +35,11 @@ public class TowerStats : MonoBehaviour
         currentHealth = hp.GetValue();
     }
 
+    void OnEnable()
+    {
+        isDead = false;
+    }
+
     public virtual void DoMeleeDamage(EnemyController _targetStats)
     {
         //Debug.Log("DoMeleeDamage");
@@ -57,6 +62,7 @@ public class TowerStats : MonoBehaviour
     private float lastDamageTime = -999f;
     public virtual void TakeDamage(float _damage)
     {
+        if (isDead) return;
         if (Time.time - lastDamageTime < 1f) return; // 1초 쿨다운
         SoundManager.Instance.Play(SoundType.Hit, transform);
         lastDamageTime = Time.time;
@@ -67,9 +73,12 @@ public class TowerStats : MonoBehaviour
             t.transform.position = transform.position;
         }
         if (currentHealth < 0)
+        {
+            isDead = true;
             Die();
+        }
     }
-
+    private bool isDead = false;
     protected virtual void Die()
     {
         Dtower.ToIconWhenPlay();

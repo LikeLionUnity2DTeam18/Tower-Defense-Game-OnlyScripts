@@ -10,7 +10,7 @@ public class Darkmur : Tower
     [SerializeField] private GameObject projectile;
     [SerializeField] private Transform left;
     [SerializeField] private Transform right;
-    [SerializeField] private float cloneDuration = 30f;
+    [SerializeField] private float cloneDuration = 12f;
     public override void Awake()
     {
         base.Awake();
@@ -25,12 +25,18 @@ public class Darkmur : Tower
     public override void Start()
     {
         base.Start();
-        if (isClone)
-        {
-            StartCoroutine(AutoDestruct());
-        }
     }
 
+    public void CloneDes()
+    {
+        StartCoroutine(WaitForSec());
+        if (!isClone) return;
+        StartCoroutine(AutoDestruct());
+    }
+    IEnumerator WaitForSec()
+    {
+        yield return new WaitForSeconds(1f);
+    }
     public void Teleport()
     {
         if (nearestEnemy == null) return;
@@ -39,7 +45,7 @@ public class Darkmur : Tower
 
     public void StartShooting(Vector2 targetPos)
     {
-        StartCoroutine(ShootBurst(targetPos, 5, 0.1f)); // 총 5발, 간격 0.1초
+        StartCoroutine(ShootBurst(targetPos, 4, 0.1f)); // 총 5발, 간격 0.1초
     }
 
     private IEnumerator ShootBurst(Vector2 targetPos, int count, float interval)
@@ -79,6 +85,7 @@ public class Darkmur : Tower
         clone.GetComponent<TowerStats>().hp.SetDefaultValue(99999);
         clone.GetComponent<DraggableTower>().enabled = false;
         clone.GetComponent<SpriteRenderer>().color = Color.black;
+        clone.GetComponent<Darkmur>().CloneDes();
         Vector2 offset = UnityEngine.Random.insideUnitCircle.normalized * 1.5f;
         clone.transform.position = transform.position + (Vector3)offset;
     }
@@ -87,14 +94,28 @@ public class Darkmur : Tower
     private IEnumerator AutoDestruct()
     {
         yield return new WaitForSeconds(cloneDuration);
-        anim.Play("darkmur_CloneBomb", 1);
-        anim.Play("darkmur_CloneBomb", 2);
+        anim.Play("darkmur_CloneBomb", 0);
     }
     //애니메이션 종료 후 리턴
     public void CloneDestroy()
     {
         isClone = false;
         PoolManager.Instance.Return(gameObject);
+    }
+    private void OnEnable() // 오브젝트풀에서 다시 꺼낼때 조합체크 bool값 초기화용
+    {
+        EventManager.AddListener<StageChangeEvent>(OnStageChange);
+    }
+    private void OnDisable()
+    {
+        EventManager.RemoveListener<StageChangeEvent>(OnStageChange);
+    }
+    private void OnStageChange(StageChangeEvent evt)
+    {
+        if(evt.EventType == StageChangeEventType.End && isClone == true)
+        {
+            CloneDestroy();
+        }
     }
 }
 

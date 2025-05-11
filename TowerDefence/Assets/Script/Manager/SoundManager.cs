@@ -58,7 +58,7 @@ public class SoundManager : MonoBehaviour
         {
             case StageChangeEventType.Start:
                 Play(SoundType.StageStart, transform);
-                bgmSource.DOPitch(0.8f, 1f);
+                bgmSource.DOPitch(0.5f, 1f);
                 break;
             case StageChangeEventType.End:
                 Play(SoundType.StageEnd, transform);

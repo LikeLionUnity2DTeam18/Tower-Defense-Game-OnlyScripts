@@ -5,7 +5,7 @@ public class DraggableTower : MonoBehaviour
 {
     public GameObject swapPrefab;
     private GameObject newObj;  //스왑할 오브젝트
-    private bool isActive = true; //스왑 가능 여부
+    [SerializeField] private bool isActive = true; //스왑 가능 여부
     [HideInInspector]
     private Tower tower;
     private void Awake()
