@@ -25,7 +25,7 @@ public class BaseTowerController : MonoBehaviour
         if(model.IsDead())
         {
             Debug.Log("기지 파괴!!!");
-            //GameManager.Instance.GameOver();
+            GameManager.Instance.GameOver();
         }
     }
 }

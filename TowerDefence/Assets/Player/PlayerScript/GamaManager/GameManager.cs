@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Threading;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
@@ -13,6 +14,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private InventoryUI inventoryUI;
     [SerializeField] private StageDataSO stageDataSO;
     [SerializeField] private GameObject menuObj;
+    [SerializeField] private GameObject gameOverPannel; //게임 오버 패널
     public List<StageData> StageDataList => stageDataSO.data;
     private PlayerController player;
     public int CurrentStage { get; private set; }
@@ -146,4 +148,23 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    public void GameOver()
+    {
+        Time.timeScale = 0f;
+        if (gameOverPannel != null)
+            gameOverPannel.SetActive(true);
+    }
+
+    public void OnClickRestart()
+    {
+        Time.timeScale = 1f;
+        UnityEngine.SceneManagement.SceneManager.LoadScene(
+        UnityEngine.SceneManagement.SceneManager.GetActiveScene().buildIndex);
+    }
+
+    public void OnClickReturnToMain()
+    {
+        Time.timeScale = 1f;
+        UnityEngine.SceneManagement.SceneManager.LoadScene("StartScene");
+    }
 }
