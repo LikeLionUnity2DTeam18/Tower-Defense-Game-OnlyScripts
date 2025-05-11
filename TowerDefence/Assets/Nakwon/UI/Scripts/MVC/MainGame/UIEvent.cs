@@ -144,3 +144,9 @@ public struct MenuButtonClicked
             this.type = type;
         }
 }
+
+public struct StageNumberChanged
+{
+    public int NewStage { get; private set; }
+    public StageNumberChanged(int stage) => NewStage = stage;
+}
