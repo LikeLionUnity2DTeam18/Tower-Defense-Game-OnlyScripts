@@ -45,13 +45,15 @@ public class PlayerState
             return;
 
         // 마지막으로 바라보던 방향과 이동방향이 같으면 굳이 애니매이터 파라미터 변경X
-        if (rb.linearVelocity.sqrMagnitude > 0.01f)
+        if (rb.linearVelocity.sqrMagnitude > 0.1f)
         {
             Direction4Custom dir = DirectionHelper.ToDirection4Custom(rb.linearVelocity);
             if (dir == player.LastDir)
                 return;
             player.SetLastDirection(dir);
         }
+
+
 
         Vector2 animDirection = DirectionHelper.ToAnimParamVector(player.LastDir);
         anim.SetFloat(PlayerAnimationParams.MoveX, animDirection.x);
@@ -83,7 +85,7 @@ public class PlayerState
         triggerCalled = true;
     }
 
-    public bool IsSamePosition(Vector2 a, Vector2 b) => Vector2.Distance(a, b) < 0.1f;
+    public bool IsSamePosition(Vector2 a, Vector2 b) => Vector2.Distance(a, b) < 0.3f;
 
 
     /// <summary>

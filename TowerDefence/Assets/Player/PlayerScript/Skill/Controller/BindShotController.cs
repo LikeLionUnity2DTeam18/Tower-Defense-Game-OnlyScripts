@@ -75,8 +75,11 @@ public class BindShotController : PlayerSkillEntity
 
         foreach (var hit in hits)
         {
+            var enemy = hit.GetComponent<EnemyController>();
+            if(enemy == null) continue;
             Debug.Log("스킬 히트");
-            hit.GetComponent<EnemyController>().TakeDamage(damage);
+            enemy.TakeDamage(damage);
+            enemy.Bind(bindTime);
             //hit.GetComponent<EnemyController>().Bind(bindTime);
         }
 
