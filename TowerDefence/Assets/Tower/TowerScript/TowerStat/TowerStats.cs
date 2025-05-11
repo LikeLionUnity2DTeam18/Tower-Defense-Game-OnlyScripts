@@ -30,6 +30,10 @@ public class TowerStats : MonoBehaviour
     {
         currentHealth = hp.GetValue();
     }
+    public void SetHP()
+    {
+        currentHealth = hp.GetValue();
+    }
 
     public virtual void DoMeleeDamage(EnemyController _targetStats)
     {
@@ -57,14 +61,17 @@ public class TowerStats : MonoBehaviour
         SoundManager.Instance.Play(SoundType.Hit, transform);
         lastDamageTime = Time.time;
         currentHealth -= _damage;
-        GameObject t =PoolManager.Instance.Get(HitVFX);
-        t.transform.position = transform.position;
+        if (HitVFX != null) 
+        { 
+            GameObject t = PoolManager.Instance.Get(HitVFX);
+            t.transform.position = transform.position;
+        }
         if (currentHealth < 0)
             Die();
     }
 
     protected virtual void Die()
     {
-        Dtower.ToIcon();
+        Dtower.ToIconWhenPlay();
     }
 }
