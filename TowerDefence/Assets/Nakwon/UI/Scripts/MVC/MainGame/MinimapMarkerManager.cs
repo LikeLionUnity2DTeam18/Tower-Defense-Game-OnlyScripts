@@ -49,32 +49,32 @@ public class MinimapMarkerManager : MonoBehaviour
         // var marker = markerObj.GetComponent<MinimapMarkerFollow>();
         // Color color = GetColorForType(type);
         // marker.Init(target, color, markerPool, minimapArea, mapSizeWorld);
-         if (target == null || target.gameObject == null)
-    {
-        Debug.LogWarning("RegisterTarget 실패: target이 null이거나 이미 파괴됨.");
-        return;
-    }
+        if (target == null || target.gameObject == null)
+        {
+            Debug.LogWarning("RegisterTarget 실패: target이 null이거나 이미 파괴됨.");
+            return;
+        }
 
-    GameObject markerObj = markerPool.Get();
+        GameObject markerObj = markerPool.Get();
 
-    if (markerObj == null)
-    {
-        Debug.LogError("markerObj가 풀에서 null로 반환됨");
-        return;
-    }
+        if (markerObj == null)
+        {
+            Debug.LogError("markerObj가 풀에서 null로 반환됨");
+            return;
+        }
 
-    markerObj.transform.SetParent(markerContainer, false);
+        markerObj.transform.SetParent(markerContainer, false);
 
-    var marker = markerObj.GetComponent<MinimapMarkerFollow>();
-    if (marker == null)
-    {
-        Debug.LogError($"MinimapMarkerFollow가 {markerObj.name}에 없습니다.");
-        return;
-    }
+        var marker = markerObj.GetComponent<MinimapMarkerFollow>();
+        if (marker == null)
+        {
+            Debug.LogError($"MinimapMarkerFollow가 {markerObj.name}에 없습니다.");
+            return;
+        }
 
-    Color color = GetColorForType(type);
-    marker.Init(target, color, markerPool, minimapArea, mapSizeWorld);
-        if(minimapArea == null) Debug.Log("#$%@#$%@#$%@#$%null 찾았다");
+        Color color = GetColorForType(type);
+        marker.Init(target, color, markerPool, minimapArea, mapSizeWorld);
+        if (minimapArea == null) Debug.Log("#$%@#$%@#$%@#$%null 찾았다");
     }
 
     private Color GetColorForType(MinimapMarkerType type)

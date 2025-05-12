@@ -91,6 +91,7 @@ public class SoundManager : MonoBehaviour
     }
 }
 
+// SoundManager.cs
 
 //[CreateAssetMenu(fileName = "SoundData", menuName = "Sound/SoundData")]
 //public class SoundData : ScriptableObject
